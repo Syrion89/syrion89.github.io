@@ -1,7 +1,7 @@
 ---
 layout: blog
 title: "Blog Posts"
-permalink: /blog/
+permalink: /
 ---
 
 <ul class="posts">
