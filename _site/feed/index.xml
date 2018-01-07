@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Syrion</title>
+    <description></description>
+    <link>http://localhost:4000//</link>
+    <atom:link href="http://localhost:4000//feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Sun, 07 Jan 2018 15:07:39 +0100</pubDate>
+    <lastBuildDate>Sun, 07 Jan 2018 15:07:39 +0100</lastBuildDate>
+    <generator>Jekyll v3.6.2</generator>
+    
+      <item>
+        <title>Redimensionar partições LVM</title>
+        <description>&lt;p&gt;Em um post passado, mostrando como fazer a &lt;a href=&quot;/blog/archlinux-lvm-luks/&quot;&gt;instalação do Arch Linux [0]&lt;/a&gt;, utilizei do LVM para gerenciar os discos. Lá falei um pouco mais da teoria por trás dele e tal. Aqui vou me ater mesmo a repassar o passo a passo utilizado para isso.&lt;/p&gt;
+
+&lt;p&gt;Uma questão a ser dita é que o LVM nos dá a possibilidade de poder redimensionar nossas partições sem desligar o sistema. Acontece que a depender de sua aplicação, mesmo que não dê um shutdown no sistema, as consequências podem ser as mesmas. Explico: para aumentar o tamanho da partição é moleza, dá para fazer sem mais nem menos. Agora para diminuir o volume de uma partição tem de desmontá-la e tudo mais. E isso para alguns pode ser um grande problema.&lt;/p&gt;
+
+&lt;p&gt;Mas enfim, vamos lá…&lt;/p&gt;
+
+&lt;h2 id=&quot;reduzir-o-tamanho&quot;&gt;Reduzir o tamanho&lt;/h2&gt;
+
+&lt;p&gt;Digamos que uma partição sua está sendo menos utilizada que outra e que você quer tirar um pouco de espaço dessa determinada partição e colocar na outra. Pois bem, não esqueça de adaptar os endereços aqui para seu cenário, uma breve explicação:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/particao&lt;/code&gt;: endereço no qual a partição que você está usando está montada&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;VolumeGroup&lt;/code&gt;: acredito que o nome já é autoexplicativo&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;LogicalVolume01&lt;/code&gt; e &lt;code class=&quot;highlighter-rouge&quot;&gt;LogicalVolume02&lt;/code&gt;: os nomes também já se explicam, mas a numeração se refere a que o 01 é o volume lógico que irá diminuir de tamanho, enquanto o 02 o que irá aumentar&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;XXG&lt;/code&gt;: nova quantidade de gigas da partição que teve espaço diminuído&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Primeiro, desmonte a partição:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# umount /particao
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Então, repare o sistema de arquivos:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# fsck -f /dev/VolumeGroup/LogicalVolume01
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Agora de fato redimensione:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# resize2fs /dev/VolumeGroup/LogicalVolume01 XXG
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;E então, reduza o tamanho do volume lógico para seu novo espaço:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# lvreduce -L XXG /dev/VolumeGroup/LogicalVolume01
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Agora monte sua partição numa boa:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# mount /particao
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;aumentar-tamanho&quot;&gt;Aumentar tamanho&lt;/h2&gt;
+
+&lt;p&gt;Depois que passei por alguns apertos passei a deixar alguns gigas “sobrando” quando ia pensar no esquemas de partições, justamente por essa facilidade da adição em relação à redução. Pois bem, tendo em vista que já se tem o espaço sobrando, como o procedimento acima mostra como fazer, basta seguir:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# lvextend -L +10G /dev/mapper/main-root
+# resize2fs /dev/mapper/main-root
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;E pronto. Agora cheque o tamanho dos discos com &lt;code class=&quot;highlighter-rouge&quot;&gt;df -h&lt;/code&gt; e seja feliz! :)&lt;/p&gt;
+
+&lt;p&gt;Até!&lt;/p&gt;
+
+&lt;h2 id=&quot;links&quot;&gt;Links&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[0]: http://localhost:4000/blog/archlinux-lvm-luks/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Tue, 11 Apr 2017 05:00:00 +0200</pubDate>
+        <link>http://localhost:4000//blog/redimensionar-particoes-lvm/</link>
+        <guid isPermaLink="true">http://localhost:4000//blog/redimensionar-particoes-lvm/</guid>
+        
+        <category>linux</category>
+        
+        <category>lvm</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Arch Linux + Tmux = CLI++</title>
+        <description>&lt;p&gt;&lt;img src=&quot;/images/posts/2017/01.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Caso queira ver o print maior, &lt;a href=&quot;/images/posts/2017/01.png&quot;&gt;clica aqui [0]&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Primeiro post do blog em 2017, logo no primeiro dia do ano, será que isso quer dizer alguma coisa? haha&lt;/p&gt;
+
+&lt;p&gt;Enfim, temos aqui um screenshot, algo que já queria postar há um tempo, mas enfim, está aqui agora. Nele tem aberto o filme “Lights Out” no Mplayer (\o/) e por trás o Tmux, com ZSH.&lt;/p&gt;
+
+&lt;p&gt;O Tmux é quase o padrão. No arquivo de configuração tem apenas o seguinte:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bind c new-window -c '#{pane_current_path}'
+bind '&quot;' split-window -c '#{pane_current_path}'
+bind % split-window -h -c '#{pane_current_path}'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Contribuição do &lt;a href=&quot;https://github.com/marinofull&quot;&gt;Marino&lt;/a&gt;, que serve para quando abrirmos um novo painel no Tmux, ele persistir o diretório do painel atual.&lt;/p&gt;
+
+&lt;p&gt;Já no ZSH eu utilizo o &lt;a href=&quot;http://ohmyz.sh/&quot;&gt;Oh-My-ZSH [1]&lt;/a&gt; com um tema bem simples que montei:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;setopt promptsubst
+PROMPT=$'%B${(r:$COLUMNS::¨:)}$(git_prompt_info)%{$fg[white]%}&amp;gt;&amp;gt; %b%{$reset_color%}'
+RPROMPT='%B%*%b'
+
+ZSH_THEME_GIT_PROMPT_PREFIX=&quot;%{$fg[white]%}&quot;
+ZSH_THEME_GIT_PROMPT_SUFFIX=&quot;%{$reset_color%} &quot;
+ZSH_THEME_GIT_PROMPT_DIRTY=&quot;%{$fg[red]%} *%{$reset_color%}&quot;
+ZSH_THEME_GIT_PROMPT_CLEAN=&quot;&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;E lá ao fundo o wallpaper de gatênho! Aqui o link para ele: &lt;a href=&quot;/images/posts/2017/02.jpg&quot;&gt;Gatênho [2]&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Bom, tomara que começar o ano postando algo assim faça vir mais posts e coisas boas por aqui. Até a próxima, pessoal! o/&lt;/p&gt;
+
+&lt;h2 id=&quot;links&quot;&gt;Links&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[0]: http://localhost:4000/images/posts/2017/01.png
+[1]: http://ohmyz.sh/
+[2]: http://localhost:4000/images/posts/2017/02.jpg
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Sun, 01 Jan 2017 13:00:00 +0100</pubDate>
+        <link>http://localhost:4000//blog/arch-linux-tmux/</link>
+        <guid isPermaLink="true">http://localhost:4000//blog/arch-linux-tmux/</guid>
+        
+        <category>archlinux</category>
+        
+        <category>linux</category>
+        
+        <category>screenshot</category>
+        
+        <category>tmux</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+  </channel>
+</rss>
