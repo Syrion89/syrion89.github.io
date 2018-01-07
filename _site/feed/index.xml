@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 07 Jan 2018 21:54:23 +0100</pubDate>
-    <lastBuildDate>Sun, 07 Jan 2018 21:54:23 +0100</lastBuildDate>
+    <pubDate>Sun, 07 Jan 2018 23:33:39 +0100</pubDate>
+    <lastBuildDate>Sun, 07 Jan 2018 23:33:39 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -114,8 +114,6 @@ bash-3.2#
         <guid isPermaLink="true">http://localhost:4000/blog/lamp-security-ctf5-writeup/</guid>
         
         <category>vulnhub</category>
-        
-        <category>root-me</category>
         
         
         <category>blog</category>
@@ -229,8 +227,6 @@ uid=0(root) gid=0(root) groups=0(root),1(bin),2(daemon),3(sys),4(adm),6(disk),10
         <guid isPermaLink="true">http://localhost:4000/blog/lamp-security-ctf4-writeup/</guid>
         
         <category>vulnhub</category>
-        
-        <category>root-me</category>
         
         
         <category>blog</category>
