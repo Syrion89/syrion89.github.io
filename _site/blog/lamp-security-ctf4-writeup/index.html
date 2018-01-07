@@ -120,6 +120,86 @@ Aggressive OS guesses: OpenBSD 4.0 (88%), Apple AirPort Extreme WAP (87%), FreeB
 No exact OS matches for host (test conditions non-ideal).
 </code></pre></div></div>
 
+<p>At this point I used netcat to verify the services on the three open ports. As excepted:</p>
+
+<ul>
+  <li>SSH on 22</li>
+  <li>SENDMAIL on 25</li>
+  <li>HTTP on 80</li>
+</ul>
+
+<p>In the meantime,  I ran DirBuster, and I noticed this file:</p>
+
+<p><img src="/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img1.png" alt="Screenshot" /></p>
+
+<p>It was the database’s structure:</p>
+
+<p><img src="/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img2.png" alt="Screenshot" /></p>
+
+<p>This was the website on port 80:</p>
+
+<p><img src="/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img3.png" alt="Screenshot" /></p>
+
+<p>I noticed this xss on the search bar:</p>
+
+<p><img src="/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img4.png" alt="Screenshot" /></p>
+
+<p>Then I found an SQL Injection on the blog:</p>
+
+<p><img src="/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img5.png" alt="Screenshot" /></p>
+
+<p>At this pont I started to enumerate the select statement’s parameters by using this payloads:</p>
+
+<ul>
+  <li>id=1 order by 1 —</li>
+  <li>id=1 order by 2 —</li>
+</ul>
+
+<p>They were five!</p>
+
+<p><img src="/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img6.png" alt="Screenshot" /></p>
+
+<p>I needed to know which parameters were visible:</p>
+
+<p><img src="/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img7.png" alt="Screenshot" /></p>
+
+<p>And then I performed the full SQL Inection (i knew the database structure because of db.sql):</p>
+
+<p><img src="/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img8.png" alt="Screenshot" /></p>
+
+<p>Ok let’s use <a href="https://crackstation.net/">crackstation</a> to crack the hash. I tried to login as dstevens via ssh with the following credentials:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>username dstevens
+password: ilike2surf
+</code></pre></div></div>
+
+<p>And I succeeded:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Syrion:~ syrion$ ssh dstevens@ctf07.root-me.org
+The authenticity of host ‘ctf07.root-me.org (212.83.142.84)’ can’t be established.
+RSA key fingerprint is SHA256:NDWh6/414mOsW4P7K6ICc5R67PrX87ADMFUx9DK9ftk.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added ‘ctf07.root-me.org,212.83.142.84’ (RSA) to the list of known hosts.
+BSD SSH 4.1
+dstevens@ctf07.root-me.org’s password:
+Last login: Mon Mar  9 07:48:18 2009 from 192.168.0.50
+[dstevens@ctf ~]$
+</code></pre></div></div>
+
+<p>I tried to run “sudo su” and yes… it worked (LOL):</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[dstevens@ctf ~]$ sudo su
+Password:
+[root@ctf dstevens]# id
+uid=0(root) gid=0(root) groups=0(root),1(bin),2(daemon),3(sys),4(adm),6(disk),10(wheel) context=user_u:system_r:unconfined_t:SystemLow-SystemHigh
+[root@ctf dstevens]# cat /passwd
+8cfd7e1715e7957021b5aa23f7839131
+</code></pre></div></div>
+
+<p>The privilege escalation was very very…very easy 😛</p>
+
+<p>Bye bye!</p>
+
   </article>
 
 	<!--<p class="feed-recomendation">

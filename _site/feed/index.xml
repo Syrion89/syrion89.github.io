@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 07 Jan 2018 21:18:06 +0100</pubDate>
-    <lastBuildDate>Sun, 07 Jan 2018 21:18:06 +0100</lastBuildDate>
+    <pubDate>Sun, 07 Jan 2018 21:32:48 +0100</pubDate>
+    <lastBuildDate>Sun, 07 Jan 2018 21:32:48 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -30,6 +30,86 @@ OS CPE: cpe:/o:openbsd:openbsd:4.0 cpe:/h:apple:airport_extreme cpe:/o:freebsd:f
 Aggressive OS guesses: OpenBSD 4.0 (88%), Apple AirPort Extreme WAP (87%), FreeBSD 6.2-RELEASE (87%), FreeBSD 6.3-RELEASE (87%), OpenBSD 4.3 (87%)
 No exact OS matches for host (test conditions non-ideal).
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;At this point I used netcat to verify the services on the three open ports. As excepted:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;SSH on 22&lt;/li&gt;
+  &lt;li&gt;SENDMAIL on 25&lt;/li&gt;
+  &lt;li&gt;HTTP on 80&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In the meantime,  I ran DirBuster, and I noticed this file:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It was the database’s structure:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This was the website on port 80:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I noticed this xss on the search bar:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then I found an SQL Injection on the blog:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;At this pont I started to enumerate the select statement’s parameters by using this payloads:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;id=1 order by 1 —&lt;/li&gt;
+  &lt;li&gt;id=1 order by 2 —&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;They were five!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img6.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I needed to know which parameters were visible:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img7.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And then I performed the full SQL Inection (i knew the database structure because of db.sql):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img8.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ok let’s use &lt;a href=&quot;https://crackstation.net/&quot;&gt;crackstation&lt;/a&gt; to crack the hash. I tried to login as dstevens via ssh with the following credentials:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;username dstevens
+password: ilike2surf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And I succeeded:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Syrion:~ syrion$ ssh dstevens@ctf07.root-me.org
+The authenticity of host ‘ctf07.root-me.org (212.83.142.84)’ can’t be established.
+RSA key fingerprint is SHA256:NDWh6/414mOsW4P7K6ICc5R67PrX87ADMFUx9DK9ftk.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added ‘ctf07.root-me.org,212.83.142.84’ (RSA) to the list of known hosts.
+BSD SSH 4.1
+dstevens@ctf07.root-me.org’s password:
+Last login: Mon Mar  9 07:48:18 2009 from 192.168.0.50
+[dstevens@ctf ~]$
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I tried to run “sudo su” and yes… it worked (LOL):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[dstevens@ctf ~]$ sudo su
+Password:
+[root@ctf dstevens]# id
+uid=0(root) gid=0(root) groups=0(root),1(bin),2(daemon),3(sys),4(adm),6(disk),10(wheel) context=user_u:system_r:unconfined_t:SystemLow-SystemHigh
+[root@ctf dstevens]# cat /passwd
+8cfd7e1715e7957021b5aa23f7839131
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The privilege escalation was very very…very easy 😛&lt;/p&gt;
+
+&lt;p&gt;Bye bye!&lt;/p&gt;
 </description>
         <pubDate>Wed, 20 Dec 2017 22:00:00 +0100</pubDate>
         <link>http://localhost:4000/blog/lamp-security-ctf4-writeup/</link>
