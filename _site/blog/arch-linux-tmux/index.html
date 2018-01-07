@@ -95,53 +95,12 @@
         
         
         •
-        <span><a href="category/#archlinux" class="reserved">archlinux</a>,</span><span><a href="category/#linux" class="reserved">linux</a>,</span><span><a href="category/#screenshot" class="reserved">screenshot</a>,</span><span><a href="category/#tmux" class="reserved">tmux</a></span>
+        <span><a href="category/#test" class="reserved">test</a></span>
     </p>
   </header>
 
   <article class="post-content">
-  <p><img src="images/posts/2017/01.png" alt="Screenshot" /></p>
-
-<blockquote>
-  <p>Caso queira ver o print maior, <a href="images/posts/2017/01.png">clica aqui [0]</a>.</p>
-</blockquote>
-
-<p>Primeiro post do blog em 2017, logo no primeiro dia do ano, será que isso quer dizer alguma coisa? haha</p>
-
-<p>Enfim, temos aqui um screenshot, algo que já queria postar há um tempo, mas enfim, está aqui agora. Nele tem aberto o filme “Lights Out” no Mplayer (\o/) e por trás o Tmux, com ZSH.</p>
-
-<p>O Tmux é quase o padrão. No arquivo de configuração tem apenas o seguinte:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bind c new-window -c '#{pane_current_path}'
-bind '"' split-window -c '#{pane_current_path}'
-bind % split-window -h -c '#{pane_current_path}'
-</code></pre></div></div>
-
-<p>Contribuição do <a href="https://github.com/marinofull">Marino</a>, que serve para quando abrirmos um novo painel no Tmux, ele persistir o diretório do painel atual.</p>
-
-<p>Já no ZSH eu utilizo o <a href="http://ohmyz.sh/">Oh-My-ZSH [1]</a> com um tema bem simples que montei:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setopt promptsubst
-PROMPT=$'%B${(r:$COLUMNS::¨:)}$(git_prompt_info)%{$fg[white]%}&gt;&gt; %b%{$reset_color%}'
-RPROMPT='%B%*%b'
-
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[white]%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%} *%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_CLEAN=""
-</code></pre></div></div>
-
-<p>E lá ao fundo o wallpaper de gatênho! Aqui o link para ele: <a href="images/posts/2017/02.jpg">Gatênho [2]</a>.</p>
-
-<p>Bom, tomara que começar o ano postando algo assim faça vir mais posts e coisas boas por aqui. Até a próxima, pessoal! o/</p>
-
-<h2 id="links">Links</h2>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[0]: http://localhost:4000images/posts/2017/01.png
-[1]: http://ohmyz.sh/
-[2]: http://localhost:4000images/posts/2017/02.jpg
-</code></pre></div></div>
-
+  <p>prova</p>
 
   </article>
 

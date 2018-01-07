@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 07 Jan 2018 16:59:50 +0100</pubDate>
-    <lastBuildDate>Sun, 07 Jan 2018 16:59:50 +0100</lastBuildDate>
+    <pubDate>Sun, 07 Jan 2018 20:13:21 +0100</pubDate>
+    <lastBuildDate>Sun, 07 Jan 2018 20:13:21 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -86,60 +86,13 @@
     
       <item>
         <title>Arch Linux + Tmux = CLI++</title>
-        <description>&lt;p&gt;&lt;img src=&quot;images/posts/2017/01.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Caso queira ver o print maior, &lt;a href=&quot;images/posts/2017/01.png&quot;&gt;clica aqui [0]&lt;/a&gt;.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Primeiro post do blog em 2017, logo no primeiro dia do ano, será que isso quer dizer alguma coisa? haha&lt;/p&gt;
-
-&lt;p&gt;Enfim, temos aqui um screenshot, algo que já queria postar há um tempo, mas enfim, está aqui agora. Nele tem aberto o filme “Lights Out” no Mplayer (\o/) e por trás o Tmux, com ZSH.&lt;/p&gt;
-
-&lt;p&gt;O Tmux é quase o padrão. No arquivo de configuração tem apenas o seguinte:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bind c new-window -c '#{pane_current_path}'
-bind '&quot;' split-window -c '#{pane_current_path}'
-bind % split-window -h -c '#{pane_current_path}'
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Contribuição do &lt;a href=&quot;https://github.com/marinofull&quot;&gt;Marino&lt;/a&gt;, que serve para quando abrirmos um novo painel no Tmux, ele persistir o diretório do painel atual.&lt;/p&gt;
-
-&lt;p&gt;Já no ZSH eu utilizo o &lt;a href=&quot;http://ohmyz.sh/&quot;&gt;Oh-My-ZSH [1]&lt;/a&gt; com um tema bem simples que montei:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;setopt promptsubst
-PROMPT=$'%B${(r:$COLUMNS::¨:)}$(git_prompt_info)%{$fg[white]%}&amp;gt;&amp;gt; %b%{$reset_color%}'
-RPROMPT='%B%*%b'
-
-ZSH_THEME_GIT_PROMPT_PREFIX=&quot;%{$fg[white]%}&quot;
-ZSH_THEME_GIT_PROMPT_SUFFIX=&quot;%{$reset_color%} &quot;
-ZSH_THEME_GIT_PROMPT_DIRTY=&quot;%{$fg[red]%} *%{$reset_color%}&quot;
-ZSH_THEME_GIT_PROMPT_CLEAN=&quot;&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;E lá ao fundo o wallpaper de gatênho! Aqui o link para ele: &lt;a href=&quot;images/posts/2017/02.jpg&quot;&gt;Gatênho [2]&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Bom, tomara que começar o ano postando algo assim faça vir mais posts e coisas boas por aqui. Até a próxima, pessoal! o/&lt;/p&gt;
-
-&lt;h2 id=&quot;links&quot;&gt;Links&lt;/h2&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[0]: http://localhost:4000images/posts/2017/01.png
-[1]: http://ohmyz.sh/
-[2]: http://localhost:4000images/posts/2017/02.jpg
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
+        <description>&lt;p&gt;prova&lt;/p&gt;
 </description>
         <pubDate>Sun, 01 Jan 2017 13:00:00 +0100</pubDate>
         <link>http://localhost:4000/blog/arch-linux-tmux/</link>
         <guid isPermaLink="true">http://localhost:4000/blog/arch-linux-tmux/</guid>
         
-        <category>archlinux</category>
-        
-        <category>linux</category>
-        
-        <category>screenshot</category>
-        
-        <category>tmux</category>
+        <category>test</category>
         
         
         <category>blog</category>
