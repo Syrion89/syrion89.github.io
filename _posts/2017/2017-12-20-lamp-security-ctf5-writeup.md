@@ -6,7 +6,6 @@ categories:
     - blog
 tags:
     - vulnhub
-    - root-me
 ---
 
 LAMP security CTF5 is a funny and easy CTF with a lot of vulnerabilities. You can find info about it on [Vulnhub.com](https://vulnhub.com).

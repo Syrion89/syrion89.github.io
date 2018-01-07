@@ -6,7 +6,6 @@ categories:
     - blog
 tags:
     - vulnhub
-    - root-me
 ---
 
 Hi everyone. This is my solution for LAMP security CTF4. This CTF is very easy, you can download it from [Vulnhub.com](https://vulnhub.com) or play online on [root-me.org](https://root-me.org). I did it on root-me, therefore my target was ctf07.root-me.org.
