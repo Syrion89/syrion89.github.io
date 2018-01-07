@@ -3,15 +3,15 @@
   <channel>
     <title>Syrion</title>
     <description></description>
-    <link>http://localhost:4000//</link>
-    <atom:link href="http://localhost:4000//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 07 Jan 2018 15:07:39 +0100</pubDate>
-    <lastBuildDate>Sun, 07 Jan 2018 15:07:39 +0100</lastBuildDate>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Sun, 07 Jan 2018 16:59:50 +0100</pubDate>
+    <lastBuildDate>Sun, 07 Jan 2018 16:59:50 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
         <title>Redimensionar partições LVM</title>
-        <description>&lt;p&gt;Em um post passado, mostrando como fazer a &lt;a href=&quot;/blog/archlinux-lvm-luks/&quot;&gt;instalação do Arch Linux [0]&lt;/a&gt;, utilizei do LVM para gerenciar os discos. Lá falei um pouco mais da teoria por trás dele e tal. Aqui vou me ater mesmo a repassar o passo a passo utilizado para isso.&lt;/p&gt;
+        <description>&lt;p&gt;Em um post passado, mostrando como fazer a &lt;a href=&quot;blog/archlinux-lvm-luks/&quot;&gt;instalação do Arch Linux [0]&lt;/a&gt;, utilizei do LVM para gerenciar os discos. Lá falei um pouco mais da teoria por trás dele e tal. Aqui vou me ater mesmo a repassar o passo a passo utilizado para isso.&lt;/p&gt;
 
 &lt;p&gt;Uma questão a ser dita é que o LVM nos dá a possibilidade de poder redimensionar nossas partições sem desligar o sistema. Acontece que a depender de sua aplicação, mesmo que não dê um shutdown no sistema, as consequências podem ser as mesmas. Explico: para aumentar o tamanho da partição é moleza, dá para fazer sem mais nem menos. Agora para diminuir o volume de uma partição tem de desmontá-la e tudo mais. E isso para alguns pode ser um grande problema.&lt;/p&gt;
 
@@ -67,13 +67,13 @@
 
 &lt;h2 id=&quot;links&quot;&gt;Links&lt;/h2&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[0]: http://localhost:4000/blog/archlinux-lvm-luks/
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[0]: http://localhost:4000blog/archlinux-lvm-luks/
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 </description>
         <pubDate>Tue, 11 Apr 2017 05:00:00 +0200</pubDate>
-        <link>http://localhost:4000//blog/redimensionar-particoes-lvm/</link>
-        <guid isPermaLink="true">http://localhost:4000//blog/redimensionar-particoes-lvm/</guid>
+        <link>http://localhost:4000/blog/redimensionar-particoes-lvm/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/redimensionar-particoes-lvm/</guid>
         
         <category>linux</category>
         
@@ -86,10 +86,10 @@
     
       <item>
         <title>Arch Linux + Tmux = CLI++</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/images/posts/2017/01.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;img src=&quot;images/posts/2017/01.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;Caso queira ver o print maior, &lt;a href=&quot;/images/posts/2017/01.png&quot;&gt;clica aqui [0]&lt;/a&gt;.&lt;/p&gt;
+  &lt;p&gt;Caso queira ver o print maior, &lt;a href=&quot;images/posts/2017/01.png&quot;&gt;clica aqui [0]&lt;/a&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;Primeiro post do blog em 2017, logo no primeiro dia do ano, será que isso quer dizer alguma coisa? haha&lt;/p&gt;
@@ -117,21 +117,21 @@ ZSH_THEME_GIT_PROMPT_DIRTY=&quot;%{$fg[red]%} *%{$reset_color%}&quot;
 ZSH_THEME_GIT_PROMPT_CLEAN=&quot;&quot;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;E lá ao fundo o wallpaper de gatênho! Aqui o link para ele: &lt;a href=&quot;/images/posts/2017/02.jpg&quot;&gt;Gatênho [2]&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;E lá ao fundo o wallpaper de gatênho! Aqui o link para ele: &lt;a href=&quot;images/posts/2017/02.jpg&quot;&gt;Gatênho [2]&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Bom, tomara que começar o ano postando algo assim faça vir mais posts e coisas boas por aqui. Até a próxima, pessoal! o/&lt;/p&gt;
 
 &lt;h2 id=&quot;links&quot;&gt;Links&lt;/h2&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[0]: http://localhost:4000/images/posts/2017/01.png
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[0]: http://localhost:4000images/posts/2017/01.png
 [1]: http://ohmyz.sh/
-[2]: http://localhost:4000/images/posts/2017/02.jpg
+[2]: http://localhost:4000images/posts/2017/02.jpg
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 </description>
         <pubDate>Sun, 01 Jan 2017 13:00:00 +0100</pubDate>
-        <link>http://localhost:4000//blog/arch-linux-tmux/</link>
-        <guid isPermaLink="true">http://localhost:4000//blog/arch-linux-tmux/</guid>
+        <link>http://localhost:4000/blog/arch-linux-tmux/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/arch-linux-tmux/</guid>
         
         <category>archlinux</category>
         
