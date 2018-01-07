@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Category List | Syrion</title>
+    <title>Lamp Security CTF4 Writeup | Syrion</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="/css/bootstrap-3.3.6/css/bootstrap.min.css">
@@ -83,124 +83,71 @@
             <div class="post">
 
   <header class="post-header">
-    <h1>Category List</h1>
+    <h1>Lamp Security CTF4 Writeup</h1>
   </header>
 
   <article class="post-content">
-  <div style="width:100%;text-align:right;">
-    <a href="/category/" title="Category List">Category List</a>
-    <!--|
-    <a href="/feed/" title="Atom Feed Posts">Atom Feed</a>
-	-->
+  <div class="post">
+
+  <header class="post-header">
+    <p class="meta">
+        Dec 20, 2017
+        
+        
+        •
+        <span><a href="/category/#vulnhub" class="reserved">vulnhub</a>,</span><span><a href="/category/#root-me" class="reserved">root-me</a></span>
+    </p>
+  </header>
+
+  <article class="post-content">
+  <p>Hi everyone. This is my solution for LAMP security CTF4. This CTF is very easy, you can download it from <a href="https://vulnhub.com">Vulnhub.com</a> or play online on <a href="https://root-me.org">root-me.org</a>. I did it on root-me, therefore my target was ctf07.root-me.org.</p>
+
+<p>Ok let’s start, i ran nmap to see which services were open (usually I run a second scan with “-p 1-65535” parameter to identify all the ports).</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Syrion:~ syrion$ sudo nmap -sT -sV -O ctf07.root-me.org
+Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-10-07 21:19 CEST
+Nmap scan report for ctf07.root-me.org (212.83.142.84)
+Host is up (0.040s latency).
+Not shown: 727 closed ports, 270 filtered ports
+PORT STATE SERVICE VERSION
+22/tcp open tcpwrapped
+25/tcp open tcpwrapped
+80/tcp open tcpwrapped
+Device type: general purpose|WAP
+Running (JUST GUESSING): OpenBSD 4.X (88%), Apple embedded (87%), FreeBSD 6.X (87%)
+OS CPE: cpe:/o:openbsd:openbsd:4.0 cpe:/h:apple:airport_extreme cpe:/o:freebsd:freebsd:6.2
+Aggressive OS guesses: OpenBSD 4.0 (88%), Apple AirPort Extreme WAP (87%), FreeBSD 6.2-RELEASE (87%), FreeBSD 6.3-RELEASE (87%), OpenBSD 4.3 (87%)
+No exact OS matches for host (test conditions non-ideal).
+</code></pre></div></div>
+
+  </article>
+
+	<!--<p class="feed-recomendation">
+		Gostou do post? Assina o <a href="feed/">feed</a> e seja feliz!!
+	</p>
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'syrion89';
+    var disqus_config = function () {
+        this.page.identifier = "/blog/lamp-security-ctf4-writeup/";
+    };
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+-->
+
 </div>
-
-
-<header>
-    <h1>Category List</h1>
-</header>
-
-<ul class="tag-box inline">
-
-     
-        <li>
-            <a href="#linux">
-                linux
-            </a>
-            <span>(1)</span>
-        </li>
-     
-        <li>
-            <a href="#lvm">
-                lvm
-            </a>
-            <span>(1)</span>
-        </li>
-     
-        <li>
-            <a href="#root-me">
-                root-me
-            </a>
-            <span>(1)</span>
-        </li>
-     
-        <li>
-            <a href="#test">
-                test
-            </a>
-            <span>(1)</span>
-        </li>
-     
-        <li>
-            <a href="#vulnhub">
-                vulnhub
-            </a>
-            <span>(1)</span>
-        </li>
-    
-
-</ul>
-
-<h2 id="linux">linux</h2>
-<ul class="post-list">
-    
-  
-   <li>
-   <a href="/blog/redimensionar-particoes-lvm/">Redimensionar partições LVM</a>
-   </li>
-  
-  
-  
- </ul>
-
-<h2 id="lvm">lvm</h2>
-<ul class="post-list">
-    
-  
-   <li>
-   <a href="/blog/redimensionar-particoes-lvm/">Redimensionar partições LVM</a>
-   </li>
-  
-  
-  
- </ul>
-
-<h2 id="root-me">root-me</h2>
-<ul class="post-list">
-    
-  
-   <li>
-   <a href="/blog/lamp-security-ctf4-writeup/">Lamp Security CTF4 Writeup</a>
-   </li>
-  
-  
-  
- </ul>
-
-<h2 id="test">test</h2>
-<ul class="post-list">
-    
-  
-   <li>
-   <a href="/blog/arch-linux-tmux/">Arch Linux + Tmux = CLI++</a>
-   </li>
-  
-  
-  
- </ul>
-
-<h2 id="vulnhub">vulnhub</h2>
-<ul class="post-list">
-    
-  
-   <li>
-   <a href="/blog/lamp-security-ctf4-writeup/">Lamp Security CTF4 Writeup</a>
-   </li>
-  
-  
-  
- </ul>
-
-
 
   </article>
 
