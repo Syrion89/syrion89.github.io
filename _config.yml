@@ -2,20 +2,21 @@
 title: "Syrion"
 bye_message: "Thx!"
 baseurl: "/"
-url: "https://syrion89.github.io"
-disqus: syrion89
+url: "https://syrion.github.io"
+disqus: syrion
 
 # Header settings
-nick: "syrion89"
+nick: "syrion"
 mail:
     domain: "protonmail"
     ext: "ch"
 source_code:
     server: "github.com"
-    nick: "syrion89"
+    nick: "syrion"
 blog:
     server: "wordpress.com"
-    nick: "syrion89"
+    nick: "syrion"
+fingerprint_key: "5E12 9ABC C2A9 564B C048  2DF9 D327 0D10 BC71 CF75"
 
 # Build settings
 markdown: kramdown
