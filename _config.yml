@@ -1,7 +1,7 @@
 # Site settings
 title: "syrion89"
 bye_message: "Thx!"
-baseurl: "/"
+baseurl: "//"
 url: "https://syrion89.github.io"
 disqus: syrion89
 
