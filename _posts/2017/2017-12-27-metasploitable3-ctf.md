@@ -6,7 +6,6 @@ categories:
     - blog
 tags:
     - metasploitable
-    - rapid7
 ---
 
 Hello,

