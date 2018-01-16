@@ -14,7 +14,7 @@ Some time ago I analized this ipcam with my friend [Dzonerzy](https://twitter.co
 
 ![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img2.jpg)
 
-We found some vulnerabilities but we might found much more in the next days.
+We found some vulnerabilities but we might find much more in the next days.
 
 In this first article we will describe:
 
@@ -56,7 +56,7 @@ There was a login page where we could login with admin:admin
 
 Obviously every request was in HTTP (LOL).
 
-The web application had not so much functionality but after some researches on google we found [this](http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf) manual with a lot of gci command like the one we found in our ipcam. 
+The web application had not so much functionality but after some researches on google we found [this](http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf) manual with a lot of cgi command like the one we found in our ipcam. 
 
 ## From Webserver to Root Shell
 
@@ -64,7 +64,7 @@ We could download the configuration file:
 
 ![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img7.png)
 
-After unzip it, there were a lot of configuration files. But let's look at the webserver.conf:
+The first step was uncompressing the config_backup.bin file. There were a lot of configuration files. But let's look at the webserver.conf:
 
 ~~~
 port=80 user=root cgipat=cgi-bin/** nosymlink globalpasswd debug cgilimit=30
@@ -76,7 +76,7 @@ From nmap we knew the webserver was thttpd 2.25b 29dec2003, so after read the [m
 port=80 user=root dir=/etc/ nosymlink globalpasswd debug cgilimit=30
 ~~~
 
-Ok at this point we only needed something for upload the new configuration file. The [manual](http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf) helped us again:
+Ok at this point we only needed something to upload the new configuration file. The [manual](http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf) helped us again:
 
 ![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img8.png)
 
