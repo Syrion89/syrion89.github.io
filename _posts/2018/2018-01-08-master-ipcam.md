@@ -120,7 +120,7 @@ And yes, we got root:
 
 ![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img11.png)
 
-# [CVE-2018-5725] Unauthenticated Configuration Change
+## [CVE-2018-5725] Unauthenticated Configuration Change
 
 Without any authentication we could change the port where the server was running:
 
