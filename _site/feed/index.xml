@@ -5,19 +5,37 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 16 Jan 2018 18:06:08 +0100</pubDate>
-    <lastBuildDate>Tue, 16 Jan 2018 18:06:08 +0100</lastBuildDate>
+    <pubDate>Tue, 16 Jan 2018 18:32:50 +0100</pubDate>
+    <lastBuildDate>Tue, 16 Jan 2018 18:32:50 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
-        <title>Master IP CAM Vulnerabilities</title>
+        <title>Master IP CAM 01 Vulnerabilities</title>
         <description>&lt;p&gt;Some time ago I analized this ipcam with my friend &lt;a href=&quot;https://twitter.com/dzonerzy&quot;&gt;Dzonerzy&lt;/a&gt;:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img1.jpg&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img2.jpg&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;We found some vulnerabilities but we might found much more in the next days.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var serialNum=&quot;VVVIPCSBC150617Z-06929VjmJH54vkK&quot;;
+var model=&quot;RT_IPC&quot;;
+var hardVersion=&quot;5900-gc1004&quot;;
+var softVersion=&quot;V3.3.4.2103-S50-SBC-B20150721E&quot;;
+var ipcname=&quot;WIFICAM&quot;;
+var startdate=&quot;2017-8-5 0:0:2&quot;;
+var runtimes=&quot;0 day, 0:54&quot;;
+var sdstatus=&quot;Ready&quot;;
+var sdfreespace=&quot;3400608 &quot;;
+var sdtotalspace=&quot;3969024 &quot;;
+var builddate=&quot;Jul 20 2015 &quot;;
+var productmodel=&quot;null&quot;;
+var vendor=&quot;RTJ&quot;;
+var swver=&quot;&quot;;
+var hwver=&quot;&quot;;
+var mppver=&quot;mpp&quot;;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We found some vulnerabilities but we might find much more in the next days.&lt;/p&gt;
 
 &lt;p&gt;In this first article we will describe:&lt;/p&gt;
 
@@ -60,7 +78,7 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 &lt;p&gt;Obviously every request was in HTTP (LOL).&lt;/p&gt;
 
-&lt;p&gt;The web application had not so much functionality but after some researches on google we found &lt;a href=&quot;http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf&quot;&gt;this&lt;/a&gt; manual with a lot of gci command like the one we found in our ipcam.&lt;/p&gt;
+&lt;p&gt;The web application had not so much functionality but after some researches on google we found &lt;a href=&quot;http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf&quot;&gt;this&lt;/a&gt; manual with a lot of cgi command like the one we found in our ipcam.&lt;/p&gt;
 
 &lt;h2 id=&quot;from-webserver-to-root-shell&quot;&gt;From Webserver to Root Shell&lt;/h2&gt;
 
@@ -68,7 +86,7 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 &lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img7.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;After unzip it, there were a lot of configuration files. But let’s look at the webserver.conf:&lt;/p&gt;
+&lt;p&gt;The first step was uncompressing the config_backup.bin file. There were a lot of configuration files. But let’s look at the webserver.conf:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;port=80 user=root cgipat=cgi-bin/** nosymlink globalpasswd debug cgilimit=30
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -78,11 +96,11 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;port=80 user=root dir=/etc/ nosymlink globalpasswd debug cgilimit=30
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ok at this point we only needed something for upload the new configuration file. The &lt;a href=&quot;http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf&quot;&gt;manual&lt;/a&gt; helped us again:&lt;/p&gt;
+&lt;p&gt;Ok at this point we only needed something to upload the new configuration file. The &lt;a href=&quot;http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf&quot;&gt;manual&lt;/a&gt; helped us again:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img8.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Ok the forms worked and after some minutes the ipcamera came online again:&lt;/p&gt;
+&lt;p&gt;It worked and after some minutes the ipcamera was online again:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img9.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
@@ -101,7 +119,7 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 &lt;h1 id=&quot;change-server-settings-with-no-auth&quot;&gt;Change Server Settings With No Auth&lt;/h1&gt;
 
-&lt;p&gt;Without any autentication we could change the port where the server was running:&lt;/p&gt;
+&lt;p&gt;Without any authentication we could change the port where the server was running:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;
 &lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;

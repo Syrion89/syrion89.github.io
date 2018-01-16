@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Master IP CAM Vulnerabilities | Syrion</title>
+    <title>Master IP CAM 01 Vulnerabilities | Syrion</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="/css/bootstrap-3.3.6/css/bootstrap.min.css">
@@ -83,7 +83,7 @@
             <div class="post">
 
   <header class="post-header">
-    <h1>Master IP CAM Vulnerabilities</h1>
+    <h1>Master IP CAM 01 Vulnerabilities</h1>
   </header>
 
   <article class="post-content">
@@ -106,7 +106,25 @@
 
 <p><img src="/images/posts/2018/2018-01-15-master-ipcam/img2.jpg" alt="Screenshot" /></p>
 
-<p>We found some vulnerabilities but we might found much more in the next days.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var serialNum="VVVIPCSBC150617Z-06929VjmJH54vkK";
+var model="RT_IPC";
+var hardVersion="5900-gc1004";
+var softVersion="V3.3.4.2103-S50-SBC-B20150721E";
+var ipcname="WIFICAM";
+var startdate="2017-8-5 0:0:2";
+var runtimes="0 day, 0:54";
+var sdstatus="Ready";
+var sdfreespace="3400608 ";
+var sdtotalspace="3969024 ";
+var builddate="Jul 20 2015 ";
+var productmodel="null";
+var vendor="RTJ";
+var swver="";
+var hwver="";
+var mppver="mpp";
+</code></pre></div></div>
+
+<p>We found some vulnerabilities but we might find much more in the next days.</p>
 
 <p>In this first article we will describe:</p>
 
@@ -149,7 +167,7 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 <p>Obviously every request was in HTTP (LOL).</p>
 
-<p>The web application had not so much functionality but after some researches on google we found <a href="http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf">this</a> manual with a lot of gci command like the one we found in our ipcam.</p>
+<p>The web application had not so much functionality but after some researches on google we found <a href="http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf">this</a> manual with a lot of cgi command like the one we found in our ipcam.</p>
 
 <h2 id="from-webserver-to-root-shell">From Webserver to Root Shell</h2>
 
@@ -157,7 +175,7 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 <p><img src="/images/posts/2018/2018-01-15-master-ipcam/img7.png" alt="Screenshot" /></p>
 
-<p>After unzip it, there were a lot of configuration files. But let’s look at the webserver.conf:</p>
+<p>The first step was uncompressing the config_backup.bin file. There were a lot of configuration files. But let’s look at the webserver.conf:</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>port=80 user=root cgipat=cgi-bin/** nosymlink globalpasswd debug cgilimit=30
 </code></pre></div></div>
@@ -167,11 +185,11 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>port=80 user=root dir=/etc/ nosymlink globalpasswd debug cgilimit=30
 </code></pre></div></div>
 
-<p>Ok at this point we only needed something for upload the new configuration file. The <a href="http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf">manual</a> helped us again:</p>
+<p>Ok at this point we only needed something to upload the new configuration file. The <a href="http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf">manual</a> helped us again:</p>
 
 <p><img src="/images/posts/2018/2018-01-15-master-ipcam/img8.png" alt="Screenshot" /></p>
 
-<p>Ok the forms worked and after some minutes the ipcamera came online again:</p>
+<p>It worked and after some minutes the ipcamera was online again:</p>
 
 <p><img src="/images/posts/2018/2018-01-15-master-ipcam/img9.png" alt="Screenshot" /></p>
 
@@ -190,7 +208,7 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 <h1 id="change-server-settings-with-no-auth">Change Server Settings With No Auth</h1>
 
-<p>Without any autentication we could change the port where the server was running:</p>
+<p>Without any authentication we could change the port where the server was running:</p>
 
 <p><img src="/images/posts/2018/2018-01-15-master-ipcam/img4.png" alt="Screenshot" />
 <img src="/images/posts/2018/2018-01-15-master-ipcam/img5.png" alt="Screenshot" />

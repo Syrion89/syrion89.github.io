@@ -14,6 +14,25 @@ Some time ago I analized this ipcam with my friend [Dzonerzy](https://twitter.co
 
 ![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img2.jpg)
 
+~~~
+var serialNum="VVVIPCSBC150617Z-06929VjmJH54vkK";
+var model="RT_IPC";
+var hardVersion="5900-gc1004";
+var softVersion="V3.3.4.2103-S50-SBC-B20150721E";
+var ipcname="WIFICAM";
+var startdate="2017-8-5 0:0:2";
+var runtimes="0 day, 0:54";
+var sdstatus="Ready";
+var sdfreespace="3400608 ";
+var sdtotalspace="3969024 ";
+var builddate="Jul 20 2015 ";
+var productmodel="null";
+var vendor="RTJ";
+var swver="";
+var hwver="";
+var mppver="mpp";
+~~~
+
 We found some vulnerabilities but we might find much more in the next days.
 
 In this first article we will describe:
