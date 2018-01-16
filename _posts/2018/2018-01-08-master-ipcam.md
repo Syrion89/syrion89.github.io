@@ -82,7 +82,6 @@ Ok at this point we only needed something to upload the new configuration file. 
 
 It worked and after some minutes the ipcamera was online again:
 
-
 ![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img9.png)
 
 Good, we got the passwd file with the password hash for user root:
@@ -101,7 +100,7 @@ And yes, we got root:
 
 # Change Server Settings With No Auth
 
-Without any autentication we could change the port where the server was running:
+Without any authentication we could change the port where the server was running:
 
 ![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img4.png)
 ![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img5.png)
