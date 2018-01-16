@@ -80,7 +80,7 @@ Ok at this point we only needed something to upload the new configuration file. 
 
 ![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img8.png)
 
-Ok the forms worked and after some minutes the ipcamera came online again:
+It worked and after some minutes the ipcamera was online again:
 
 
 ![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img9.png)
