@@ -84,7 +84,13 @@ We could download the configuration file:
 
 ![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img7.png)
 
-The first step was uncompressing the config_backup.bin file. There were a lot of configuration files. But let's look at the webserver.conf:
+The first step was uncompressing the config_backup.bin file:
+
+~~~
+Stone:Desktop syrion$ tar xvf config_backup.bin 
+~~~
+
+ There were a lot of configuration files. But let's look at the webserver.conf:
 
 ~~~
 port=80 user=root cgipat=cgi-bin/** nosymlink globalpasswd debug cgilimit=30
