@@ -5,7 +5,7 @@ date:	2018-01-15 21:00:00
 categories:
     - blog
 tags:
-    - penetrationtesting
+    - penetration testing
 ---
 
 Some time ago I analized this ipcam with my friend [Dzonerzy](https://twitter.com/dzonerzy):
