@@ -5,9 +5,128 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 10 Jan 2018 11:25:41 +0100</pubDate>
-    <lastBuildDate>Wed, 10 Jan 2018 11:25:41 +0100</lastBuildDate>
+    <pubDate>Tue, 16 Jan 2018 18:06:08 +0100</pubDate>
+    <lastBuildDate>Tue, 16 Jan 2018 18:06:08 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
+    
+      <item>
+        <title>Master IP CAM Vulnerabilities</title>
+        <description>&lt;p&gt;Some time ago I analized this ipcam with my friend &lt;a href=&quot;https://twitter.com/dzonerzy&quot;&gt;Dzonerzy&lt;/a&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img1.jpg&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img2.jpg&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We found some vulnerabilities but we might found much more in the next days.&lt;/p&gt;
+
+&lt;p&gt;In this first article we will describe:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;From Webserver to Root Shell&lt;/li&gt;
+  &lt;li&gt;Change Server Settings With No Auth (Server Port)&lt;/li&gt;
+  &lt;li&gt;Read Users Credential&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;First of all we ran nmap:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Stone:~ syrion$ nmap 192.168.1.124 -sV -sT -p 1-65535
+
+Starting Nmap 7.40 ( https://nmap.org ) at 2017-12-23 17:41 CET
+Nmap scan report for 192.168.1.124
+Host is up (0.026s latency).
+Not shown: 65528 closed ports
+PORT      STATE SERVICE        VERSION
+23/tcp    open  telnet         BusyBox telnetd
+80/tcp    open  http           thttpd 2.25b 29dec2003
+554/tcp   open  rtsp           HiLinux IP camera rtspd V100R003 (VodServer 1.0.0)
+1018/tcp  open  soap           gSOAP 2.8
+1235/tcp  open  mosaicsyssvc1?
+8840/tcp  open  rtsp
+60075/tcp open  unknown
+
+Service Info: Host: RT-IPC; Device: webcam
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There were different services running on the camera but we started from the webapp.&lt;/p&gt;
+
+&lt;p&gt;There was a login page where we could login with admin:admin&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Obviously every request was in HTTP (LOL).&lt;/p&gt;
+
+&lt;p&gt;The web application had not so much functionality but after some researches on google we found &lt;a href=&quot;http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf&quot;&gt;this&lt;/a&gt; manual with a lot of gci command like the one we found in our ipcam.&lt;/p&gt;
+
+&lt;h2 id=&quot;from-webserver-to-root-shell&quot;&gt;From Webserver to Root Shell&lt;/h2&gt;
+
+&lt;p&gt;We could download the configuration file:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img7.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After unzip it, there were a lot of configuration files. But let’s look at the webserver.conf:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;port=80 user=root cgipat=cgi-bin/** nosymlink globalpasswd debug cgilimit=30
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;From nmap we knew the webserver was thttpd 2.25b 29dec2003, so after read the &lt;a href=&quot;https://acme.com/software/thttpd/thttpd_man.html&quot;&gt;manual&lt;/a&gt; we discovered how to change the root directory of the webserver, so we modified the configuration file as follow:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;port=80 user=root dir=/etc/ nosymlink globalpasswd debug cgilimit=30
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ok at this point we only needed something for upload the new configuration file. The &lt;a href=&quot;http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf&quot;&gt;manual&lt;/a&gt; helped us again:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img8.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ok the forms worked and after some minutes the ipcamera came online again:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img9.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Good, we got the passwd file with the password hash for user root:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root:$1$xFoO/s3I$zRQPwLG2yX1biU31a2wxN/:0:0::/root:/bin/sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;With John we cracked it:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img10.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And yes, we got root:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img11.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;change-server-settings-with-no-auth&quot;&gt;Change Server Settings With No Auth&lt;/h1&gt;
+
+&lt;p&gt;Without any autentication we could change the port where the server was running:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;
+&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;
+&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img6.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;read-users-credential&quot;&gt;Read Users Credential&lt;/h2&gt;
+
+&lt;p&gt;That was so magic:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img12.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I will update this post with the new vulnerabilities we will found.&lt;/p&gt;
+
+&lt;p&gt;Bye!!!&lt;/p&gt;
+</description>
+        <pubDate>Mon, 15 Jan 2018 22:00:00 +0100</pubDate>
+        <link>http://localhost:4000/blog/master-ipcam/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/master-ipcam/</guid>
+        
+        <category>penetrationtest</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Beep Writeup</title>
