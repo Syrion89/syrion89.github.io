@@ -37,9 +37,10 @@ We found some vulnerabilities but we might find much more in the next days.
 
 In this first article we will describe:
 
-* From Webserver to Root Shell
-* Change Server Settings With No Auth (Server Port)
-* Read Users Credential
+* [CVE-2018-5724] Unauthenticated Configuration Download and Upload
+* [CVE-2018-5723] Hardcoded Password for Root Account 
+* [CVE-2018-5725] Unauthenticated Configuration Change
+* [CVE-2018-5726] Unauthenticated Sensitive Information Disclousure
 
 ## Introduction
 
@@ -77,7 +78,7 @@ Obviously every request was in HTTP (LOL).
 
 The web application had not so much functionality but after some researches on google we found [this](http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf) manual with a lot of cgi command like the one we found in our ipcam. 
 
-## From Webserver to Root Shell
+## [CVE-2018-5724] Unauthenticated Configuration Download and Upload
 
 We could download the configuration file:
 
@@ -103,6 +104,8 @@ It worked and after some minutes the ipcamera was online again:
 
 ![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img9.png)
 
+[CVE-2018-5723] Hardcoded Password for Root Account 
+
 Good, we got the passwd file with the password hash for user root:
 
 ~~~
@@ -117,7 +120,7 @@ And yes, we got root:
 
 ![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img11.png)
 
-# Change Server Settings With No Auth
+# [CVE-2018-5725] Unauthenticated Configuration Change
 
 Without any authentication we could change the port where the server was running:
 
@@ -125,7 +128,7 @@ Without any authentication we could change the port where the server was running
 ![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img5.png)
 ![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img6.png)
 
-## Read Users Credential
+## [CVE-2018-5726] Unauthenticated Sensitive Information Disclousure
 
 That was so magic:
 
