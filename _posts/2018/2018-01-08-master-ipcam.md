@@ -1,6 +1,6 @@
 ---
 layout: post
-title:	"Master IP CAM Vulnerabilities"
+title:	"Master IP CAM 01 Vulnerabilities"
 date:	2018-01-15 21:00:00
 categories:
     - blog
