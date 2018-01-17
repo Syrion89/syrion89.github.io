@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 16 Jan 2018 18:32:50 +0100</pubDate>
-    <lastBuildDate>Tue, 16 Jan 2018 18:32:50 +0100</lastBuildDate>
+    <pubDate>Wed, 17 Jan 2018 01:13:09 +0100</pubDate>
+    <lastBuildDate>Wed, 17 Jan 2018 01:13:09 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -40,9 +40,10 @@ var mppver=&quot;mpp&quot;;
 &lt;p&gt;In this first article we will describe:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;From Webserver to Root Shell&lt;/li&gt;
-  &lt;li&gt;Change Server Settings With No Auth (Server Port)&lt;/li&gt;
-  &lt;li&gt;Read Users Credential&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5724&quot;&gt;[CVE-2018-5724]&lt;/a&gt; Unauthenticated Configuration Download and Upload&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5723&quot;&gt;[CVE-2018-5723]&lt;/a&gt; Hardcoded Password for Root Account&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5725&quot;&gt;[CVE-2018-5725]&lt;/a&gt; Unauthenticated Configuration Change&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5726&quot;&gt;[CVE-2018-5726]&lt;/a&gt; Unauthenticated Sensitive Information Disclousure&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
@@ -80,13 +81,18 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 &lt;p&gt;The web application had not so much functionality but after some researches on google we found &lt;a href=&quot;http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf&quot;&gt;this&lt;/a&gt; manual with a lot of cgi command like the one we found in our ipcam.&lt;/p&gt;
 
-&lt;h2 id=&quot;from-webserver-to-root-shell&quot;&gt;From Webserver to Root Shell&lt;/h2&gt;
+&lt;h2 id=&quot;cve-2018-5724-unauthenticated-configuration-download-and-upload&quot;&gt;[CVE-2018-5724] Unauthenticated Configuration Download and Upload&lt;/h2&gt;
 
 &lt;p&gt;We could download the configuration file:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img7.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;The first step was uncompressing the config_backup.bin file. There were a lot of configuration files. But let’s look at the webserver.conf:&lt;/p&gt;
+&lt;p&gt;The first step was uncompressing the config_backup.bin file:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Stone:Desktop syrion$ tar xvf config_backup.bin 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There were a lot of configuration files. But let’s look at the webserver.conf:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;port=80 user=root cgipat=cgi-bin/** nosymlink globalpasswd debug cgilimit=30
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -104,6 +110,8 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 &lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img9.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
+&lt;p&gt;[CVE-2018-5723] Hardcoded Password for Root Account&lt;/p&gt;
+
 &lt;p&gt;Good, we got the passwd file with the password hash for user root:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root:$1$xFoO/s3I$zRQPwLG2yX1biU31a2wxN/:0:0::/root:/bin/sh
@@ -117,7 +125,7 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 &lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img11.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;change-server-settings-with-no-auth&quot;&gt;Change Server Settings With No Auth&lt;/h1&gt;
+&lt;h2 id=&quot;cve-2018-5725-unauthenticated-configuration-change&quot;&gt;[CVE-2018-5725] Unauthenticated Configuration Change&lt;/h2&gt;
 
 &lt;p&gt;Without any authentication we could change the port where the server was running:&lt;/p&gt;
 
@@ -125,7 +133,7 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 &lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;
 &lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img6.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;read-users-credential&quot;&gt;Read Users Credential&lt;/h2&gt;
+&lt;h2 id=&quot;cve-2018-5726-unauthenticated-sensitive-information-disclousure&quot;&gt;[CVE-2018-5726] Unauthenticated Sensitive Information Disclousure&lt;/h2&gt;
 
 &lt;p&gt;That was so magic:&lt;/p&gt;
 
@@ -139,7 +147,7 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
         <link>http://localhost:4000/blog/master-ipcam/</link>
         <guid isPermaLink="true">http://localhost:4000/blog/master-ipcam/</guid>
         
-        <category>penetrationtest</category>
+        <category>penetration testing</category>
         
         
         <category>blog</category>

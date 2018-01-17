@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="utf-8">
+<!-- saved from url=(0035)http://syrion.me/blog/master-ipcam/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Master IP CAM 01 Vulnerabilities | Syrion</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="/css/bootstrap-3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="./Master IP CAM 01 Vulnerabilities _ Syrion_files/bootstrap.min.css">
+    <link rel="stylesheet" href="./Master IP CAM 01 Vulnerabilities _ Syrion_files/main.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -19,7 +18,7 @@
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-    <script>
+    <script async="" src="./Master IP CAM 01 Vulnerabilities _ Syrion_files/analytics.js"></script><script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -31,9 +30,9 @@
 </script>
 
 
-    <link rel="shortcut icon" href="/images/favicon.png">
+    <link rel="shortcut icon" href="http://syrion.me/images/favicon.png">
 
-    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed/"> 
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="http://syrion.me/feed/"> 
 
 </head>
 
@@ -67,9 +66,9 @@
   <div class="col-lg-8 col-lg-offset-2">
     <div class="menu">
       <ul>
-          <li><a href="/">Home</a></li>
+          <li><a href="http://syrion.me/">Home</a></li>
          <!-- <li><a href="/blog">blog</a></li> -->
-          <li><a href="/whoami">Whoami</a></li>
+          <li><a href="http://syrion.me/whoami">Whoami</a></li>
       </ul>
     </div>
   </div>
@@ -95,16 +94,16 @@
         
         
         •
-        <span><a href="/category/#penetration testing" class="reserved">penetration testing</a></span>
+        <span><a href="http://syrion.me/category/#penetrationtest" class="reserved">penetrationtest</a></span>
     </p>
   </header>
 
   <article class="post-content">
   <p>Some time ago I analized this ipcam with my friend <a href="https://twitter.com/dzonerzy">Dzonerzy</a>:</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img1.jpg" alt="Screenshot" /></p>
+<p><img src="./Master IP CAM 01 Vulnerabilities _ Syrion_files/img1.jpg" alt="Screenshot"></p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img2.jpg" alt="Screenshot" /></p>
+<p><img src="./Master IP CAM 01 Vulnerabilities _ Syrion_files/img2.jpg" alt="Screenshot"></p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var serialNum="VVVIPCSBC150617Z-06929VjmJH54vkK";
 var model="RT_IPC";
@@ -129,10 +128,9 @@ var mppver="mpp";
 <p>In this first article we will describe:</p>
 
 <ul>
-  <li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5724">[CVE-2018-5724]</a> Unauthenticated Configuration Download and Upload</li>
-  <li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5723">[CVE-2018-5723]</a> Hardcoded Password for Root Account</li>
-  <li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5725">[CVE-2018-5725]</a> Unauthenticated Configuration Change</li>
-  <li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5726">[CVE-2018-5726]</a> Unauthenticated Sensitive Information Disclousure</li>
+  <li>From Webserver to Root Shell</li>
+  <li>Change Server Settings With No Auth (Server Port)</li>
+  <li>Read Users Credential</li>
 </ul>
 
 <h2 id="introduction">Introduction</h2>
@@ -164,24 +162,19 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 <p>There was a login page where we could login with admin:admin</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img3.png" alt="Screenshot" /></p>
+<p><img src="./Master IP CAM 01 Vulnerabilities _ Syrion_files/img3.png" alt="Screenshot"></p>
 
 <p>Obviously every request was in HTTP (LOL).</p>
 
 <p>The web application had not so much functionality but after some researches on google we found <a href="http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf">this</a> manual with a lot of cgi command like the one we found in our ipcam.</p>
 
-<h2 id="cve-2018-5724-unauthenticated-configuration-download-and-upload">[CVE-2018-5724] Unauthenticated Configuration Download and Upload</h2>
+<h2 id="from-webserver-to-root-shell">From Webserver to Root Shell</h2>
 
 <p>We could download the configuration file:</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img7.png" alt="Screenshot" /></p>
+<p><img src="./Master IP CAM 01 Vulnerabilities _ Syrion_files/img7.png" alt="Screenshot"></p>
 
-<p>The first step was uncompressing the config_backup.bin file:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Stone:Desktop syrion$ tar xvf config_backup.bin 
-</code></pre></div></div>
-
-<p>There were a lot of configuration files. But let’s look at the webserver.conf:</p>
+<p>The first step was uncompressing the config_backup.bin file. There were a lot of configuration files. But let’s look at the webserver.conf:</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>port=80 user=root cgipat=cgi-bin/** nosymlink globalpasswd debug cgilimit=30
 </code></pre></div></div>
@@ -193,13 +186,11 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 <p>Ok at this point we only needed something to upload the new configuration file. The <a href="http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf">manual</a> helped us again:</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img8.png" alt="Screenshot" /></p>
+<p><img src="./Master IP CAM 01 Vulnerabilities _ Syrion_files/img8.png" alt="Screenshot"></p>
 
 <p>It worked and after some minutes the ipcamera was online again:</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img9.png" alt="Screenshot" /></p>
-
-<p>[CVE-2018-5723] Hardcoded Password for Root Account</p>
+<p><img src="./Master IP CAM 01 Vulnerabilities _ Syrion_files/img9.png" alt="Screenshot"></p>
 
 <p>Good, we got the passwd file with the password hash for user root:</p>
 
@@ -208,25 +199,25 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 <p>With John we cracked it:</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img10.png" alt="Screenshot" /></p>
+<p><img src="./Master IP CAM 01 Vulnerabilities _ Syrion_files/img10.png" alt="Screenshot"></p>
 
 <p>And yes, we got root:</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img11.png" alt="Screenshot" /></p>
+<p><img src="./Master IP CAM 01 Vulnerabilities _ Syrion_files/img11.png" alt="Screenshot"></p>
 
-<h2 id="cve-2018-5725-unauthenticated-configuration-change">[CVE-2018-5725] Unauthenticated Configuration Change</h2>
+<h1 id="change-server-settings-with-no-auth">Change Server Settings With No Auth</h1>
 
 <p>Without any authentication we could change the port where the server was running:</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img4.png" alt="Screenshot" />
-<img src="/images/posts/2018/2018-01-15-master-ipcam/img5.png" alt="Screenshot" />
-<img src="/images/posts/2018/2018-01-15-master-ipcam/img6.png" alt="Screenshot" /></p>
+<p><img src="./Master IP CAM 01 Vulnerabilities _ Syrion_files/img4.png" alt="Screenshot">
+<img src="./Master IP CAM 01 Vulnerabilities _ Syrion_files/img5.png" alt="Screenshot">
+<img src="./Master IP CAM 01 Vulnerabilities _ Syrion_files/img6.png" alt="Screenshot"></p>
 
-<h2 id="cve-2018-5726-unauthenticated-sensitive-information-disclousure">[CVE-2018-5726] Unauthenticated Sensitive Information Disclousure</h2>
+<h2 id="read-users-credential">Read Users Credential</h2>
 
 <p>That was so magic:</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img12.png" alt="Screenshot" /></p>
+<p><img src="./Master IP CAM 01 Vulnerabilities _ Syrion_files/img12.png" alt="Screenshot"></p>
 
 <p>I will update this post with the new vulnerabilities we will found.</p>
 
@@ -279,5 +270,6 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 
       </div>
-    </body>
-</html>
+    
+
+</body></html>

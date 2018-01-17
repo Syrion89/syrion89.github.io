@@ -37,10 +37,10 @@ We found some vulnerabilities but we might find much more in the next days.
 
 In this first article we will describe:
 
-* [CVE-2018-5724] Unauthenticated Configuration Download and Upload
-* [CVE-2018-5723] Hardcoded Password for Root Account 
-* [CVE-2018-5725] Unauthenticated Configuration Change
-* [CVE-2018-5726] Unauthenticated Sensitive Information Disclousure
+* [[CVE-2018-5724]](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5724) Unauthenticated Configuration Download and Upload
+* [[CVE-2018-5723]](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5723) Hardcoded Password for Root Account 
+* [[CVE-2018-5725]](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5725) Unauthenticated Configuration Change
+* [[CVE-2018-5726]](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5726) Unauthenticated Sensitive Information Disclousure
 
 ## Introduction
 
