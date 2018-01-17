@@ -110,7 +110,7 @@ It worked and after some minutes the ipcamera was online again:
 
 ![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img9.png)
 
-[CVE-2018-5723] Hardcoded Password for Root Account 
+## [CVE-2018-5723] Hardcoded Password for Root Account 
 
 Good, we got the passwd file with the password hash for user root:
 
