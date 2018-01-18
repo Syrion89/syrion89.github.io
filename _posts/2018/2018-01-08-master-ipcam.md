@@ -42,6 +42,8 @@ In this first article we will describe:
 * [[CVE-2018-5725]](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5725) Unauthenticated Configuration Change
 * [[CVE-2018-5726]](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5726) Unauthenticated Sensitive Information Disclousure
 
+I will update this post with the new vulnerabilities we will found.
+
 ## Introduction
 
 First of all we ran nmap:
@@ -140,6 +142,11 @@ That was so magic:
 
 ![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img12.png)
 
-I will update this post with the new vulnerabilities we will found.
+### References
 
-Bye!!!
+* [https://www.exploit-db.com/exploits/43693](https://www.exploit-db.com/exploits/43693/)
+* [https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5723](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5723)
+* [https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5724](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5724)
+* [https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5725](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5725)
+* [https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5726](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5726)
+

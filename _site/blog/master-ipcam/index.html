@@ -135,6 +135,8 @@ var mppver="mpp";
   <li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5726">[CVE-2018-5726]</a> Unauthenticated Sensitive Information Disclousure</li>
 </ul>
 
+<p>I will update this post with the new vulnerabilities we will found.</p>
+
 <h2 id="introduction">Introduction</h2>
 
 <p>First of all we ran nmap:</p>
@@ -199,7 +201,7 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 <p><img src="/images/posts/2018/2018-01-15-master-ipcam/img9.png" alt="Screenshot" /></p>
 
-<p>[CVE-2018-5723] Hardcoded Password for Root Account</p>
+<h2 id="cve-2018-5723-hardcoded-password-for-root-account">[CVE-2018-5723] Hardcoded Password for Root Account</h2>
 
 <p>Good, we got the passwd file with the password hash for user root:</p>
 
@@ -228,9 +230,16 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 <p><img src="/images/posts/2018/2018-01-15-master-ipcam/img12.png" alt="Screenshot" /></p>
 
-<p>I will update this post with the new vulnerabilities we will found.</p>
+<h3 id="references">References</h3>
 
-<p>Bye!!!</p>
+<ul>
+  <li><a href="https://www.exploit-db.com/exploits/43693/">https://www.exploit-db.com/exploits/43693</a></li>
+  <li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5723">https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5723</a></li>
+  <li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5724">https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5724</a></li>
+  <li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5725">https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5725</a></li>
+  <li><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5726">https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5726</a></li>
+</ul>
+
 
   </article>
 

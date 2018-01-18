@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 17 Jan 2018 01:13:09 +0100</pubDate>
-    <lastBuildDate>Wed, 17 Jan 2018 01:13:09 +0100</lastBuildDate>
+    <pubDate>Thu, 18 Jan 2018 20:51:40 +0100</pubDate>
+    <lastBuildDate>Thu, 18 Jan 2018 20:51:40 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -45,6 +45,8 @@ var mppver=&quot;mpp&quot;;
   &lt;li&gt;&lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5725&quot;&gt;[CVE-2018-5725]&lt;/a&gt; Unauthenticated Configuration Change&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5726&quot;&gt;[CVE-2018-5726]&lt;/a&gt; Unauthenticated Sensitive Information Disclousure&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;I will update this post with the new vulnerabilities we will found.&lt;/p&gt;
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
@@ -110,7 +112,7 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 &lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img9.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;[CVE-2018-5723] Hardcoded Password for Root Account&lt;/p&gt;
+&lt;h2 id=&quot;cve-2018-5723-hardcoded-password-for-root-account&quot;&gt;[CVE-2018-5723] Hardcoded Password for Root Account&lt;/h2&gt;
 
 &lt;p&gt;Good, we got the passwd file with the password hash for user root:&lt;/p&gt;
 
@@ -139,9 +141,16 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 &lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img12.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;I will update this post with the new vulnerabilities we will found.&lt;/p&gt;
+&lt;h3 id=&quot;references&quot;&gt;References&lt;/h3&gt;
 
-&lt;p&gt;Bye!!!&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.exploit-db.com/exploits/43693/&quot;&gt;https://www.exploit-db.com/exploits/43693&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5723&quot;&gt;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5723&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5724&quot;&gt;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5724&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5725&quot;&gt;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5725&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5726&quot;&gt;https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5726&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
 </description>
         <pubDate>Mon, 15 Jan 2018 22:00:00 +0100</pubDate>
         <link>http://localhost:4000/blog/master-ipcam/</link>
