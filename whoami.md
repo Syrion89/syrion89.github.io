@@ -13,6 +13,6 @@ I like to challenge myself with “Capture the Flag”, learn new attack and def
 * [Twitter](https://twitter.com/syrion89)
 * [Exploit-DB](https://www.exploit-db.com/author/?a=9265)
 * [Bugcrowd](https://bugcrowd.com/syrion)
-* [HackTheBox](https://www.hackthebox.eu/home/users/profile/3353)
+* [HackTheBox](https://www.hackthebox.eu/profile/3353)
 * [Root-Me](https://www.root-me.org/Syrion-60972?lang=en)
 * [Vulnhub](https://www.vulnhub.com/author/syrion,432/)
