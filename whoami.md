@@ -4,7 +4,7 @@ title: "Whoami"
 permalink: /whoami/
 ---
 
-Hi, my name is Raffaele and I’m a penetration tester.
+Hi, my name is Raffaele and I’m a Penetration Tester.
 
 I took a Master’s Degree in Network and Software Technologies at University of Salerno, Italy.
 
