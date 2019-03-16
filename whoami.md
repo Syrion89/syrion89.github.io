@@ -14,6 +14,7 @@ I like to challenge myself with “Capture the Flag”, learn new attack and def
 * [Exploit-DB](https://www.exploit-db.com/?author=9265)
 * [Youracclaim](https://www.youracclaim.com/users/raffaele-sabato)
 * [Fastweb Hall Of Fame](https://www.fastweb.it/corporate/responsible-disclosure/)
+* [Tim Hall Of Fame](https://www.telecomitalia.com/tit/it/footer/responsible-disclosure.html)
 * [Youtube](https://www.youtube.com/channel/UCkMOZEduLP73TSOpWOGkWDw)
 * [Bugcrowd](https://bugcrowd.com/syrion)
 * [HackTheBox](https://www.hackthebox.eu/profile/3353)
