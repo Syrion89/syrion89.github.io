@@ -87,7 +87,7 @@ Task Completed
 
 There was phpLiteAdmin v1.9 on https://nineveh.htb/db/index.php: 
 
-![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-02-05-htb-nineveh/img1.png)
+![Screenshot]({{ site.baseurl }}/images/2018-02-05-htb-nineveh/img1.png)
 
 I tried to bruteforce the login with hydra:
 
@@ -106,7 +106,7 @@ So the application didn't have the permissions for write there.
 
 At this point I tried to bruteforce the login in http://nineveh.htb/department :
 
-![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-02-05-htb-nineveh/img2.png)
+![Screenshot]({{ site.baseurl }}/images/2018-02-05-htb-nineveh/img2.png)
 
 The credentials were admin:1q2w3e4r5t.
 
@@ -116,7 +116,7 @@ I tried to include my db /var/tmp/syrion.php (but it didn't work.
 
 By rename the db ninevehNotes1.php I was able to incude my shell and execute command:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-02-05-htb-nineveh/img3.png)
+![Screenshot]({{ site.baseurl }}/images/2018-02-05-htb-nineveh/img3.png)
 
 In the source code of the page there was this check:
 

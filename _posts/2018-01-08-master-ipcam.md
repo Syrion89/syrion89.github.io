@@ -10,9 +10,9 @@ tags:
 
 Some time ago I analized this ipcam with my friend [Dzonerzy](https://twitter.com/dzonerzy):
 
-![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img1.jpg)
+![Screenshot]({{ site.baseurl }}/images/2018-01-15-master-ipcam/img1.jpg)
 
-![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img2.jpg)
+![Screenshot]({{ site.baseurl }}/images/2018-01-15-master-ipcam/img2.jpg)
 
 ~~~
 var serialNum="VVVIPCSBC150617Z-06929VjmJH54vkK";
@@ -74,7 +74,7 @@ There were different services running on the camera but we started from the weba
 
 There was a login page where we could login with admin:admin
 
-![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img3.png)
+![Screenshot]({{ site.baseurl }}/images/2018-01-15-master-ipcam/img3.png)
 
 Obviously every request was in HTTP (LOL).
 
@@ -84,7 +84,7 @@ The web application had not so much functionality but after some researches on g
 
 We could download the configuration file:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img7.png)
+![Screenshot]({{ site.baseurl }}/images/2018-01-15-master-ipcam/img7.png)
 
 The first step was uncompressing the config_backup.bin file:
 
@@ -106,11 +106,11 @@ port=80 user=root dir=/etc/ nosymlink globalpasswd debug cgilimit=30
 
 Ok at this point we only needed something to upload the new configuration file. The [manual](http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf) helped us again:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img8.png)
+![Screenshot]({{ site.baseurl }}/images/2018-01-15-master-ipcam/img8.png)
 
 It worked and after some minutes the ipcamera was online again:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img9.png)
+![Screenshot]({{ site.baseurl }}/images/2018-01-15-master-ipcam/img9.png)
 
 ## [CVE-2018-5723] Hardcoded Password for Root Account 
 
@@ -122,25 +122,25 @@ root:$1$xFoO/s3I$zRQPwLG2yX1biU31a2wxN/:0:0::/root:/bin/sh
 
 With John we cracked it:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img10.png)
+![Screenshot]({{ site.baseurl }}/images/2018-01-15-master-ipcam/img10.png)
 
 And yes, we got root:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img11.png)
+![Screenshot]({{ site.baseurl }}/images/2018-01-15-master-ipcam/img11.png)
 
 ## [CVE-2018-5725] Unauthenticated Configuration Change
 
 Without any authentication we could change the port where the server was running:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img4.png)
-![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img5.png)
-![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img6.png)
+![Screenshot]({{ site.baseurl }}/images/2018-01-15-master-ipcam/img4.png)
+![Screenshot]({{ site.baseurl }}/images/2018-01-15-master-ipcam/img5.png)
+![Screenshot]({{ site.baseurl }}/images/2018-01-15-master-ipcam/img6.png)
 
 ## [CVE-2018-5726] Unauthenticated Sensitive Information Disclousure
 
 That was so magic:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2018/2018-01-15-master-ipcam/img12.png)
+![Screenshot]({{ site.baseurl }}/images/2018-01-15-master-ipcam/img12.png)
 
 ### References
 

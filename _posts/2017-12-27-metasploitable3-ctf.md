@@ -14,4 +14,4 @@ My dear Friend [R3d](https://twitter.com/R3dShift23) and I partecipated to the R
 
 You can find our write-up [here](https://github.com/16667/Metasploitable-3-CTF).
 
-![Screenshot]({{ site.baseurl }}/images/posts/2017/2017-12-27-metasploitable3-ctf/img1.png)
+![Screenshot]({{ site.baseurl }}/images/2017-12-27-metasploitable3-ctf/img1.png)

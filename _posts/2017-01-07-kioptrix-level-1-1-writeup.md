@@ -32,15 +32,15 @@ PORT     STATE SERVICE  VERSION
 
 On port 80 there was this vulnerable login:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2017/2017-01-07-kioptrix-level-1-1-writeup/img1.png)
+![Screenshot]({{ site.baseurl }}/images/2017-01-07-kioptrix-level-1-1-writeup/img1.png)
 
 By using ‘ or 1=1 — – as username I successfully logged in:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2017/2017-01-07-kioptrix-level-1-1-writeup/img2.png)
+![Screenshot]({{ site.baseurl }}/images/2017-01-07-kioptrix-level-1-1-writeup/img2.png)
 
 There was this “Basic Administrative Web Console”.  By giving an ip address, it performed a ping command:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2017/2017-01-07-kioptrix-level-1-1-writeup/img3.png)
+![Screenshot]({{ site.baseurl }}/images/2017-01-07-kioptrix-level-1-1-writeup/img3.png)
 
 Nice!!! It looked like a Command Injection Vulnerability!!! I succesfully executed a “ls” command by using this input:
 
@@ -48,7 +48,7 @@ Nice!!! It looked like a Command Injection Vulnerability!!! I succesfully execut
 ;ls
 ~~~
 
-![Screenshot]({{ site.baseurl }}/images/posts/2017/2017-01-07-kioptrix-level-1-1-writeup/img4.png)
+![Screenshot]({{ site.baseurl }}/images/2017-01-07-kioptrix-level-1-1-writeup/img4.png)
 
 I opened a reverse shell:
 

@@ -1,8 +1,8 @@
 # Site settings
 title: "Syrion"
-bye_message: "Syrion © 2019 "
+bye_message: "Syrion © 2020 "
 baseurl: ""
-url: "https://syrion89.github.io"
+url: "https://syrion.me"
 disqus: syrion89
 
 # Header settings

