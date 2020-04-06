@@ -4,19 +4,28 @@ title: "Whoami"
 permalink: /whoami/
 ---
 
-Hi, my name is Raffaele and I’m a Penetration Tester.
+# Summary
 
-I took a Master’s Degree in Network and Software Technologies at University of Salerno, Italy and I'm a Offensive Security Certified Professional.
+Hi, my name is Raffaele Sabato and I’m a Cyber Security Consultant.
+I took a Master’s Degree in Network and Software Technologies at University of Salerno, Italy.
+I like to challenge myself with “Capture the Flag”, learn new attacks and play the guitar. I'm insterested in iOS Application Security, Binary Exploitation and Red Teaming.
 
-I like to challenge myself with “Capture the Flag”, learn new attack and defense strategies, and play the guitar.
+# Training
+
+* [OSCP - Offensive Security Certified Professional](https://twitter.com/syrion89)
+* [eMAPT - eLearnSecurity Mobile Application Penetration Tester](https://www.elearnsecurity.com/certification/emapt/)
+* [Corelan Live - Corelan Advanced Exploit Development](https://www.corelan-training.com/index.php/training/advanced/)
+* [CRTP - Certified Red Team Professional](https://www.pentesteracademy.com/activedirectorylab)
+
+
+# References
 
 * [Twitter](https://twitter.com/syrion89)
 * [Exploit-DB](https://www.exploit-db.com/?author=9265)
-* [Youracclaim](https://www.youracclaim.com/users/raffaele-sabato)
+* [Linkedin](https://www.linkedin.com/in/raffaelesabato/)
 * [Fastweb Hall Of Fame](https://www.fastweb.it/corporate/responsible-disclosure/)
 * [Tim Hall Of Fame](https://www.telecomitalia.com/tit/it/footer/responsible-disclosure.html)
 * [Youtube](https://www.youtube.com/channel/UCkMOZEduLP73TSOpWOGkWDw)
-* [Bugcrowd](https://bugcrowd.com/syrion)
 * [HackTheBox](https://www.hackthebox.eu/profile/3353)
 * [Root-Me](https://www.root-me.org/Syrion-60972?lang=en)
-* [Vulnhub](https://www.vulnhub.com/author/syrion,432/)
+
