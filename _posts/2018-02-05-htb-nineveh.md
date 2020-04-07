@@ -8,8 +8,9 @@ tags:
     - hackthebox
 ---
 
-Let's start with NMAP:
+![Screenshot]({{ site.baseurl }}/images/2018-02-05-htb-nineveh/img0.png)
 
+Let's start with NMAP:
 
 ~~~
 root@kali:~# nmap -sT -sV 10.10.10.43 -p 1-65535 -A
