@@ -8,7 +8,7 @@ permalink: /whoami/
 
 Hi, my name is Raffaele Sabato and I’m a Cyber Security Consultant.
 I took a Master’s Degree in Network and Software Technologies at University of Salerno, Italy.
-I like to challenge myself with “Capture the Flag”, learn new attacks and play the guitar. I'm insterested in iOS Application Security, Binary Exploitation and Red Teaming.
+I like to challenge myself with “Capture the Flag”, learn new attacks and play the guitar. I'm interested in iOS Application Security, Binary Exploitation and Red Teaming.
 
 ### Training
 
