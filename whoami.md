@@ -4,21 +4,21 @@ title: "Whoami"
 permalink: /whoami/
 ---
 
-# Summary
+### Summary
 
 Hi, my name is Raffaele Sabato and I’m a Cyber Security Consultant.
 I took a Master’s Degree in Network and Software Technologies at University of Salerno, Italy.
 I like to challenge myself with “Capture the Flag”, learn new attacks and play the guitar. I'm insterested in iOS Application Security, Binary Exploitation and Red Teaming.
 
-# Training
+### Training
 
-* [OSCP - Offensive Security Certified Professional](https://twitter.com/syrion89)
-* [eMAPT - eLearnSecurity Mobile Application Penetration Tester](https://www.elearnsecurity.com/certification/emapt/)
-* [Corelan Live - Corelan Advanced Exploit Development](https://www.corelan-training.com/index.php/training/advanced/)
-* [CRTP - Certified Red Team Professional](https://www.pentesteracademy.com/activedirectorylab)
+* Offensive Security Certified Professional([OSCP](https://www.offensive-security.com/pwk-oscp))
+* eLearnSecurity Mobile Application Penetration Tester([eMAPT](https://www.elearnsecurity.com/certification/emapt/))
+* Corelan Advanced Exploit Development([Corelan Live](https://www.corelan-training.com/index.php/training/advanced/))
+* Certified Red Team Professional([CRTP](https://www.pentesteracademy.com/activedirectorylab))
 
 
-# References
+### References
 
 * [Twitter](https://twitter.com/syrion89)
 * [Exploit-DB](https://www.exploit-db.com/?author=9265)
