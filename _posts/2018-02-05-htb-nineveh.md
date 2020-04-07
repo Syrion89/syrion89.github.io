@@ -10,6 +10,8 @@ tags:
 
 ![Screenshot]({{ site.baseurl }}/images/2018-02-05-htb-nineveh/img0.png)
 
+### User Flag
+
 Let's start with NMAP:
 
 ~~~
@@ -229,6 +231,8 @@ amrois@nineveh:~$ id
 uid=1000(amrois) gid=1000(amrois) groups=1000(amrois)
 amrois@nineveh:~$ 
 ~~~
+
+### Root Flag
 
 There was an insteresting file in the crontab:
 
