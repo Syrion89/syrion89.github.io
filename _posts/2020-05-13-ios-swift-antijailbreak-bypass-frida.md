@@ -16,7 +16,7 @@ Frida is a dynamic binary instrumentation framework that has been around for a w
 Fortunately, my friend [r3dx0f](https://twitter.com/r3dx0f) provided me with some suggestions about how to approach the problem, and I will share with you what I learnt during this journey.  
 
 
-### IOSSecuritySuite 
+### Swift Security Checks
 
 In this blogpost, I will describe how to bypass a number of jailbreak and reverse engineering detection mechanisms implemented within the IOSSecuritySuite. The aforementioned project is written in Swift and is hosted on [Github](https://github.com/securing/IOSSecuritySuite). However, we will perform the analysis against a non-stripped iOS application which implements such library. The analysis will be conducted without the support of the source code in order to simulate a real-life scenario. 
 When the application is executed, it shows the message below, telling us that our iPhone is jailbroken. Some suspicious files are found and the application is considered “reversed”.
@@ -49,7 +49,7 @@ By reversing it, we can see the canOpenURL method call at the address offset **0
 
 ![Screenshot]({{ site.baseurl }}/images/2020-05-13-ios-swift-antijailbreak-bypass-frida/img5.png)
 
-We can use Frida’s Module.getBaseAddress() function to obtain the base address where the library is loaded in memory (Frida calculate the ASLR Shift for us) and then we have to add the **0x126c** offset to it. Then we ask Frida to ‘hook’ and replace the code at that specific address (baseAddress+offset). Our implementations will change the **x0** register value from **0x01** (**true**) to **0x00** (**false**). In Frida we can access register’s values by using the this.context object.
+We can use Frida’s Module.getBaseAddress() function to obtain the base address where the library is loaded in memory (Frida calculate the ASLR Shift for us) and then we have to add the **0x126c** offset to it. Then we ask Frida to hook and replace the code at that specific address (baseAddress+offset). Our implementations will change the **x0** register value from **0x01** (**true**) to **0x00** (**false**). In Frida we can access register’s values by using the this.context object.
 
 #### **Frida Code**
 ~~~
@@ -211,7 +211,7 @@ The function AmIDebugged checks if the application is debugged, following the me
 
 ![Screenshot]({{ site.baseurl }}/images/2020-05-13-ios-swift-antijailbreak-bypass-frida/img21.png)
 
-If we try to debug the application, the check will return true but we can Hook the ret instruction at address 0xae08 and change the return value contained in **x0** to **0x00** with the following Frida script.
+If we try to debug the application, the check will return true but we can hook the ret instruction at address 0xae08 and change the return value contained in **x0** to **0x00** with the following Frida script.
 
 #### **Frida Code**
 
