@@ -10,7 +10,7 @@ tags:
 
 ![Screenshot]({{ site.baseurl }}/images/2020-06-06-htb-resolute/img1.png)
 
-I had some problems the last week and couldn't publish this report I wrote in Decembre.
+I had some problems the last week and couldn't publish this writeup I wrote in Decembre.
 
 ### User Flag
 
