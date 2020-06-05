@@ -111,5 +111,5 @@ And we get a reverse shell with System privilege:
 
 ![Screenshot]({{ site.baseurl }}/images/2020-06-06-htb-resolute/img11.png)
 
-
+![Screenshot]({{ site.baseurl }}/images/2020-06-06-htb-resolute/img12.png)
 
