@@ -204,9 +204,9 @@ I didn’t tell you but, at the beginning, as user t.thompson, I found two inter
 
 If you remember, the TempAdmin was also in the Audit.db into the “DeletedUserAudit” table. So, the email tells us there was a user called “TempAdmin” with the same password as the Administrator, we know the this user was deleted and it is in the Recycle Bin and we are member of AD Recycle Bin group.
 
-![Screenshot]({{ site.baseurl }}/images/2020-07-25-htb-cascade/img17.png)
+![Screenshot]({{ site.baseurl }}/images/2020-07-25-htb-cascade/img17.jpg)
 
-After some enumeration on google we can find this article, using the following command we can find the base64 password for the user TempAdmin:
+After some enumeration on google we can find [this](https://www.lepide.com/how-to/restore-deleted-objects-in-active-directory.html) article, using the following command we can find the base64 password for the user TempAdmin:
 
 ~~~
 Get-ADObject -Filter {SamAccountName -eq 'TempAdmin'} -IncludeDeletedObjects -Properties *
