@@ -12,7 +12,7 @@ tags:
 
 ### User Flag
 
-Let’s start by enumerating all the service on the machine with a TCP scan:
+Let’s start by enumerating all the services on the machine with a TCP scan:
 
 ~~~
 root@kali:~# nmap -sT -sV -T4 10.10.10.182 -p-
