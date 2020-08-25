@@ -11,7 +11,7 @@ tags:
 
 In this blogpost, I’ll explain how to bypass **NX** using **mprotect()** in order to make the stack executable.
 
-For the purpose, I created the following vulnerable C program.
+For this purpose, I created the following vulnerable C program.
 
 ~~~
 #include <stdio.h>
@@ -35,12 +35,12 @@ gcc -o chall chall.c -fno-stack-protector -no-pie -Wl,-z,noexecstack
 
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img1.png)
 
-**ASLR** is disabled and **NX** is enabled.
+**ASLR** should be disabled, how we can see **NX** is enabled.
 
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img2.png)
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img3.png)
 
-Let’s run the executable in GDB. In order to trigger the buffer overflow we will give 300 ‘A’s as input.
+Let’s run the executable in gdb. In order to trigger the buffer overflow we will give 300 ‘A’s as input.
 
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img4.png)
 
@@ -48,7 +48,7 @@ as we expected, the **RBP** register is overwritten with our ‘A’s.
 
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img5.png)
 
-Using pattern_create, we can generate a payload in order to calculate the exact offset that overwrite the **RBP** register.
+By using pattern_create, we can generate a payload in order to calculate the exact offset that overwrite the **RIP** register. Because the executable is a 64 bit ELF, the maximum address is **0x7FFFFFFFFFFFF**, we can overwrite the **RIP** register by adding 8 byte to the **RBP** register.
 
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img6.png)
 
@@ -148,6 +148,8 @@ p.sendline(payload)
 p.readline()
 p.interactive()
 ~~~
+
+Let's run the script, use the command "attach 12889" in gdb and then let the execution continue.
 
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img16.png)
 
