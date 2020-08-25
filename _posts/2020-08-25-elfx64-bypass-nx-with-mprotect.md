@@ -9,7 +9,7 @@ tags:
 ---
 
 
-In this blogpost, I’ll explain how to bypass NX using **mprotect()** in order to make the stack executable.
+In this blogpost, I’ll explain how to bypass **NX** using **mprotect()** in order to make the stack executable.
 
 For the purpose, I created the following vulnerable C program.
 
@@ -27,7 +27,7 @@ int main(int argc, char **argv){
 }
 ~~~
 
-This is the gcc command to compile the executable with NX enabled and PIE disabled.
+This is the gcc command to compile the executable with **NX** enabled and **PIE** disabled.
 
 ~~~
 gcc -o chall chall.c -fno-stack-protector -no-pie -Wl,-z,noexecstack
@@ -35,7 +35,7 @@ gcc -o chall chall.c -fno-stack-protector -no-pie -Wl,-z,noexecstack
 
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img1.png)
 
-ASLR is disabled and NX is enabled:
+**ASLR** is disabled and **NX** is enabled.
 
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img2.png)
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img3.png)
