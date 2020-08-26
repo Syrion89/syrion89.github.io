@@ -29,3 +29,7 @@ I like to challenge myself with “Capture the Flag”, learn new attacks and pl
 * [HackTheBox](https://www.hackthebox.eu/profile/3353)
 * [Root-Me](https://www.root-me.org/Syrion-60972?lang=en)
 
+![Screenshot]({{ site.baseurl }}/images/certs/oscp.png)
+![Screenshot]({{ site.baseurl }}/images/certs/emapt.png)
+![Screenshot]({{ site.baseurl }}/images/certs/corelanadvanced.png)
+![Screenshot]({{ site.baseurl }}/images/certs/crtp.png)
