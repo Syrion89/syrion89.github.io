@@ -42,6 +42,7 @@ I like to challenge myself with “Capture the Flag”, learn new attacks and pl
 ![Screenshot]({{ site.baseurl }}/images/whoami/tim.jpeg)
 
 ### Certifications
+
 ![Screenshot]({{ site.baseurl }}/images/whoami/oscp.png)
 
 ![Screenshot]({{ site.baseurl }}/images/whoami/emapt.png)
