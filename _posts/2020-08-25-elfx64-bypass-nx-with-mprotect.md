@@ -90,7 +90,7 @@ PROT_EXEC: The memory can be executed.
 ...
 ~~~
 
-We will set address to **0x7fffffffe000**, the value **0x1000** as length and the protection to **RWX**, which is **0x7**.
+We will set address to **0x7fffffffe000** (I take it from gdb, our 'A's are at  address **0x7fffffffe168**), the value **0x1000** as length and the protection to **RWX**, which is **0x7**.
 
 The calling convention for ELF 64 is the following: 
 * Arguments in RDI, RSI, RDX, RCX, R8, R9 
