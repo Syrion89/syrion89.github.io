@@ -1,6 +1,6 @@
 ---
 layout: post
-title:	"ELF x64 Bypass NX with mprotect()"
+title:	"ELF x64 bypass NX with mprotect()"
 date:	2020-08-25
 categories:
     - blog
