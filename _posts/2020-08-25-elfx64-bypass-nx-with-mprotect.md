@@ -40,7 +40,7 @@ gcc -o chall chall.c -fno-stack-protector -no-pie -Wl,-z,noexecstack
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img2.png)
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img3.png)
 
-Let’s run the executable in gdb. In order to trigger the buffer overflow we will give 300 ‘A’s as input.
+Let’s run the executable in gdb. In order to trigger the buffer overflow we will use 300 ‘A’s as input.
 
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img4.png)
 
@@ -102,7 +102,7 @@ Using gdb, it is possible to find the **mprotect()** address.
 
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img12.png)
 
-Using ROPgadget, we can find the gadgets we need to put the values into the registers.
+Using [ROPgadget](https://github.com/JonathanSalwan/ROPgadget), we can find the gadgets we need to put the values into the registers.
 
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img13.png)
 
