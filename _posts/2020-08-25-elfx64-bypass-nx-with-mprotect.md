@@ -60,8 +60,6 @@ Using pattern_offset, we can calculate the offset.
 
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img8.png)
 
-Because the executable is a 64 bit ELF, the maximum address is **0x7FFFFFFFFFFFF**, we can overwrite the **RIP** register by adding 8 byte to the **RBP** register and using the following value.
-
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img9.png)
 
 We successfully overwrite the **RIP** register with the value **0x0000424242424242**.
