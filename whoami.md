@@ -30,7 +30,11 @@ I like to challenge myself with “Capture the Flag”, learn new attacks and pl
 * [Root-Me](https://www.root-me.org/Syrion-60972?lang=en)
 * [Credential](https://www.credential.net/profile/raffaelesabato88)
 
-![Screenshot]({{ site.baseurl }}/images/certs/oscp.png)
-![Screenshot]({{ site.baseurl }}/images/certs/emapt.png)
-![Screenshot]({{ site.baseurl }}/images/certs/corelanadvanced.png)
-![Screenshot]({{ site.baseurl }}/images/certs/crtp.png)
+### HTB Reported Vulnerability
+![Screenshot]({{ site.baseurl }}/images/whoami/htb.jpeg)
+
+### Certifications
+![Screenshot]({{ site.baseurl }}/images/whoami/oscp.png)
+![Screenshot]({{ site.baseurl }}/images/whoami/emapt.png)
+![Screenshot]({{ site.baseurl }}/images/whoami/corelanadvanced.png)
+![Screenshot]({{ site.baseurl }}/images/whoami/crtp.png)
