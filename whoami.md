@@ -8,7 +8,7 @@ permalink: /whoami/
 
 Hi, my name is Raffaele Sabato and I’m a Cyber Security Consultant.
 I took a Master’s Degree in Network and Software Technologies at University of Salerno, Italy.
-I like to challenge myself with “Capture the Flag”, learn new attacks and play the guitar. I'm interested in iOS Application Security, Binary Exploitation and Red Teaming.
+I like to challenge myself with “Capture the Flag”, learn new attacks and play the guitar. I'm interested in iOS Application Security, Binary Exploitation and Red Teaming. I'm a Warcraft World addicted.
 
 ### Training
 
@@ -28,6 +28,7 @@ I like to challenge myself with “Capture the Flag”, learn new attacks and pl
 * [Youtube](https://www.youtube.com/channel/UCkMOZEduLP73TSOpWOGkWDw)
 * [HackTheBox](https://www.hackthebox.eu/profile/3353)
 * [Root-Me](https://www.root-me.org/Syrion-60972?lang=en)
+* [Credential](https://www.credential.net/profile/raffaelesabato88)
 
 ![Screenshot]({{ site.baseurl }}/images/certs/oscp.png)
 ![Screenshot]({{ site.baseurl }}/images/certs/emapt.png)
