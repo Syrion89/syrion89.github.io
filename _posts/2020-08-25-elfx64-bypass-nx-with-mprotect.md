@@ -44,7 +44,7 @@ Let’s run the executable in gdb. In order to trigger the buffer overflow we wi
 
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img4.png)
 
-as we expected, the **RBP** register is overwritten with our ‘A’s.
+As we expected, the **RBP** register is overwritten with our ‘A’s.
 
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img5.png)
 
@@ -70,7 +70,7 @@ Because NX is enabled, our stack is not executable, we can use the **[mprotect()
 
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img11.png)
 
-as reported in the documentation:
+As reported in the documentation:
 
 ~~~
 mprotect() changes the access protections for the calling process's memory pages containing any part of the address range in the interval [addr, addr+len-1].  addr must be aligned to a page boundary.
