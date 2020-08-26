@@ -30,11 +30,22 @@ I like to challenge myself with “Capture the Flag”, learn new attacks and pl
 * [Root-Me](https://www.root-me.org/Syrion-60972?lang=en)
 * [Credential](https://www.credential.net/profile/raffaelesabato88)
 
-### HTB Reported Vulnerability
+### Reported Bugs
+
+* ##### **Hack The Box**
 ![Screenshot]({{ site.baseurl }}/images/whoami/htb.jpeg)
+
+* ##### **Fastweb**
+![Screenshot]({{ site.baseurl }}/images/whoami/fastweb.jpeg)
+
+* ##### **Telecom Italia**
+![Screenshot]({{ site.baseurl }}/images/whoami/tim.jpeg)
 
 ### Certifications
 ![Screenshot]({{ site.baseurl }}/images/whoami/oscp.png)
+
 ![Screenshot]({{ site.baseurl }}/images/whoami/emapt.png)
+
 ![Screenshot]({{ site.baseurl }}/images/whoami/corelanadvanced.png)
+
 ![Screenshot]({{ site.baseurl }}/images/whoami/crtp.png)
