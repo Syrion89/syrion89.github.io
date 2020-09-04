@@ -41,6 +41,7 @@ In this first article we will describe:
 * [[CVE-2018-5723]](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5723) Hardcoded Password for Root Account 
 * [[CVE-2018-5725]](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5725) Unauthenticated Configuration Change
 * [[CVE-2018-5726]](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-5726) Unauthenticated Sensitive Information Disclousure
+* [[CVE-2019-8387]](https://cve.mitre.org/cgi-bin/cvename.cgi?name=2019-8387) Remote Command Execution
 
 I will update this post with the new vulnerabilities we will found.
 
