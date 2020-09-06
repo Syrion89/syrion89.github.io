@@ -13,10 +13,10 @@ I like to challenge myself with “Capture the Flag”, learn new attacks and pl
 ### Training
 
 * Offensive Security Certified Professional([OSCP](https://www.offensive-security.com/pwk-oscp))
-* eLearnSecurity Certified Exploit Developer ([eCXD](https://www.elearnsecurity.com/certification/ecxd/))
 * eLearnSecurity Mobile Application Penetration Tester([eMAPT](https://www.elearnsecurity.com/certification/emapt/))
 * Corelan Advanced Exploit Development([Corelan Live](https://www.corelan-training.com/index.php/training/advanced/))
 * Certified Red Team Professional([CRTP](https://www.pentesteracademy.com/activedirectorylab))
+* eLearnSecurity Certified Exploit Developer ([eCXD](https://www.elearnsecurity.com/certification/ecxd/))
 
 
 ### References
@@ -47,10 +47,10 @@ I like to challenge myself with “Capture the Flag”, learn new attacks and pl
 
 ![Screenshot]({{ site.baseurl }}/images/whoami/oscp.png)
 
-![Screenshot]({{ site.baseurl }}/images/whoami/ecxd.jpeg)
-
 ![Screenshot]({{ site.baseurl }}/images/whoami/emapt.png)
 
 ![Screenshot]({{ site.baseurl }}/images/whoami/corelanadvanced.png)
 
 ![Screenshot]({{ site.baseurl }}/images/whoami/crtp.png)
+
+![Screenshot]({{ site.baseurl }}/images/whoami/ecxd.jpeg)
