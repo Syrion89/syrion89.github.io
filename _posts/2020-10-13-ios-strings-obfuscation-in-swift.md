@@ -45,7 +45,7 @@ func isJailbroken(){
 ~~~
 
 The method **isJailbroken** calls the **canOpenUrlFromList** method and give the string **“cydia://”** as parameter, it will return a Boolean value indicating if the url **“cydia://”** is opened or not, then the application shows the message **“Jailbroken!”** or **“Not Jailbroken!”**.
-If we run the application on a the device, we will see the string indicating the device is not **jailbroken** as showed in the image below:
+If we run the application on a the device, we will see the string indicating the device is not **jailbroken** as showed in the image below.
 
 ![Screenshot]({{ site.baseurl }}/images/2020-10-13-ios-strings-obfuscation-in-swift/img1.png)
 
@@ -55,7 +55,7 @@ If we reverse the application using Hopper, we can find the method name (It’s 
 
 ![Screenshot]({{ site.baseurl }}/images/2020-10-13-ios-strings-obfuscation-in-swift/img3.png)
 
-By looking for the string **“cydia://”** references, we can easily find the method that performs the anti-jailbreak mechanism:
+By looking for the string **“cydia://”** references, we can easily find the method that performs the anti-jailbreak mechanism.
 
 ![Screenshot]({{ site.baseurl }}/images/2020-10-13-ios-strings-obfuscation-in-swift/img4.png)
 
@@ -137,7 +137,7 @@ Pay attention: the attacker will be able to see the secret key and the IV, how t
 
 ![Screenshot]({{ site.baseurl }}/images/2020-10-13-ios-strings-obfuscation-in-swift/img9.png)
 
-You can encrypt the strings with [CyberChef](https://gchq.github.io/CyberChef):
+You can encrypt the strings with [CyberChef](https://gchq.github.io/CyberChef).
 
 ![Screenshot]({{ site.baseurl }}/images/2020-10-13-ios-strings-obfuscation-in-swift/img10.png)
 
