@@ -77,8 +77,7 @@ func aesEncrypt(myString: String, myKey: String, myIv: String) throws -> String 
 }
 ~~~
 
-~~~
-    
+~~~   
 func aesDecrypt(myString: String, myKey: String, myIv: String) throws -> String {
 
     let aes = try AES(key: myKey, iv: myIv)
