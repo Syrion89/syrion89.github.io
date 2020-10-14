@@ -132,9 +132,7 @@ The attacker will only find a lot of base64 strings.
 
 ![Screenshot]({{ site.baseurl }}/images/2020-10-13-ios-strings-obfuscation-in-swift/img8.png)
 
-Note: this is just a basic example using AES 128 using a weak password and a weak IV of 16 bytes, how to generate a strong key and IV is not in the scope of this blog post, please don't use the this key and IV! 
-
-Note: The attacker will be able to see the secret key and the IV, how to safe manage the key and the IV is not in the scope of this blogpost and there are plenty of blog explains how to do it in the right way.
+**Pay Attention**: this is just a basic example using **AES**  using a weak password and a weak IV of 16 bytes (128 bit), how to generate a strong key and IV is not in the scope of this blog post, please don't use the this key and IV! The attacker will be able to see the secret key and the IV, how to safe manage the key and the IV is not in the scope of this blogpost and there are plenty of blog explains how to do it in the right way.
 
 ![Screenshot]({{ site.baseurl }}/images/2020-10-13-ios-strings-obfuscation-in-swift/img9.png)
 
