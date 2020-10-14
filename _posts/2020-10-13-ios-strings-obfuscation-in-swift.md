@@ -144,5 +144,5 @@ You can encrypt the strings with [CyberChef](https://gchq.github.io/CyberChef).
 
 ### Conclusion
 
-This obfuscation is a **security in depth** / ** defense in depth ** practice, it will not stops an experienced attacker, as for the jailbreak checks the purpose of these methods is to make the reverse engineering more time consuming for the attacker, and trust me, when you’re reversing an application with a lot of checks, it’s not very nice to not see the strings the application is using.
+This obfuscation is a **security in depth**/** defence in depth ** practice, it will not stops an experienced attacker, as for the jailbreak checks the purpose of these methods is to make the reverse engineering more time consuming for the attacker, and trust me, when you’re reversing an application with a lot of checks, it’s not very nice to not see the strings the application is using.
 I’m not an iOS application developer, I’m sure a good developer can do it in a better way. Let me know if there are errors or doubts!
