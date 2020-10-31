@@ -33,11 +33,11 @@ First of all, let's find this URL in the application binary, for this purpose I 
 
 ![Screenshot]({{ site.baseurl }}/images/2020-10-31-ios-dviav2-url-runtime-manipulation-frida/img4.png)
 
-By clicking on the string, we can see it at address **0x1003476e0**.
+By clicking on the string, we can find it at address **0x1003476e0**.
 
 ![Screenshot]({{ site.baseurl }}/images/2020-10-31-ios-dviav2-url-runtime-manipulation-frida/img5.png)
 
-By looking at the memory map, we can see that our string is in the **__cstring** section, this section is part of the **__TEXT** segment, it’s a read-only area, containing the **“Literal string constants (quoted strings in source code)”** as reported in the [Apple documentation](https://developer.apple.com/library/archive/documentation/Performance/Conceptual/CodeFootprint/Articles/MachOOverview.html#//apple_ref/doc/uid/20001860-BAJGJEJC).
+By looking at the memory map, we can see that our string is in the **__cstring** section, this section is part of the **__TEXT** segment, it’s a read-only area containing the **“Literal string constants (quoted strings in source code)”** as reported in the [Apple documentation](https://developer.apple.com/library/archive/documentation/Performance/Conceptual/CodeFootprint/Articles/MachOOverview.html#//apple_ref/doc/uid/20001860-BAJGJEJC).
 
 ![Screenshot]({{ site.baseurl }}/images/2020-10-31-ios-dviav2-url-runtime-manipulation-frida/img6.png)
 
@@ -76,7 +76,7 @@ Interceptor.attach(toAtt, {
 
 ![Screenshot]({{ site.baseurl }}/images/2020-10-31-ios-dviav2-url-runtime-manipulation-frida/img10.png)
 
-As we expected, we can dump our url and its length. I want to overwrite the url “http://highaltitudehacks.com/2013/11/08/ios-application-security-part-21-arm-and-gdb-basics”  with “https://syrion.me”, we have to change the **x9** register value with my url length **0x11** and overwrite the URL with the new one, to do this we can use the Frida **Memory.protect** function in order to make the first **17**  bytes of the string at address contained in the **x0** register, readable and writable (ASLR) and then, use the the **Memory.copy** to copy "https://syrion.me" into the address contained in the **x0** register.
+As we expected, we can dump our url and its length. I want to overwrite the url “http://highaltitudehacks.com/2013/11/08/ios-application-security-part-21-arm-and-gdb-basics”  with “https://syrion.me”, we have to change the **x9** register value with my url length **0x11** and overwrite the URL with the new one, to do this we can use the Frida **Memory.protect** function in order to make the first **17**  bytes of the string at address contained in the **x0** register readable and writable (ASLR) and then, use the the **Memory.copy** to copy "https://syrion.me" into the address contained in the **x0** register.
 
 ~~~
 var addr = ptr(0x19d990) 
