@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "DVIA v2 iOS URL Runtime Manipulation with Frida"
-date:   2020-10-13
+date:   2020-10-31
 categories:
     - blog
 tags:
