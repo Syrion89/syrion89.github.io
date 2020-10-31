@@ -12,7 +12,7 @@ tags:
 ![Screenshot]({{ site.baseurl }}/images/2020-10-31-ios-dviav2-url-runtime-manipulation-frida/img0.png)
 
 
-After my previous blog posts about [DVIA](https://syrion.me/blog/ios-dvia-antidebugging-bypass) and [Frida with Swift](https://syrion.me/blog/ios-swift-antijailbreak-bypass-frida) some guys asked me about the URL Runtime Manipulation challenge in [DVIA v2](https://github.com/prateek147/DVIA-v2). 
+After my previous blog posts about [DVIA v2 Anti-Debug](https://syrion.me/blog/ios-dvia-antidebugging-bypass) and [Frida with Swift](https://syrion.me/blog/ios-swift-antijailbreak-bypass-frida) some guys asked me about the URL Runtime Manipulation challenge in [DVIA v2](https://github.com/prateek147/DVIA-v2). 
 I will not show my solution for **“Login Method 1”**, **“Login Method 2”** and **“Validate Code”** challenges because they were already described [here](https://philkeeble.com/ios/reverse-engineering/iOS-Runtime-Manipulation), I will focus only on the **“Read Tutorial”** challenge. 
 
 ### URL Runtime Manipulation Challenge
