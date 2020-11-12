@@ -8,9 +8,6 @@ tags:
     - iOS
 ---
 
-
-![Screenshot]({{ site.baseurl }}/images/2020-10-13-ios-strings-obfuscation-in-swift/img0.png)
-
 ### Introduction
 
 Usually when reversing an iOS Application, it’s common to see methods and strings that can help an attacker to figure out how the application works. 
