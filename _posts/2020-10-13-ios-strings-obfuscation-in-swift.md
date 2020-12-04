@@ -135,6 +135,8 @@ The attacker will only find a lot of base64 strings.
 
 **NOTE 2**: The attacker will be able to see the secret key and the IV, how to safe manage the key and the IV is not in the scope of this blogpost and there are plenty of blog explains how to do it in the right way.
 
+**NOTE 3**: The **aesDecrypt** method name should be obfuscate in the same way of **canOpenUrlFromList** and **isJailbroken**.
+
 You can encrypt the strings with [CyberChef](https://gchq.github.io/CyberChef).
 
 ![Screenshot]({{ site.baseurl }}/images/2020-10-13-ios-strings-obfuscation-in-swift/img10.png)
